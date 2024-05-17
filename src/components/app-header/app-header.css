@@ -1,0 +1,40 @@
+.app-header {
+  height: 88px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #1c1c21;
+  color: #f2f2f3;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.nav-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.nav-item {
+  height: 56px;
+}
+
+.nav-item:last-child {
+  margin-left: auto;
+}
+
+.nav-link {
+  display: flex;
+  height: 100%;
+  text-decoration: none;
+  color: #f2f2f3;
+  cursor: pointer;
+}
