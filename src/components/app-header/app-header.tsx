@@ -14,20 +14,20 @@ const AppHeader = () => {
               <a className='nav-link pr-5 pl-5 pt-4 pb-4' href="">
                 <BurgerIcon type="primary" />
                 <span className='pl-2'>Конструктор</span>
-                </a>
-              </li>
+              </a>
+            </li>
             <li className='nav-item'>
               <a className='nav-link pr-5 pl-5 pt-4 pb-4' href="">
-              <ListIcon type="primary" />
-              <span className='pl-2'>Лента заказов</span>
+                <ListIcon type="primary" />
+                <span className='pl-2'>Лента заказов</span>
               </a>
-              </li>
+            </li>
             <li className='nav-item'>
               <a className='nav-link pr-5 pl-5 pt-4 pb-4' href="">
-              <ProfileIcon type="primary" />
-              <span className='pl-2'>Личный кабинет</span>
+                <ProfileIcon type="primary" />
+                <span className='pl-2'>Личный кабинет</span>
               </a>
-              </li>
+            </li>
           </ul>
         </nav>
         <div className='logo-wrapper'>
