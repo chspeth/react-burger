@@ -1,12 +1,18 @@
-import React from 'react';
 import AppHeader from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import '@ya.praktikum/react-developer-burger-ui-components';
-import './app.css';
+import styles from './app.module.css';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <AppHeader />
+      <main>
+        <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
+        <div className={ styles['wrapper'] }>
+          <BurgerIngredients />
+        </div>
+      </main>
     </div>
   );
 }
