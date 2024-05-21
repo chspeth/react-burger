@@ -1,33 +1,37 @@
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
-const CustomScrollbar = ({ children }) => {
+const CustomScrollbar = ({ children, customStyles }) => {
   return (
-    <Scrollbars 
-      style={{ width: '100%', height: '100vh' }}
-      renderThumbVertical={({ style, ...props }) => (
-        <div
-          {...props}
-          style={{
-            ...style,
-            width: '8px',
-            backgroundColor: '#8585ad'
-          }}
-        />
-      )}
-      renderTrackVertical={({ style, ...props }) => (
-        <div
-          {...props}
-          style={{
-            ...style,
-            width: '8px',
-            height: '95vh',
-            backgroundColor: '#2f2f37',
-            right: '2px',
-            bottom: '2px',
-            top: '2px'
-          }}
-        />
-      )}>{children}</Scrollbars>
+    <div style={{ height: customStyles.wrapperHeight, position: 'relative' }}>
+      <Scrollbars
+        renderThumbVertical={({ style, ...props }) => (
+          <div
+            {...props}
+            style={{
+              ...style,
+              width: '8px',
+              backgroundColor: '#8585ad',
+              position: 'relative',
+              height: customStyles.thumbHeight
+            }}
+          />
+        )}
+        renderTrackVertical={({ style, ...props }) => (
+          <div
+            {...props}
+            style={{
+              ...style,
+              width: '8px',
+              backgroundColor: '#2f2f37',
+              position: 'absolute',
+              right: '0',
+              top: customStyles.top,
+              bottom: customStyles.bottom
+            }}
+          />
+        )}
+        style={{ height: '100%' }}>{children}</Scrollbars>
+    </div>
   )
 }
 

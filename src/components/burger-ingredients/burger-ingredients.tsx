@@ -11,18 +11,18 @@ const BurgerIngredients = () => {
     <section className={ styles['ingredients-section'] }>
       <h2 className={'text text_type_main-large mb-5'}>Соберите бургер</h2>
       <IngredientsTabs />
-      <CustomScrollbar>
+      <CustomScrollbar  customStyles={{ wrapperHeight: '756px', thumbHeight: '76%', top: '40px', bottom: '50px' }}>
         <div className={ styles['ingredients-lists'] }>
           <div className={ styles['group'] }>
-            <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}>Buns</h3>
+            <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}>Булки</h3>
             <IngredientsList ingredients={buns} />
           </div>
           <div className={ styles['group'] }>
-            <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}>Sauces</h3>
+            <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}>Соусы</h3>
             <IngredientsList ingredients={sauces} />
           </div>
           <div className={ styles['group'] }>
-            <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}>Fillings</h3>
+            <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}>Начинки</h3>
             <IngredientsList ingredients={fillings} />
           </div>
         </div>
