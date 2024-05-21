@@ -1,12 +1,12 @@
 .ingredients-section {
   width: 50%;
-  max-height: 912px;
-  overflow-y: hidden;
   padding-top: 40px;
+  max-height: 912px;
 }
 
 .ingredients-lists {
   margin-top: 40px;
+  overflow-y: hidden;
 }
 
 .group {
@@ -16,3 +16,4 @@
 .group-header {
   margin-bottom: 24px;
 }
+
