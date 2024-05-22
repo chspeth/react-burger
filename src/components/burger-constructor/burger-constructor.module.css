@@ -4,6 +4,10 @@
   width: 50%;
 }
 
+.flex-wrapper {
+  height: 81%;
+}
+
 .element-container {
   display: flex;
   flex-direction: row;

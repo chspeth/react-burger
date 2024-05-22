@@ -2,7 +2,7 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 
 const CustomScrollbar = ({ children, customStyles }) => {
   return (
-    <div style={{ height: customStyles.wrapperHeight, position: 'relative' }}>
+    <div style={{ height: customStyles.wrapperHeight, position: 'relative', maxHeight: customStyles.wrapperMaxHeight || 'auto' }}>
       <Scrollbars
         renderThumbVertical={({ style, ...props }) => (
           <div

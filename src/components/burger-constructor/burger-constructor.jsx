@@ -14,7 +14,7 @@ const BurgerConstructor = () => {
   
   return (
     <section className={ styles['constructor-section'] }>
-      <div className={ styles['flex-container'] }>
+      <div className={`${ styles['flex-container'] } ${ styles['flex-wrapper'] }`}>
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
           <ConstructorElement
             type='top'
@@ -24,7 +24,7 @@ const BurgerConstructor = () => {
             thumbnail={buns[0].image}
           />
         </div>
-        <CustomScrollbar customStyles={{ wrapperHeight: '464px', thumbHeight: '62,9%', top: '0', bottom: '0' }}>
+        <CustomScrollbar customStyles={{ wrapperHeight: '100%', wrapperMaxHeight: '464px', thumbHeight: '62,9%', top: '0', bottom: '0' }}>
           <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
             {[sauces[0], ...main].map(element => (
               <div className={ styles['element-container'] } key={element._id}>
