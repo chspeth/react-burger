@@ -7,7 +7,7 @@ import styles from './app-header.module.css';
 const AppHeader = () => {
   return (
     <header className={ styles['app-header'] }>
-      <div className={ styles['wrapper'] }>
+      <div className={`${ styles['wrapper'] } pt-4 pb-4`}>
         <nav className={ styles['navigation'] }>
           <ul className={`text text_type_main-default ${ styles['nav-list'] }`}>
             <li className={ styles['nav-item'] }>

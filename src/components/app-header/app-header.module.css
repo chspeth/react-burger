@@ -46,8 +46,8 @@
 
 .logo-wrapper {
   position: absolute;
-  top: 2px;
-  left: 38.5%;
+  top: 22%;
+  left: 39%;
 
   @media (max-width: 1050px) {
     left: calc(50% - 145px);
