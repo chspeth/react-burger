@@ -52,7 +52,7 @@ const BurgerConstructor = () => {
       <div className={ styles['total'] }>
         <p className={ styles['total-price'] }>
           <span className="text text_type_digits-medium">610</span> 
-          <CurrencyIcon type="primary" width="36" height="36" />
+          <CurrencyIcon type="primary" />
         </p>
         <Button htmlType="button" type="primary" size="large">Оформить заказ</Button>
       </div>

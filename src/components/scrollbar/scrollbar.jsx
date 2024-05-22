@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
 const CustomScrollbar = ({ children, customStyles }) => {
@@ -33,6 +34,17 @@ const CustomScrollbar = ({ children, customStyles }) => {
         style={{ height: '100%' }}>{children}</Scrollbars>
     </div>
   )
+}
+
+CustomScrollbar.propTypes = {
+  children: PropTypes.node,
+  customStyles: PropTypes.shape({
+    wrapperHeight: PropTypes.string.isRequired,
+    wrapperMaxHeight: PropTypes.string,
+    thumbHeight: PropTypes.string.isRequired,
+    top: PropTypes.string.isRequired,
+    bottom: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default CustomScrollbar;
