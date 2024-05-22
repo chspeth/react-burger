@@ -2,17 +2,9 @@ import IngredientsTabs from './ingredients-tabs/ingredients-tabs';
 import IngredientsList from './ingredients-list/ingredients-list';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import productData from '../../product-data/product-data';
+import { filterProducts } from '../../product-data/util';
+import { productsCategories } from '../../product-data/util';
 import styles from './burger-ingredients.module.css';
-
-const filterProducts = (products, type) => {
-  return products.filter(product => product.type === type);
-};
-
-const productsCategories = [
-  {type: 'bun', title: 'Булки'},
-  {type: 'sauce', title: 'Соусы'},
-  {type: 'main', title: 'Начинки'}
-]
 
 const BurgerIngredients = () => {
   return (
