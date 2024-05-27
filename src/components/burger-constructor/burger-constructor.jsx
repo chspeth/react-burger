@@ -16,6 +16,7 @@ const BurgerConstructor = ({ productData }) => {
     <section className={ styles['constructor-section'] }>
       <div className={`${ styles['flex-container'] } ${ styles['flex-wrapper'] }`}>
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
+          {buns[0] && (
           <ConstructorElement
             type='top'
             isLocked={true}
@@ -23,10 +24,11 @@ const BurgerConstructor = ({ productData }) => {
             price={buns[0].price}
             thumbnail={buns[0].image}
           />
+          )}
         </div>
         <CustomScrollbar customStyles={{ wrapperHeight: '100%', wrapperMaxHeight: '464px', thumbHeight: '62,9%', top: '0', bottom: '0' }}>
           <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
-            {[sauces[0], ...main].map(element => (
+            {sauces && sauces.length > 0 && main && [sauces[0], ...main].map(element => (
               <div className={ styles['element-container'] } key={element._id}>
               <DragIcon type="primary" />
               <ConstructorElement
@@ -40,13 +42,14 @@ const BurgerConstructor = ({ productData }) => {
           </div>
         </CustomScrollbar>
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
+          {buns[0] && (
           <ConstructorElement
             type='bottom'
             isLocked={true}
             text={`${buns[0].name} (низ)`}
             price={buns[0].price}
             thumbnail={buns[0].image}
-          />
+          />)}
         </div>
       </div>
       <div className={ styles['total'] }>
