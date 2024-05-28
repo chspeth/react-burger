@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -42,6 +43,13 @@ const Modal = ({ isModalOpen, onClose, hasTitle, children }) => {
     </>, 
     modalRoot
   )
+}
+
+Modal.propTypes = {
+  isModalOpen: PropTypes.bool.isRequired, 
+  onClose: PropTypes.func.isRequired, 
+  hasTitle: PropTypes.bool.isRequired, 
+  children: PropTypes.node.isRequired
 }
 
 export default Modal;
