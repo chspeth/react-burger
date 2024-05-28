@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import IngredientsItem from '../ingredient-item/ingredient-item';
 import styles from './ingredients-list.module.css';
 
-const IngredientsList = ({ ingredients }) => {
+const IngredientsList = ({ ingredients, openModal }) => {
   return (
     <ul className={ styles['ingredients-list'] }>
       {ingredients.map(ingredient => (
-      <IngredientsItem key={ingredient._id} ingredient={ingredient} />
+      <IngredientsItem key={ingredient._id} ingredient={ingredient} openModal={openModal} />
       ))}
     </ul>
   )
@@ -28,7 +28,8 @@ IngredientsList.propTypes = {
       image_large: PropTypes.string,
       __v: PropTypes.number
     })
-  )
+  ),
+  openModal: PropTypes.func.isRequired
 }
 
 export default IngredientsList;

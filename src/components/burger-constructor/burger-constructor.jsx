@@ -7,7 +7,7 @@ import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts } from '../../product-data/util';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = ({ productData }) => {
+const BurgerConstructor = ({ productData, openModal }) => {
   const buns = filterProducts(productData, 'bun');
   const sauces = filterProducts(productData, 'sauce');
   const main = filterProducts(productData, 'main');
@@ -57,7 +57,7 @@ const BurgerConstructor = ({ productData }) => {
           <span className="text text_type_digits-medium">610</span> 
           <CurrencyIcon type="primary" />
         </p>
-        <Button htmlType="button" type="primary" size="large">Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="large" onClick={openModal}>Оформить заказ</Button>
       </div>
     </section>
   )

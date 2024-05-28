@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import Modal from '../modal/modal';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app.module.css';
 
@@ -11,6 +12,10 @@ function App() {
   const [productData, setProductData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   useEffect(() => {
     const getProductData = async () => {
@@ -22,7 +27,6 @@ function App() {
           throw new Error('Network response err')
         }
         const data = await res.json();
-        console.log(data);
         setProductData(data.data);
         setIsLoading(false);
       } catch (error) {
@@ -43,12 +47,13 @@ function App() {
         {hasError && <p>Ошибка!</p>}
         {!isLoading && productData && !hasError && (
           <div className={ styles['wrapper'] }>
-            <BurgerIngredients productData={productData} />
-            <BurgerConstructor productData={productData} />
+            <BurgerIngredients productData={productData} openModal={openModal} />
+            <BurgerConstructor productData={productData} openModal={openModal} />
           </div>
           )
         }
       </main>
+      <Modal isOpen={isOpen} onClose={closeModal} />
     </div>
   );
 }

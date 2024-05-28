@@ -6,7 +6,7 @@ import { filterProducts } from '../../product-data/util';
 import { productsCategories } from '../../product-data/util';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredients = ({ productData }) => {
+const BurgerIngredients = ({ productData, openModal }) => {
   return (
     <section className={ styles['ingredients-section'] }>
       <h2 className={'text text_type_main-large mb-5'}>Соберите бургер</h2>
@@ -16,7 +16,7 @@ const BurgerIngredients = ({ productData }) => {
           {productsCategories.map(category => (
             <div className={ styles['group'] } key={category.type}>
               <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}> {category.title} </h3>
-              <IngredientsList ingredients={filterProducts(productData, category.type)} />
+              <IngredientsList ingredients={filterProducts(productData, category.type)} openModal={openModal} />
             </div>
           ))}
         </div>
@@ -41,7 +41,8 @@ BurgerIngredients.propTypes = {
       image_large: PropTypes.string,
       __v: PropTypes.number
     })
-  )
+  ),
+  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;
