@@ -1,8 +1,15 @@
+import orderCompletedIcon from '../../../images/icons/order-completed.svg';
 import styles from './order-details.module.css';
 
 const OrderDetails = () => {
   return (
-    <div className={styles['wrapper']}>00000jjjdjfh</div>
+    <div className={styles['wrapper']}>
+      <p className={`${styles['order-id']} text text_type_digits-large`}>034536</p>
+      <p className="text text_type_main-medium">идентификатор заказа</p>
+      <img className={styles['order-completed-img']} src={orderCompletedIcon} alt='Order completed icon' />
+      <p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>
+      <p className="text text_type_main-default text_color_inactive">Дождитесь готовности на орбитальной станции</p>
+    </div>
   )
 }
 
