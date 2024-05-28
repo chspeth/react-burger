@@ -5,12 +5,18 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts } from '../../product-data/util';
+import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = ({ productData, openModal }) => {
   const buns = filterProducts(productData, 'bun');
   const sauces = filterProducts(productData, 'sauce');
   const main = filterProducts(productData, 'main');
+
+  const handleOrderClick = () => {
+    openModal(<OrderDetails />, false);
+  };
+
   
   return (
     <section className={ styles['constructor-section'] }>
@@ -57,7 +63,7 @@ const BurgerConstructor = ({ productData, openModal }) => {
           <span className="text text_type_digits-medium">610</span> 
           <CurrencyIcon type="primary" />
         </p>
-        <Button htmlType="button" type="primary" size="large" onClick={openModal}>Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>Оформить заказ</Button>
       </div>
     </section>
   )

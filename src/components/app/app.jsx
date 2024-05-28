@@ -12,10 +12,21 @@ function App() {
   const [productData, setProductData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [hasTitle, setHasTitle] = useState(false);
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openModal = (content, hasTitle) => {
+    setModalContent(content);
+    setHasTitle(hasTitle);
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalContent(null);
+    setHasTitle(false);
+  }
 
   useEffect(() => {
     const getProductData = async () => {
@@ -44,7 +55,6 @@ function App() {
       <AppHeader />
       <main>
         <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
-        {hasError && <p>Ошибка!</p>}
         {!isLoading && productData && !hasError && (
           <div className={ styles['wrapper'] }>
             <BurgerIngredients productData={productData} openModal={openModal} />
@@ -53,7 +63,9 @@ function App() {
           )
         }
       </main>
-      <Modal isOpen={isOpen} onClose={closeModal} />
+      <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
+        {modalContent}
+      </Modal>
     </div>
   );
 }
