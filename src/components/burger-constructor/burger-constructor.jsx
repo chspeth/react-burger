@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import { ingredientType } from '../../utils/types';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
-import { filterProducts } from '../../product-data/util';
+import { filterProducts } from '../../utils/util';
 import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 
@@ -70,22 +71,7 @@ const BurgerConstructor = ({ productData, openModal }) => {
 }
 
 BurgerConstructor.propTypes = {
-  productData: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number,
-      fat: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      calories: PropTypes.number,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string,
-      image_large: PropTypes.string,
-      __v: PropTypes.number
-    })
-  ),
+  productData: PropTypes.arrayOf(ingredientType),
   openModal: PropTypes.func.isRequired
 }
 

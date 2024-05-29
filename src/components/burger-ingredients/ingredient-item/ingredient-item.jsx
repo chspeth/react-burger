@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { ingredientType } from '../../../utils/types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
 import styles from './ingredient-item.module.css';
@@ -18,11 +19,7 @@ const IngredientItem = ({ ingredient, openModal }) => {
 }
 
 IngredientItem.propTypes = {
-  ingredient: PropTypes.shape({
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired
-  }).isRequired,
+  ingredient: ingredientType.isRequired,
   openModal: PropTypes.func.isRequired
 }
 

@@ -39,11 +39,11 @@ function App() {
         }
         const data = await res.json();
         setProductData(data.data);
-        setIsLoading(false);
       } catch (error) {
         setHasError(true);
-        setIsLoading(false);
         console.error('Error:', error)
+      } finally {
+        setIsLoading(false);
       }
     }
 
