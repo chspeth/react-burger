@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  text-align: center;
+}
+
+.wrapper h3 {
+  margin-bottom: 32px;
+}
+
+.image {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.nutrition-facts {
+  border-collapse: collapse;
+  width: auto;
+  margin: 0 auto;
+}
+
+.nutrition-facts thead tr, 
+.nutrition-facts tbody tr {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) repeat(3, minmax(112px, auto)); 
+  grid-gap: 20px; 
+}
+
+.nutrition-facts th {
+  font-weight: normal;
+}
