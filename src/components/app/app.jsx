@@ -3,8 +3,12 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
+import { Provider } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app.module.css';
+import { configureStore } from '@reduxjs/toolkit';
+
+const store = configureStore();
 
 const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -52,20 +56,22 @@ function App() {
 
   return (
     <div>
-      <AppHeader />
-      <main>
-        <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
-        {!isLoading && productData && !hasError && (
-          <div className={ styles['wrapper'] }>
-            <BurgerIngredients productData={productData} openModal={openModal} />
-            <BurgerConstructor productData={productData} openModal={openModal} />
-          </div>
-          )
-        }
-      </main>
-      <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
-        {modalContent}
-      </Modal>
+      <Provider store={store}>
+        <AppHeader />
+        <main>
+          <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
+          {!isLoading && productData && !hasError && (
+            <div className={ styles['wrapper'] }>
+              <BurgerIngredients productData={productData} openModal={openModal} />
+              <BurgerConstructor productData={productData} openModal={openModal} />
+            </div>
+            )
+          }
+        </main>
+        <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
+          {modalContent}
+        </Modal>
+      </Provider>
     </div>
   );
 }
