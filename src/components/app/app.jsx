@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { fetchIngredients } from '../../services/actions/burger-ingredients';
+import { configureStore } from '../../services/store';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
-import { Provider } from 'react-redux';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app.module.css';
-import { configureStore } from '@reduxjs/toolkit';
 
 const store = configureStore();
 
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
-
 function App() {
-  const [productData, setProductData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const dispatch = useDispatch();
+  const { ingredients, isLoading, hasError } = useSelector((state) => state.ingredients);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [hasTitle, setHasTitle] = useState(false);
@@ -33,26 +31,8 @@ function App() {
   }
 
   useEffect(() => {
-    const getProductData = async () => {
-      setIsLoading(true);
-      setHasError(false);
-      try {
-        const res = await fetch(API_URL);
-        if (!res.ok) {
-          throw new Error('Network response err')
-        }
-        const data = await res.json();
-        setProductData(data.data);
-      } catch (error) {
-        setHasError(true);
-        console.error('Error:', error)
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    getProductData();
-  }, [])
+    dispatch(fetchIngredients());
+  }, [dispatch])
 
   return (
     <div>
@@ -60,10 +40,10 @@ function App() {
         <AppHeader />
         <main>
           <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
-          {!isLoading && productData && !hasError && (
+          {!isLoading && ingredients && !hasError && (
             <div className={ styles['wrapper'] }>
-              <BurgerIngredients productData={productData} openModal={openModal} />
-              <BurgerConstructor productData={productData} openModal={openModal} />
+              <BurgerIngredients productData={ingredients} openModal={openModal} />
+              <BurgerConstructor productData={ingredients} openModal={openModal} />
             </div>
             )
           }
@@ -76,4 +56,10 @@ function App() {
   );
 }
 
-export default App;
+const AppWithProvider = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+
+export default AppWithProvider;

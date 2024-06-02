@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/app/app';
+import AppWithProvider from './components/app/app';
 import reportWebVitals from './report-web-vitals';
 import './index.css';
 
@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <AppWithProvider />
   </React.StrictMode>
 );
 
