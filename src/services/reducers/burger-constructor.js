@@ -4,7 +4,7 @@ const initialState = {
   items: []
 }
 
-export const constructorReducer = (state = initialState, action) => {
+const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM:
       return {
@@ -20,3 +20,5 @@ export const constructorReducer = (state = initialState, action) => {
       return state;
   }
 }
+
+export default constructorReducer;

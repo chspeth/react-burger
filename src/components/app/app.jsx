@@ -35,24 +35,22 @@ function App() {
   }, [dispatch])
 
   return (
-    <div>
-      <Provider store={store}>
-        <AppHeader />
-        <main>
-          <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
-          {!isLoading && ingredients && !hasError && (
-            <div className={ styles['wrapper'] }>
-              <BurgerIngredients productData={ingredients} openModal={openModal} />
-              <BurgerConstructor productData={ingredients} openModal={openModal} />
-            </div>
-            )
-          }
-        </main>
-        <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
-          {modalContent}
-        </Modal>
-      </Provider>
-    </div>
+    <>
+      <AppHeader />
+      <main>
+        <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
+        {!isLoading && ingredients && !hasError && (
+          <div className={ styles['wrapper'] }>
+            <BurgerIngredients openModal={openModal} />
+            <BurgerConstructor productData={ingredients} openModal={openModal} />
+          </div>
+          )
+        }
+      </main>
+      <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
+        {modalContent}
+      </Modal>
+    </>
   );
 }
 

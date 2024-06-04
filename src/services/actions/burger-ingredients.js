@@ -29,7 +29,7 @@ export const fetchIngredients = () => {
         throw new Error('Network response err')
       }
       const data = await res.json();
-      dispatch(fetchIngredientsSuccess(data.data));
+      dispatch(fetchIngredientsSuccess(data));
     } catch (error) {
       dispatch(fetchIngredientsError(error.message));
     } 

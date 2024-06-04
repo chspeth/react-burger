@@ -22,7 +22,7 @@ const ingredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        ingredients: action.payload
+        ingredients: action.payload.data
       }
     case FETCH_INGREDIENTS_ERROR:
       return {
