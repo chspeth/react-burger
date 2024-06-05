@@ -42,7 +42,7 @@ function App() {
         {!isLoading && ingredients && !hasError && (
           <div className={ styles['wrapper'] }>
             <BurgerIngredients openModal={openModal} />
-            <BurgerConstructor productData={ingredients} openModal={openModal} />
+            <BurgerConstructor openModal={openModal} />
           </div>
           )
         }
