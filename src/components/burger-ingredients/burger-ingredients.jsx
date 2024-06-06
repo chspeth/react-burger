@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 import IngredientsTabs from './ingredients-tabs/ingredients-tabs';
 import IngredientsList from './ingredients-list/ingredients-list';
 import CustomScrollbar from '../scrollbar/scrollbar';
-import { filterProducts } from '../../utils/util';
-import { productsCategories } from '../../utils/util';
+import { filterProducts, productsCategories } from '../../utils/util';
 import styles from './burger-ingredients.module.css';
 
 const BurgerIngredients = ({ openModal }) => {
