@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { fetchIngredients } from '../../services/actions/burger-ingredients';
 import { configureStore } from '../../services/store';
@@ -14,21 +14,7 @@ const store = configureStore();
 function App() {
   const dispatch = useDispatch();
   const { ingredients, isLoading, hasError } = useSelector((state) => state.ingredients);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
-  const [hasTitle, setHasTitle] = useState(false);
-
-  const openModal = (content, hasTitle) => {
-    setModalContent(content);
-    setHasTitle(hasTitle);
-    setIsModalOpen(true);
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalContent(null);
-    setHasTitle(false);
-  }
+  const { content } = useSelector((state) => state.modalContent);
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -41,14 +27,14 @@ function App() {
         <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
         {!isLoading && ingredients && !hasError && (
           <div className={ styles['wrapper'] }>
-            <BurgerIngredients openModal={openModal} />
-            <BurgerConstructor openModal={openModal} />
+            <BurgerIngredients />
+            <BurgerConstructor />
           </div>
           )
         }
       </main>
-      <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
-        {modalContent}
+      <Modal>
+        {content}
       </Modal>
     </>
   );

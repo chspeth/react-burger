@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import IngredientsTabs from './ingredients-tabs/ingredients-tabs';
 import IngredientsList from './ingredients-list/ingredients-list';
@@ -6,7 +5,7 @@ import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts, productsCategories } from '../../utils/util';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredients = ({ openModal }) => {
+const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredients);
 
   return (
@@ -18,17 +17,13 @@ const BurgerIngredients = ({ openModal }) => {
           {productsCategories.map(category => (
             <div className={ styles['group'] } key={category.type}>
               <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}> {category.title} </h3>
-              <IngredientsList ingredients={filterProducts(ingredients, category.type)} openModal={openModal} />
+              <IngredientsList ingredients={filterProducts(ingredients, category.type)} />
             </div>
           ))}
         </div>
       </CustomScrollbar>
     </section>
   )
-}
-
-BurgerIngredients.propTypes = {
-  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;

@@ -1,12 +1,21 @@
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { ingredientType } from '../../../utils/types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
+import { openModal } from '../../../services/actions/modal';
+import { setModalContent } from '../../../services/actions/modal-content';
 import styles from './ingredient-item.module.css';
 
-const IngredientItem = ({ ingredient, openModal }) => {
+const IngredientItem = ({ ingredient }) => {
+  const dispatch = useDispatch();
+
+  const handleOpenModal = (content, hasTitle) => {
+    dispatch(openModal(hasTitle));
+    dispatch(setModalContent(content));
+  }
+
   const handleIngredientClick = () => {
-    openModal(<IngredientDetails ingredient={ingredient} />, true);
+    handleOpenModal(<IngredientDetails ingredient={ingredient} />, true);
   };
 
   return (
@@ -19,8 +28,7 @@ const IngredientItem = ({ ingredient, openModal }) => {
 }
 
 IngredientItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-  openModal: PropTypes.func.isRequired
+  ingredient: ingredientType.isRequired
 }
 
 export default IngredientItem;

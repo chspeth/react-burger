@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts } from '../../utils/util';
 import OrderDetails from '../modal/order-details/order-details';
-import styles from './burger-constructor.module.css';
 import { deleteItem, addItem } from '../../services/actions/burger-constructor';
+import { openModal } from '../../services/actions/modal';
+import { setModalContent } from '../../services/actions/modal-content';
+import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = ({ openModal }) => {
+const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
   const { items } = useSelector((state) => state.burgerConstructor);
@@ -24,8 +25,14 @@ const BurgerConstructor = ({ openModal }) => {
     }
   }, [ingredients, dispatch]);
 
+  
+  const handleOpenModal = (content, hasTitle) => {
+    dispatch(openModal(hasTitle));
+    dispatch(setModalContent(content));
+  }
+
   const handleOrderClick = () => {
-    openModal(<OrderDetails />, false);
+    handleOpenModal(<OrderDetails />, false);
   };
 
   const handleDelete = (id) => {
@@ -82,10 +89,6 @@ const BurgerConstructor = ({ openModal }) => {
       </div>
     </section>
   )
-}
-
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor;
