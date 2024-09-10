@@ -1,6 +1,5 @@
 // import PropTypes from 'prop-types';
 // import { useContext } from 'react';
-// import { ModalContext } from '../../../services/appContext';
 import { useDispatch } from 'react-redux'; 
 import { openModal } from '../../../services/actions/modal';
 import { ingredientType } from '../../../utils/types';
@@ -10,6 +9,7 @@ import styles from './ingredient-item.module.css';
 
 const IngredientItem = ({ ingredient }) => {
   const dispatch = useDispatch();
+  
   const handleIngredientClick = () => {
     dispatch(openModal(<IngredientDetails ingredient={ingredient} />, true));
   };
