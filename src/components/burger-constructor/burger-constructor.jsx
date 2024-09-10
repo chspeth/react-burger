@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { ModalContext } from '../../services/appContext';
 import { ingredientType } from '../../utils/types';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts } from '../../utils/util';
 import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = ({ productData, openModal }) => {
+const BurgerConstructor = ({ productData }) => {
+  const { openModal } = useContext(ModalContext);
   const buns = filterProducts(productData, 'bun');
   const sauces = filterProducts(productData, 'sauce');
   const main = filterProducts(productData, 'main');
@@ -71,8 +71,7 @@ const BurgerConstructor = ({ productData, openModal }) => {
 }
 
 BurgerConstructor.propTypes = {
-  productData: PropTypes.arrayOf(ingredientType),
-  openModal: PropTypes.func.isRequired
+  productData: PropTypes.arrayOf(ingredientType)
 }
 
 export default BurgerConstructor;

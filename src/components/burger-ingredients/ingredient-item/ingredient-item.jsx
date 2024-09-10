@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { ModalContext } from '../../../services/appContext'; 
 import { ingredientType } from '../../../utils/types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
 import styles from './ingredient-item.module.css';
 
-const IngredientItem = ({ ingredient, openModal }) => {
+const IngredientItem = ({ ingredient }) => {
+  const { openModal } = useContext(ModalContext);
   const handleIngredientClick = () => {
     openModal(<IngredientDetails ingredient={ingredient} />, true);
   };
@@ -19,8 +22,7 @@ const IngredientItem = ({ ingredient, openModal }) => {
 }
 
 IngredientItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-  openModal: PropTypes.func.isRequired
+  ingredient: ingredientType.isRequired
 }
 
 export default IngredientItem;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ModalContext } from '../../services/appContext';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -52,20 +53,22 @@ function App() {
 
   return (
     <div>
-      <AppHeader />
-      <main>
-        <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
-        {!isLoading && productData && !hasError && (
-          <div className={ styles['wrapper'] }>
-            <BurgerIngredients productData={productData} openModal={openModal} />
-            <BurgerConstructor productData={productData} openModal={openModal} />
-          </div>
-          )
-        }
-      </main>
-      <Modal isModalOpen={isModalOpen} onClose={closeModal} hasTitle={hasTitle}>
-        {modalContent}
-      </Modal>
+      <ModalContext.Provider value={{ openModal, closeModal }}>
+        <AppHeader />
+        <main>
+          <h1 className={ styles['visually-hidden'] }>Бургерная «Stellar Burgers»</h1>
+          {!isLoading && productData && !hasError && (
+            <div className={ styles['wrapper'] }>
+              <BurgerIngredients productData={productData} />
+              <BurgerConstructor productData={productData} />
+            </div>
+            )
+          }
+        </main>
+        <Modal isModalOpen={isModalOpen} hasTitle={hasTitle}>
+          {modalContent}
+        </Modal>
+      </ModalContext.Provider>
     </div>
   );
 }
