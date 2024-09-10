@@ -1,27 +1,33 @@
-import PropTypes from 'prop-types';
-import { useEffect, useContext } from 'react';
-import { ModalContext } from '../../services/appContext';
+// import PropTypes from 'prop-types';
+import { useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeModal } from '../../services/actions/modal';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 
-const Modal = ({ isModalOpen, hasTitle, children }) => {
-  const { closeModal } = useContext(ModalContext);
+const Modal = () => {
+  const { isModalOpen, modalContent, hasTitle } = useSelector(state => state.modal);
+  const dispatch = useDispatch();
   const modalRoot = document.getElementById('modal-root');
+
+  const handleClose = useCallback(() => {
+    dispatch(closeModal());
+  }, [dispatch]);
 
   useEffect(() => {
     const handleKeyPress = e => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') handleClose();
     }
 
     document.addEventListener('keydown', handleKeyPress);
 
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [closeModal])
+  }, [handleClose])
 
   const handleOverlayClick = e => {
-    if (e.target.classList.contains('overlay')) closeModal();
+    if (e.target.classList.contains('overlay')) handleClose();
   }
 
   if (!isModalOpen) {
@@ -32,25 +38,19 @@ const Modal = ({ isModalOpen, hasTitle, children }) => {
     <>
       {isModalOpen && (
         <>
-        <ModalOverlay onClose={closeModal} />
+        <ModalOverlay onClose={handleClose} />
         <div className={styles['modal']} onClick={handleOverlayClick}>
           {hasTitle && <h2 className='text text_type_main-large'>Детали ингредиента</h2>}
-          <button className={styles['close-btn']} onClick={closeModal}>
+          <button className={styles['close-btn']} onClick={handleClose}>
             <CloseIcon type="primary" />
           </button>
-          <div className={styles['modal-content']}> {children} </div>
+          <div className={styles['modal-content']}> {modalContent} </div>
         </div>
         </>
       )}
     </>, 
     modalRoot
   )
-}
-
-Modal.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired, 
-  hasTitle: PropTypes.bool.isRequired, 
-  children: PropTypes.node
 }
 
 export default Modal;

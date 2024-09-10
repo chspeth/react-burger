@@ -1,15 +1,17 @@
 // import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { ModalContext } from '../../../services/appContext'; 
+// import { useContext } from 'react';
+// import { ModalContext } from '../../../services/appContext';
+import { useDispatch } from 'react-redux'; 
+import { openModal } from '../../../services/actions/modal';
 import { ingredientType } from '../../../utils/types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
 import styles from './ingredient-item.module.css';
 
 const IngredientItem = ({ ingredient }) => {
-  const { openModal } = useContext(ModalContext);
+  const dispatch = useDispatch();
   const handleIngredientClick = () => {
-    openModal(<IngredientDetails ingredient={ingredient} />, true);
+    dispatch(openModal(<IngredientDetails ingredient={ingredient} />, true));
   };
 
   return (

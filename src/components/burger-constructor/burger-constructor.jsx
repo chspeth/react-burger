@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { ModalContext } from '../../services/appContext';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../services/actions/modal';
 import { ingredientType } from '../../utils/types';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
@@ -9,15 +9,15 @@ import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = ({ productData }) => {
-  const { openModal } = useContext(ModalContext);
+  const dispatch = useDispatch();
+
   const buns = filterProducts(productData, 'bun');
   const sauces = filterProducts(productData, 'sauce');
   const main = filterProducts(productData, 'main');
 
   const handleOrderClick = () => {
-    openModal(<OrderDetails />, false);
+    dispatch(openModal(<OrderDetails />, false));
   };
-
   
   return (
     <section className={ styles['constructor-section'] }>
