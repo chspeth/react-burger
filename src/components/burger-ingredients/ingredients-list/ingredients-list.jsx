@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
-import { ingredientType } from '../../../utils/types';
+import { useSelector } from 'react-redux';
+import { filterProducts } from '../../../utils/util';
 import IngredientsItem from '../ingredient-item/ingredient-item';
 import styles from './ingredients-list.module.css';
 
-const IngredientsList = ({ ingredients }) => {
+const IngredientsList = ({ categoryType }) => {
+  const productData = useSelector((state) => state.products.productData);
+  const ingredients= filterProducts(productData, categoryType)
   return (
     <ul className={ styles['ingredients-list'] }>
       {ingredients.map(ingredient => (
@@ -14,7 +17,7 @@ const IngredientsList = ({ ingredients }) => {
 }
 
 IngredientsList.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientType)
+  categoryType: PropTypes.string
 }
 
 export default IngredientsList;
