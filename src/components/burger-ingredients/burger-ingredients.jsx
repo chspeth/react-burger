@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import { ingredientType } from '../../utils/types';
+import { useSelector } from 'react-redux';
 import IngredientsTabs from './ingredients-tabs/ingredients-tabs';
 import IngredientsList from './ingredients-list/ingredients-list';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts, productsCategories } from '../../utils/util';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredients = ({ productData }) => {
+const BurgerIngredients = () => {
+  const productData = useSelector((state) => state.products.productData);
   return (
     <section className={ styles['ingredients-section'] }>
       <h2 className={'text text_type_main-large mb-5'}>Соберите бургер</h2>
@@ -23,10 +23,6 @@ const BurgerIngredients = ({ productData }) => {
       </CustomScrollbar>
     </section>
   )
-}
-
-BurgerIngredients.propTypes = {
-  productData: PropTypes.arrayOf(ingredientType)
 }
 
 export default BurgerIngredients;

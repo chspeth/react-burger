@@ -1,4 +1,3 @@
-// import PropTypes from 'prop-types';
 import { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../../services/actions/modal';

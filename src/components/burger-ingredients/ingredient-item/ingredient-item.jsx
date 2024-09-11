@@ -1,5 +1,4 @@
 // import PropTypes from 'prop-types';
-// import { useContext } from 'react';
 import { useDispatch } from 'react-redux'; 
 import { openModal } from '../../../services/actions/modal';
 import { ingredientType } from '../../../utils/types';
