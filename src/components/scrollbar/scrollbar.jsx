@@ -1,10 +1,18 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
-const CustomScrollbar = ({ children, customStyles }) => {
+const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFrame }, ref) => {
   return (
-    <div style={{ height: customStyles.wrapperHeight, position: 'relative', maxHeight: customStyles.wrapperMaxHeight || 'auto' }}>
+    <div 
+      style={{ 
+        height: customStyles.wrapperHeight, 
+        position: 'relative', 
+        maxHeight: customStyles.wrapperMaxHeight || 'auto' 
+      }} >
       <Scrollbars
+        ref={ref}
+        onScrollFrame={onScrollFrame}
         renderThumbVertical={({ style, ...props }) => (
           <div
             {...props}
@@ -34,7 +42,7 @@ const CustomScrollbar = ({ children, customStyles }) => {
         style={{ height: '100%' }}>{children}</Scrollbars>
     </div>
   )
-}
+})
 
 CustomScrollbar.propTypes = {
   children: PropTypes.node,
@@ -44,7 +52,8 @@ CustomScrollbar.propTypes = {
     thumbHeight: PropTypes.string.isRequired,
     top: PropTypes.string.isRequired,
     bottom: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  onScrollFrame: PropTypes.func.isRequired
 }
 
 export default CustomScrollbar;
