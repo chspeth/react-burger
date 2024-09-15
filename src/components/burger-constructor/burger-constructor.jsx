@@ -25,7 +25,7 @@ const BurgerConstructor = () => {
       preRendingArray.forEach(item => dispatch(addInitialItem(item)))
     }
     isInitialRender.current = false;
-  }, [dispatch]);
+  }, [buns, dispatch, main, sauces]);
 
   const constructorItems = useSelector((state) => state.constructorItems);
   console.log('constr', constructorItems)

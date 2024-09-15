@@ -1,14 +1,24 @@
 // import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux'; 
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; 
 import { openModal } from '../../../services/actions/modal';
 import { ingredientType } from '../../../utils/types';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
 import styles from './ingredient-item.module.css';
 import { useDrag } from 'react-dnd';
 
 const IngredientItem = ({ ingredient }) => {
   const dispatch = useDispatch();
+  const { bun, fillings } = useSelector(store => store.constructorItems);
+
+  const counter = useMemo(() => {
+    if (ingredient.type === 'bun') {
+      return bun && bun._id === ingredient._id ? 2 : null;
+    } else {
+      return fillings.filter((item) => item._id === ingredient._id).length || null;
+    }
+  }, [bun, fillings, ingredient.type, ingredient._id]);
   
   const handleIngredientClick = () => {
     dispatch(openModal(<IngredientDetails ingredient={ingredient} />, true));
@@ -28,6 +38,7 @@ const IngredientItem = ({ ingredient }) => {
       style={{ opacity: isDragging ? 0.5 : 1 }}
       onClick={handleIngredientClick} 
       ref={dragRef}>
+      {counter && <Counter count={counter} size="default" extraClass="m-1" />}
       <img 
         className={`${ styles['image'] } mb-1`} 
         src={ingredient.image} 

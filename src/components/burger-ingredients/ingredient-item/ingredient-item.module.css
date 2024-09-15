@@ -1,4 +1,5 @@
 .ingredient-item {
+  position: relative;
   width: 272px;
   display: flex;
   flex-direction: column;

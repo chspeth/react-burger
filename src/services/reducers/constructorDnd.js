@@ -9,7 +9,6 @@ export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_INITIAL_ITEM: 
     case ADD_USER_ITEM: {
-      console.log(action.payload)
       if (action.payload.type === 'bun') {
         return {
           ...state,
