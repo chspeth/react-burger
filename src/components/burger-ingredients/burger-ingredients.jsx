@@ -47,7 +47,6 @@ const BurgerIngredients = () => {
       <CustomScrollbar 
         customStyles={{ 
           wrapperHeight: '756px', 
-          thumbHeight: '76%', 
           top: '40px', 
           bottom: '50px' 
         }}

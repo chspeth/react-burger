@@ -6,9 +6,9 @@ const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFram
   return (
     <div 
       style={{ 
-        height: customStyles.wrapperHeight, 
         position: 'relative', 
-        maxHeight: customStyles.wrapperMaxHeight || 'auto' 
+        height: customStyles.wrapperHeight || 'auto',
+        overflowY: 'auto'
       }} >
       <Scrollbars
         ref={ref}
@@ -20,8 +20,7 @@ const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFram
               ...style,
               width: '8px',
               backgroundColor: '#8585ad',
-              position: 'relative',
-              height: customStyles.thumbHeight
+              position: 'relative'
             }}
           />
         )}
@@ -35,7 +34,8 @@ const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFram
               position: 'absolute',
               right: '0',
               top: customStyles.top,
-              bottom: customStyles.bottom
+              bottom: customStyles.bottom,
+              borderRadius: '4px'
             }}
           />
         )}
@@ -47,13 +47,12 @@ const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFram
 CustomScrollbar.propTypes = {
   children: PropTypes.node,
   customStyles: PropTypes.shape({
-    wrapperHeight: PropTypes.string.isRequired,
     wrapperMaxHeight: PropTypes.string,
-    thumbHeight: PropTypes.string.isRequired,
-    top: PropTypes.string.isRequired,
-    bottom: PropTypes.string.isRequired
+    wrapperHeight: PropTypes.string,
+    top: PropTypes.string,
+    bottom: PropTypes.string
   }).isRequired,
-  onScrollFrame: PropTypes.func.isRequired
+  onScrollFrame: PropTypes.func
 }
 
 export default CustomScrollbar;

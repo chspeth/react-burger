@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../services/actions/modal';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -5,6 +6,8 @@ import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts } from '../../utils/util';
 import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
+import { useDrop } from 'react-dnd';
+import { addInitialItem, addUserItem, deleteItem } from '../../services/actions/constructorDnd';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -14,48 +17,88 @@ const BurgerConstructor = () => {
   const sauces = filterProducts(productData, 'sauce');
   const main = filterProducts(productData, 'main');
 
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    const preRendingArray = [buns[0], sauces[0], ...main.slice(0, 5)];
+    if (isInitialRender.current && !preRendingArray.some(element => element === undefined)) {
+      preRendingArray.forEach(item => dispatch(addInitialItem(item)))
+    }
+    isInitialRender.current = false;
+  }, [dispatch]);
+
+  const constructorItems = useSelector((state) => state.constructorItems);
+  console.log('constr', constructorItems)
+
+  const [, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      dispatch(addUserItem(item));
+    }
+  })
+
+  const handleDeleteItem = (id) => {
+    dispatch(deleteItem(id));
+  };
+
   const handleOrderClick = () => {
     dispatch(openModal(<OrderDetails />, false));
   };
+
+  const itemHeight = 80; 
+  const maxVisibleItems = 5;
+  const fillingsCount = constructorItems.fillings ? constructorItems.fillings.length : 0;
+  const containerHeight = fillingsCount <= maxVisibleItems  
+    ? `${fillingsCount * itemHeight + ((fillingsCount - 1) * 16)}px`
+    : `${maxVisibleItems * itemHeight + (16 * 4)}px`;
   
   return (
     <section className={ styles['constructor-section'] }>
-      <div className={`${ styles['flex-container'] } ${ styles['flex-wrapper'] }`}>
+      <div className={styles['flex-wrapper']} ref={dropTarget}>
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
-          {buns[0] && (
+          {constructorItems.bun && (
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={`${buns[0].name} (верх)`}
-            price={buns[0].price}
-            thumbnail={buns[0].image}
-          />
+            text={`${constructorItems.bun.name} (верх)`}
+            price={constructorItems.bun.price}
+            thumbnail={constructorItems.bun.image}
+            />
           )}
         </div>
-        <CustomScrollbar customStyles={{ wrapperHeight: '100%', wrapperMaxHeight: '464px', thumbHeight: '62,9%', top: '0', bottom: '0' }}>
-          <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
-            {sauces && sauces.length > 0 && main && [sauces[0], ...main].map(element => (
-              <div className={ styles['element-container'] } key={element._id}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                isLocked={false}
-                text={element.name}
-                price={element.price}
-                thumbnail={element.image}
-              />
+        <div className={styles['fillings-container']}>
+          <CustomScrollbar
+            customStyles={{
+              wrapperHeight: containerHeight,
+              top: '0',
+              bottom: '0'
+            }}>
+            <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
+              {constructorItems.fillings && constructorItems.fillings.map(element => (
+                <div className={ styles['element-container'] } key={element.id}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  isLocked={false}
+                  text={element.name}
+                  price={element.price}
+                  thumbnail={element.image}
+                  handleClose={() => handleDeleteItem(element.id)}
+                />
+              </div>
+              ))}
             </div>
-            ))}
-          </div>
-        </CustomScrollbar>
+          </CustomScrollbar>
+        </div>
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
-          {buns[0] && (
-          <ConstructorElement
-            type='bottom'
-            isLocked={true}
-            text={`${buns[0].name} (низ)`}
-            price={buns[0].price}
-            thumbnail={buns[0].image}
-          />)}
+          {constructorItems.bun && (
+            <ConstructorElement
+              type='bottom'
+              isLocked={true}
+              text={`${constructorItems.bun.name} (низ)`}
+              price={constructorItems.bun.price}
+              thumbnail={constructorItems.bun.image}
+            />
+          )}
         </div>
       </div>
       <div className={ styles['total'] }>
