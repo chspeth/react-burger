@@ -8,10 +8,12 @@ import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 import { useDrop } from 'react-dnd';
 import { addInitialItem, addUserItem, deleteItem } from '../../services/actions/constructorDnd';
+import { orderDetails } from '../../services/actions/orderDetails';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const productData = useSelector((state) => state.products.productData);
+  const { bun, fillings } = useSelector((state) => state.constructorItems);
 
   const buns = filterProducts(productData, 'bun');
   const sauces = filterProducts(productData, 'sauce');
@@ -39,10 +41,10 @@ const BurgerConstructor = () => {
   };
 
   const handleOrderClick = () => {
+    const ingredients = [bun?._id, ...fillings.map(item => item._id)];
+    dispatch(orderDetails(ingredients));
     dispatch(openModal(<OrderDetails />, false));
   };
-  
-  const { bun, fillings } = useSelector((state) => state.constructorItems);
 
   const itemHeight = 80; 
   const maxVisibleItems = 5;
