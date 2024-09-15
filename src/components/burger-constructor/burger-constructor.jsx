@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../services/actions/modal';
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { filterProducts } from '../../utils/util';
 import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 import { useDrop } from 'react-dnd';
-import { addInitialItem, addUserItem, deleteItem } from '../../services/actions/constructorDnd';
+import { addInitialItem, addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
 import { orderDetails } from '../../services/actions/orderDetails';
+import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,11 @@ const BurgerConstructor = () => {
     drop(item) {
       dispatch(addUserItem(item));
     }
-  })
+  });
+
+  const moveIngredient = (dragIndex, hoverIndex) => {
+    dispatch(moveItem(dragIndex, hoverIndex));
+  };
 
   const handleDeleteItem = (id) => {
     dispatch(deleteItem(id));
@@ -80,17 +85,14 @@ const BurgerConstructor = () => {
               bottom: '0'
             }}>
             <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
-              {fillings && fillings.map(element => (
-                <div className={ styles['element-container'] } key={element.id}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  isLocked={false}
-                  text={element.name}
-                  price={element.price}
-                  thumbnail={element.image}
-                  handleClose={() => handleDeleteItem(element.id)}
+              {fillings && fillings.map((element, index) => (
+                <ConstructorIngredient
+                  key={element.id}
+                  index={index}
+                  element={element}
+                  moveIngredient={moveIngredient}
+                  handleDeleteItem={handleDeleteItem}
                 />
-              </div>
               ))}
             </div>
           </CustomScrollbar>

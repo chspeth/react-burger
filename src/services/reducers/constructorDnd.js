@@ -1,4 +1,9 @@
-import { ADD_INITIAL_ITEM, ADD_USER_ITEM, DELETE_ITEM } from "../actions/constructorDnd";
+import { 
+  ADD_INITIAL_ITEM, 
+  ADD_USER_ITEM, 
+  DELETE_ITEM,
+  MOVE_ITEM
+} from "../actions/constructorDnd";
 
 const initialState = {
   bun: null,
@@ -26,6 +31,17 @@ export const constructorReducer = (state = initialState, action) => {
         ...state,
         fillings: state.fillings.filter(item => item.id !== action.payload)
       }
+    }
+    case MOVE_ITEM: {
+      const fillings = [...state.fillings];
+      const { dragIndex, hoverIndex } = action.payload;
+      const draggedItem = fillings[dragIndex];
+      fillings.splice(dragIndex, 1);
+      fillings.splice(hoverIndex, 0, draggedItem);
+      return {
+        ...state,
+        fillings,
+      };
     }
     default:
       return state;
