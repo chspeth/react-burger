@@ -71,26 +71,28 @@ const BurgerConstructor = () => {
             <span className="text text_type_main-medium">Выберите ингредиенты</span>
           </div>
         )}
-        {fillings.length > 0 && (<div className={styles['fillings-container']}>
-          <CustomScrollbar
-            customStyles={{
-              wrapperHeight: containerHeight,
-              top: '0',
-              bottom: '0'
-            }}>
-            <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
-              {fillings.map((element, index) => (
-                <ConstructorIngredient
-                  key={element.id}
-                  index={index}
-                  element={element}
-                  moveIngredient={moveIngredient}
-                  handleDeleteItem={handleDeleteItem}
-                />
-              ))}
-            </div>
-          </CustomScrollbar>
-        </div>)}
+        {fillings.length > 0 && (
+          <div className={styles['fillings-container']}>
+            <CustomScrollbar
+              customStyles={{
+                wrapperHeight: containerHeight,
+                top: '0',
+                bottom: '0'
+              }}>
+              <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
+                {fillings.map((element, index) => (
+                  <ConstructorIngredient
+                    key={element.id}
+                    index={index}
+                    element={element}
+                    moveIngredient={moveIngredient}
+                    handleDeleteItem={handleDeleteItem}
+                  />
+                ))}
+              </div>
+            </CustomScrollbar>
+          </div>
+        )}
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
           {!bun && (
             <div className={`${ styles['empty-element'] } ${ styles['bottom'] }`}>
@@ -113,7 +115,12 @@ const BurgerConstructor = () => {
           <span className="text text_type_digits-medium">{totalPrice}</span> 
           <CurrencyIcon type="primary" />
         </p>
-        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>Оформить заказ</Button>
+        <Button 
+          htmlType="button" 
+          type="primary" 
+          size="large" 
+          onClick={handleOrderClick} 
+          disabled={!bun || fillings.length === 0}>Оформить заказ</Button>
       </div>
     </section>
   )
