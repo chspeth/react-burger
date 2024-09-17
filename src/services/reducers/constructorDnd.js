@@ -1,5 +1,4 @@
 import { 
-  ADD_INITIAL_ITEM, 
   ADD_USER_ITEM, 
   DELETE_ITEM,
   MOVE_ITEM
@@ -11,8 +10,7 @@ const initialState = {
 };
 
 export const constructorReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_INITIAL_ITEM: 
+  switch (action.type) { 
     case ADD_USER_ITEM: {
       if (action.payload.type === 'bun') {
         return {

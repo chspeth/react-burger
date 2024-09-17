@@ -57,3 +57,28 @@
   width: 36px;
   height: 36px;
 }
+
+.empty-element {
+  padding: 16px 24px;
+  height: 80px;
+  max-width: 536px;
+  width: 100%;
+  align-content: center;
+  text-align: center;
+  background-color: #2f2f37;
+}
+
+.empty-element.top {
+  border-radius: 88px 88px 40px 40px;
+}
+
+.empty-element.bottom {
+  border-radius: 40px 40px 88px 88px;
+}
+
+.empty-element.middle {
+  border-radius: 88px;
+  margin-left: 30px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}

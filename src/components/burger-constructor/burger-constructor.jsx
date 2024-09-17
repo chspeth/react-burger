@@ -1,34 +1,18 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../services/actions/modal';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
-import { filterProducts } from '../../utils/util';
 import OrderDetails from '../modal/order-details/order-details';
 import styles from './burger-constructor.module.css';
 import { useDrop } from 'react-dnd';
-import { addInitialItem, addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
+import { addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
 import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const productData = useSelector((state) => state.products.productData);
   const { bun, fillings } = useSelector((state) => state.constructorItems);
-
-  const buns = filterProducts(productData, 'bun');
-  const sauces = filterProducts(productData, 'sauce');
-  const main = filterProducts(productData, 'main');
-
-  const isInitialRender = useRef(true);
-
-  useEffect(() => {
-    const preRendingArray = [buns[0], sauces[0], ...main.slice(0, 5)];
-    if (isInitialRender.current && !preRendingArray.some(element => element === undefined)) {
-      preRendingArray.forEach(item => dispatch(addInitialItem(item)))
-    }
-    isInitialRender.current = false;
-  }, [buns, dispatch, main, sauces]);
   
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
@@ -67,17 +51,27 @@ const BurgerConstructor = () => {
     <section className={ styles['constructor-section'] }>
       <div className={styles['flex-wrapper']} ref={dropTarget}>
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
+          {!bun && (
+            <div className={`${ styles['empty-element'] } ${ styles['top'] }`}>
+              <span className="text text_type_main-medium">Выберите булку</span>
+            </div>
+          )}
           {bun && (
-          <ConstructorElement
-            type='top'
-            isLocked={true}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.image}
-            />
+            <ConstructorElement
+              type='top'
+              isLocked={true}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.image}
+              />
           )}
         </div>
-        <div className={styles['fillings-container']}>
+        {fillings.length === 0 && (
+          <div className={`${ styles['empty-element'] } ${ styles['middle'] }`}>
+            <span className="text text_type_main-medium">Выберите ингредиенты</span>
+          </div>
+        )}
+        {fillings.length > 0 && (<div className={styles['fillings-container']}>
           <CustomScrollbar
             customStyles={{
               wrapperHeight: containerHeight,
@@ -85,7 +79,7 @@ const BurgerConstructor = () => {
               bottom: '0'
             }}>
             <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
-              {fillings && fillings.map((element, index) => (
+              {fillings.map((element, index) => (
                 <ConstructorIngredient
                   key={element.id}
                   index={index}
@@ -96,8 +90,13 @@ const BurgerConstructor = () => {
               ))}
             </div>
           </CustomScrollbar>
-        </div>
+        </div>)}
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
+          {!bun && (
+            <div className={`${ styles['empty-element'] } ${ styles['bottom'] }`}>
+              <span className="text text_type_main-medium">Выберите булку</span>
+            </div>
+          )}
           {bun && (
             <ConstructorElement
               type='bottom'

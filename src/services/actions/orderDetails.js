@@ -1,3 +1,6 @@
+import { BASE_URL } from '../../utils/util';
+import { request } from '../../utils/util';
+
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
@@ -12,7 +15,7 @@ export const orderFailed = (error) => ({
   payload: error,
 });
 
-const API_URL = 'https://norma.nomoreparties.space/api/orders';
+const API_URL = BASE_URL + '/orders';
 
 export function orderDetails(ingredients) {
   return async (dispatch) => {
@@ -21,7 +24,7 @@ export function orderDetails(ingredients) {
     });
 
     try {
-      const res = await fetch(API_URL, {
+      const data = await request(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -29,11 +32,6 @@ export function orderDetails(ingredients) {
         body: JSON.stringify({ ingredients }) 
       });
 
-      if (!res.ok) {
-        throw new Error('Network response err');
-      }
-
-      const data = await res.json();
       if (data && data.success) {
         dispatch({ 
           type: GET_ORDER_SUCCESS,

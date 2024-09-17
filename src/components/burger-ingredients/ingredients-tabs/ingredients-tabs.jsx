@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import './ingredients-tabs.module.css';
+import styles from './ingredients-tabs.module.css';
 
 const IngredientsTabs = React.forwardRef(({ currentTab, onTabClick }, ref) => {
   return (
-    <div style={{ display: 'flex' }} ref={ref}>
+    <div className={ styles['tabs'] } ref={ref}>
       <Tab 
         value='bun' 
         active={currentTab === 'bun'} 

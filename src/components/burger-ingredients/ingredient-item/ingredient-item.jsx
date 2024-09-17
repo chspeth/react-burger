@@ -21,7 +21,7 @@ const IngredientItem = ({ ingredient }) => {
   }, [ingredient.type, ingredient._id, bun, fillings]);
   
   const handleIngredientClick = () => {
-    dispatch(openModal(<IngredientDetails ingredient={ingredient} />, true));
+    dispatch(openModal(<IngredientDetails ingredient={ingredient} />, 'Детали ингредиента'));
   };
 
   const [{ isDragging }, dragRef] = useDrag({

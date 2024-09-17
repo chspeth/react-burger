@@ -7,3 +7,18 @@ export const productsCategories = [
   {type: 'sauce', title: 'Соусы'},
   {type: 'main', title: 'Начинки'}
 ];
+
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
+
+async function checkResponse(res) {
+  if (!res.ok) {
+    throw new Error(`Ошибка: ${res.status}`);
+  }
+  return await res.json();
+}
+
+
+export async function request(url, options) {
+  const res = await fetch(url, options);
+  return await checkResponse(res);
+}

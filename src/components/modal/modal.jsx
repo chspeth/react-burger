@@ -7,7 +7,7 @@ import ModalOverlay from './modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 
 const Modal = () => {
-  const { isModalOpen, modalContent, hasTitle } = useSelector(state => state.modal);
+  const { isModalOpen, modalContent, title } = useSelector(state => state.modal);
   const dispatch = useDispatch();
   const modalRoot = document.getElementById('modal-root');
 
@@ -39,7 +39,7 @@ const Modal = () => {
         <>
         <ModalOverlay onClose={handleClose} />
         <div className={styles['modal']} onClick={handleOverlayClick}>
-          {hasTitle && <h2 className='text text_type_main-large'>Детали ингредиента</h2>}
+          {title && <h2 className='text text_type_main-large'>{ title }</h2>}
           <button className={styles['close-btn']} onClick={handleClose}>
             <CloseIcon type="primary" />
           </button>
