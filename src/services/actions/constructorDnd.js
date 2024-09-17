@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const ADD_USER_ITEM = 'ADD_USER_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const MOVE_ITEM = 'MOVE_ITEM';
+export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 
 export const addUserItem = (ingredient) => {
   return {
@@ -24,3 +25,7 @@ export const moveItem = (dragIndex, hoverIndex) => {
     payload: { dragIndex, hoverIndex },
   };
 };
+
+export const clearConstructor = () => ({
+  type: CLEAR_CONSTRUCTOR,
+});

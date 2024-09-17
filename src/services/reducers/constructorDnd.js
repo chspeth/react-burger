@@ -1,7 +1,8 @@
 import { 
   ADD_USER_ITEM, 
   DELETE_ITEM,
-  MOVE_ITEM
+  MOVE_ITEM,
+  CLEAR_CONSTRUCTOR
 } from "../actions/constructorDnd";
 
 const initialState = {
@@ -40,6 +41,13 @@ export const constructorReducer = (state = initialState, action) => {
         ...state,
         fillings,
       };
+    }
+    case CLEAR_CONSTRUCTOR: {
+      return {
+        ...state,
+        bun: null,
+        fillings: []
+      }
     }
     default:
       return state;

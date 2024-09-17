@@ -1,5 +1,6 @@
 import { BASE_URL } from '../../utils/util';
 import { request } from '../../utils/util';
+import { clearConstructor } from './constructorDnd';
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
@@ -37,6 +38,8 @@ export function orderDetails(ingredients) {
           type: GET_ORDER_SUCCESS,
           payload: data.order.number
         });
+
+        dispatch(clearConstructor());
       } else {
         throw new Error('Failed to create order');
       }  
