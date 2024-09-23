@@ -38,7 +38,7 @@ const IngredientItem = ({ ingredient }) => {
       style={{ opacity: isDragging ? 0.5 : 1 }}
       onClick={handleIngredientClick} 
       ref={dragRef}>
-      {ingredientsCounter && <Counter count={ingredientsCounter} size="default" extraClass="m-1" />}
+      {ingredientsCounter && <Counter count={ingredientsCounter} size="default" />}
       <img 
         className={`${ styles['image'] } mb-1`} 
         src={ingredient.image} 
