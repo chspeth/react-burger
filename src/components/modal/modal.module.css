@@ -1,0 +1,21 @@
+.modal {
+  position: fixed;
+  margin: auto;
+  top: 40px;
+  left: calc(50% - 360px);
+  width: 720px;
+  padding: 40px;
+  padding-bottom: 60px;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  z-index: 101;
+}
+
+.close-btn {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}

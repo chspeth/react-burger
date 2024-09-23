@@ -1,0 +1,84 @@
+.constructor-section {
+  padding-top: 100px;
+  padding-left: 16px;
+  width: 50%;
+  display: flex; 
+  flex-direction: column;
+}
+
+.flex-wrapper {
+  display: flex; 
+  flex-direction: column;
+}
+
+.element-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.fillings-container {
+  overflow: hidden;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  gap: 16px;
+}
+
+.bun-element {
+  padding-left: 32px;
+}
+
+.total {
+  margin-top: 40px;
+  margin-right: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 40px;
+}
+
+.total-price {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.total-price svg {
+  width: 36px;
+  height: 36px;
+}
+
+.empty-element {
+  padding: 16px 24px;
+  height: 80px;
+  max-width: 536px;
+  width: 100%;
+  align-content: center;
+  text-align: center;
+  background-color: #2f2f37;
+}
+
+.empty-element.top {
+  border-radius: 88px 88px 40px 40px;
+}
+
+.empty-element.bottom {
+  border-radius: 40px 40px 88px 88px;
+}
+
+.empty-element.middle {
+  border-radius: 88px;
+  margin-left: 30px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
