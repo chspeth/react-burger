@@ -1,5 +1,5 @@
 import AppHeader from '../components/app-header/app-header';
-import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './pages.module.css';
 
@@ -11,8 +11,7 @@ function LoginPage() {
         <form action='#' className={ styles['form'] }>
           <fieldset>
             <legend className='text text_type_main-medium'>Вход</legend>
-            <Input
-              type='email'
+            <EmailInput
               placeholder='E-mail'
               extraClass='mt-6'
             />

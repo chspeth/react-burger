@@ -1,5 +1,5 @@
 import AppHeader from '../components/app-header/app-header';
-import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './pages.module.css';
 
@@ -16,8 +16,7 @@ function RegisterPage() {
               placeholder='Имя'
               extraClass='mt-6'
             />
-            <Input
-              type='email'
+            <EmailInput
               placeholder='E-mail'
               extraClass='mt-6'
             />

@@ -1,7 +1,5 @@
-import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
+import { BurgerIcon, ListIcon, ProfileIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 import styles from './app-header.module.css';
 
 const AppHeader = () => {
@@ -23,10 +21,10 @@ const AppHeader = () => {
               </a>
             </li>
             <li className={ styles['nav-item'] }>
-              <a className={`${ styles['nav-link'] } pr-5 pl-5 pt-4 pb-4`} href="">
-                <ProfileIcon type="primary" />
+              <Link className={`${ styles['nav-link'] } pr-5 pl-5 pt-4 pb-4`} to='/profile'>
+                <ProfileIcon type='primary' />
                 <span className='pl-2'>Личный кабинет</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

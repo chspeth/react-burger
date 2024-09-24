@@ -1,5 +1,5 @@
 import AppHeader from '../components/app-header/app-header';
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,8 +27,7 @@ function ForgotPasswordPage() {
         >
           <fieldset>
             <legend className='text text_type_main-medium'>Восстановление пароля</legend>
-            <Input
-              type='email'
+            <EmailInput
               placeholder='Укажите e-mail'
               extraClass='mt-6'
               value={email}
