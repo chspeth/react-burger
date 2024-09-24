@@ -1,5 +1,4 @@
-import { BASE_URL } from '../../utils/util';
-import { request } from '../../utils/util';
+import { BASE_URL, request } from '../../utils/util';
 import { clearConstructor } from './constructorDnd';
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';

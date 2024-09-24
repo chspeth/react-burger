@@ -1,5 +1,5 @@
 import AppHeader from '../components/app-header/app-header';
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './pages.module.css';
 
@@ -17,18 +17,17 @@ function RegisterPage() {
               extraClass='mt-6'
             />
             <Input
-              type='text'
+              type='email'
               placeholder='E-mail'
               extraClass='mt-6'
             />
-            <Input
-              type='password'
+            <PasswordInput
               placeholder='Пароль'
               icon='ShowIcon'
               extraClass='mt-6'
             />
             <Button 
-              htmlType='button' 
+              htmlType='submit' 
               type='primary' 
               size='medium'
               extraClass='mt-6'>
