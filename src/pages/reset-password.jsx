@@ -1,16 +1,23 @@
 import AppHeader from '../components/app-header/app-header';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { passwordResetConfirm } from '../services/actions/password';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './pages.module.css';
 
 function ResetPasswordPage() {
   const dispatch = useDispatch();
-  const { isLoading, error, success } = useSelector((state) => state.password);
+  const navigate = useNavigate();
+  const { isLoading, passwordResetSuccess } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
+
+  useEffect(() => {
+    if (passwordResetSuccess) {
+      navigate('/login'); 
+    }
+  }, [passwordResetSuccess, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,10 +56,8 @@ function ResetPasswordPage() {
               extraClass='mt-6'
               disabled={isLoading}
             >
-              {isLoading ? 'Загрузка...' : 'Сохранить'}
+              Сохранить
             </Button>
-            {error && <p className='text text_type_main-default'>{error}</p>}
-            {success && <p className='text text_type_main-default'>Пароль успешно изменен</p>}
             <p className='mt-20 text text_type_main-default text_color_inactive'>
               Вспомнили пароль? {' '}
               <Link to='/login' className={ styles['link'] }>Войти</Link>

@@ -19,7 +19,7 @@ export const passwordResetConfirmFailed = (error) => ({
 });
 
 const REQUEST_RESET_URL = BASE_URL + '/password-reset';
-const RESET_URL = BASE_URL + '/password-reset/reset';
+const RESET_URL = REQUEST_RESET_URL + '/reset';
 
 export function passwordResetRequest(email) {
   return async (dispatch) => {
