@@ -69,6 +69,9 @@ export const getUser = () => {
           dispatch(getUserFailed(err.message));
           console.error('Error:', err);
         }
+      } else {
+        dispatch(getUserFailed(err.message));
+        console.error('Error:', err);
       }
     }
   }

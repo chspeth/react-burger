@@ -86,6 +86,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
+        isAuthenticated: true,
         isLoading: false,
         hasError: false,
       };
@@ -94,16 +95,27 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
+        isAuthenticated: true,
         isLoading: false,
         hasError: false,
       };
     case REGISTER_FAILED:
     case LOGIN_FAILED:
-    case LOGOUT_FAILED:
     case REFRESH_TOKEN_FAILED:
     case GET_USER_FAILED:
+      return {
+        ...state,
+        isAuthenticated: false, 
+        isLoading: false,
+        hasError: true,
+      };
+    case LOGOUT_FAILED:
     case UPDATE_USER_FAILED:
-      return { ...state, isLoading: false, hasError: true };
+      return { 
+        ...state, 
+        isLoading: false, 
+        hasError: true,
+      };
     case PASSWORD_RESET_REQUEST:
       return { ...state, isLoading: true, hasError: false, passwordResetRequested: false };
     case PASSWORD_RESET_SUCCESS:

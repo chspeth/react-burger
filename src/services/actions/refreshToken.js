@@ -46,6 +46,7 @@ export const refreshToken = () => {
     } catch (err) {
       dispatch(refreshTokenFailed(err.message));
       console.error('Error:', err);
+      throw err; 
     }
   }
 }
