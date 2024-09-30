@@ -40,6 +40,11 @@ import {
   PASSWORD_RESET_CONFIRM_FAILED
 } from '../actions/password';
 
+import { 
+  SET_REDIRECT_PATH,
+  CLEAR_REDIRECT_PATH
+} from '../actions/redirect';
+
 const initialState = {
   user: null,
   accessToken: null,
@@ -49,6 +54,8 @@ const initialState = {
   hasError: false,
   passwordResetRequested: false,
   passwordResetSuccess: false,
+  authChecked: false,
+  redirectPath: '/',
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -70,6 +77,7 @@ export const authReducer = (state = initialState, action) => {
         user: action.payload.user,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
+        authChecked: true,
       };
     case LOGOUT_SUCCESS:
       return {
@@ -80,6 +88,7 @@ export const authReducer = (state = initialState, action) => {
         isAuthenticated: false,
         isLoading: false,
         hasError: false,
+        authChecked: true,
       };
     case REFRESH_TOKEN_SUCCESS:
       return {
@@ -98,6 +107,7 @@ export const authReducer = (state = initialState, action) => {
         isAuthenticated: true,
         isLoading: false,
         hasError: false,
+        authChecked: true,
       };
     case REGISTER_FAILED:
     case LOGIN_FAILED:
@@ -108,6 +118,7 @@ export const authReducer = (state = initialState, action) => {
         isAuthenticated: false, 
         isLoading: false,
         hasError: true,
+        authChecked: true,
       };
     case LOGOUT_FAILED:
     case UPDATE_USER_FAILED:
@@ -115,6 +126,16 @@ export const authReducer = (state = initialState, action) => {
         ...state, 
         isLoading: false, 
         hasError: true,
+      };
+    case SET_REDIRECT_PATH:
+      return {
+        ...state,
+        redirectPath: action.payload,
+      };
+    case CLEAR_REDIRECT_PATH:
+      return {
+        ...state,
+        redirectPath: '/',
       };
     case PASSWORD_RESET_REQUEST:
       return { ...state, isLoading: true, hasError: false, passwordResetRequested: false };

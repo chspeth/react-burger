@@ -4,21 +4,23 @@ import AppHeader from '../components/app-header/app-header';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/actions/login';
+import { clearRedirectPath } from '../services/actions/redirect';
 import styles from './pages.module.css';
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
+  const { isLoading, isAuthenticated, redirectPath } = useSelector((state) => state.auth);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate(redirectPath, { replace: true });
+      dispatch(clearRedirectPath());
     }
-  }, [isAuthenticated, navigate]);
+  }, [dispatch, isAuthenticated, navigate, redirectPath]);
   
   const handleSubmit = (e) => {
     e.preventDefault();

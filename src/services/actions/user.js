@@ -65,9 +65,9 @@ export const getUser = () => {
           });
 
           dispatch(getUserSuccess(data.user));
-        } catch (err) {
-          dispatch(getUserFailed(err.message));
-          console.error('Error:', err);
+        } catch (error) {
+          dispatch(getUserFailed(error.message));
+          console.error('Error:', error);
         }
       } else {
         dispatch(getUserFailed(err.message));

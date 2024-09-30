@@ -36,8 +36,8 @@ export function loginUser(email, password) {
         const accessToken = data.accessToken.split('Bearer ')[1];
         const refreshToken = data.refreshToken;
         
-        setCookie('accessToken', accessToken);
-        setCookie('refreshToken', refreshToken);
+        setCookie('accessToken', accessToken, { path: '/' });
+        setCookie('refreshToken', refreshToken, { path: '/' });
         dispatch(loginSuccess(data.user, accessToken, refreshToken));
       } else {
         throw new Error('Failed to log in');

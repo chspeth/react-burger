@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { openModal } from '../../services/actions/modal';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import OrderDetails from '../modal/order-details/order-details';
-import styles from './burger-constructor.module.css';
 import { useDrop } from 'react-dnd';
 import { addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
 import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
+import { setRedirectPath } from '../../services/actions/redirect';
+import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const { bun, fillings } = useSelector((state) => state.constructorItems);
   
   const [, dropTarget] = useDrop({
@@ -30,9 +34,14 @@ const BurgerConstructor = () => {
   };
 
   const handleOrderClick = () => {
-    const ingredients = [bun?._id, ...fillings.map(item => item._id)];
-    dispatch(orderDetails(ingredients));
-    dispatch(openModal(<OrderDetails />, false));
+    if (!isAuthenticated) {
+      dispatch(setRedirectPath('/'));
+      navigate('/login');
+    } else {
+      const ingredients = [bun?._id, ...fillings.map(item => item._id)];
+      dispatch(orderDetails(ingredients));
+      dispatch(openModal(<OrderDetails />, false));
+    }
   };
 
   const itemHeight = 80; 
