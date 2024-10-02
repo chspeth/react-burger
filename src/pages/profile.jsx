@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppHeader from '../components/app-header/app-header';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation, Outlet } from 'react-router-dom';
 import { getUser, updateUser } from '../services/actions/user';
 import { logoutUser } from '../services/actions/logout';
 import styles from './pages.module.css';
 
 function ProfilePage() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated, authChecked } = useSelector((state) => state.auth);
@@ -110,50 +111,54 @@ function ProfilePage() {
               В этом разделе вы можете <br/> изменить свои персональные данные
             </p>
           </div>
-          <form onSubmit={handleSubmit}>
-            <Input
-              placeholder='Имя'
-              icon='EditIcon'
-              value={name}
-              name='name'
-              onChange={(e) => setName(e.target.value)}
-             />
-            <EmailInput
-              placeholder='Логин'
-              extraClass='mt-6'
-              icon='EditIcon'
-              value={email}
-              name='email'
-              onChange={(e) => setEmail(e.target.value)}
-             />
-            <PasswordInput
-              placeholder='Пароль'
-              extraClass='mt-6'
-              icon='EditIcon'
-              value={password}
-              name='password'
-              onChange={(e) => setPassword(e.target.value)}
-             />
-            {isModified && (
-              <div className={styles['button-group']}>
-                <Button
-                  type='secondary'
-                  size='medium'
-                  onClick={handleCancel}
-                  extraClass='mr-4'
-                >
-                  Отмена
-                </Button>
-                <Button
-                  type='primary'
-                  size='medium'
-                  htmlType='submit'
-                >
-                  Сохранить
-                </Button>
-              </div>
-            )}
-          </form>
+          {location.pathname === '/profile' ? (
+            <form onSubmit={handleSubmit}>
+              <Input
+                placeholder='Имя'
+                icon='EditIcon'
+                value={name}
+                name='name'
+                onChange={(e) => setName(e.target.value)}
+              />
+              <EmailInput
+                placeholder='Логин'
+                extraClass='mt-6'
+                icon='EditIcon'
+                value={email}
+                name='email'
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <PasswordInput
+                placeholder='Пароль'
+                extraClass='mt-6'
+                icon='EditIcon'
+                value={password}
+                name='password'
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {isModified && (
+                <div className={styles['button-group']}>
+                  <Button
+                    type='secondary'
+                    size='medium'
+                    onClick={handleCancel}
+                    extraClass='mr-4'
+                  >
+                    Отмена
+                  </Button>
+                  <Button
+                    type='primary'
+                    size='medium'
+                    htmlType='submit'
+                  >
+                    Сохранить
+                  </Button>
+                </div>
+              )}
+            </form>
+          ) : (
+            <Outlet />
+          )}
         </div>
       </main>
     </>

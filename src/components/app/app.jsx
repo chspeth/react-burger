@@ -10,6 +10,7 @@ import RegisterPage from '../../pages/register';
 import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
+import OrdersPage from '../../pages/orders';
 import NotFound404 from '../../pages/not-found';
 
 function App() {
@@ -44,7 +45,12 @@ function App() {
         <Route 
           path='/profile' 
           element={<ProtectedRouteElement element={<ProfilePage />} />} 
-        />
+        >
+          <Route 
+            path='orders' 
+            element={<ProtectedRouteElement element={<OrdersPage />} />}
+          />
+        </Route>
 
         <Route path="*" element={<NotFound404/>}/>
       </Routes>
