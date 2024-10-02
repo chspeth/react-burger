@@ -10,6 +10,7 @@ import RegisterPage from '../../pages/register';
 import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
+import NotFound404 from '../../pages/not-found';
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,8 @@ function App() {
           path='/profile' 
           element={<ProtectedRouteElement element={<ProfilePage />} />} 
         />
+
+        <Route path="*" element={<NotFound404/>}/>
       </Routes>
     </BrowserRouter>
   );

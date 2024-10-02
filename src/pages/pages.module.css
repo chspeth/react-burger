@@ -70,3 +70,17 @@
 .logout-button:hover {
   opacity: 0.8;
 }
+
+.center-container {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+}

@@ -16,6 +16,9 @@ function ProfilePage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [originalData, setOriginalData] = useState({ name: '', email: '' });
+  const [isModified, setIsModified] = useState(false);
+
   useEffect(() => {
     if (!isAuthenticated && authChecked) {
       navigate('/login', { replace: true });
@@ -28,12 +31,35 @@ function ProfilePage() {
     if (user) {
       setName(user.name);
       setEmail(user.email);
+      setOriginalData({ name: user.name, email: user.email });
     }
   }, [user]);
 
+  useEffect(() => {
+    if (user) {
+      if (name !== originalData.name || email !== originalData.email || password !== '') {
+        setIsModified(true);
+      } else {
+        setIsModified(false);
+      }
+    }
+  }, [name, email, password, originalData, user]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser({ name, email, password }));
+    const updatedData = {
+      name,
+      email,
+      ...(password && { password }),
+    };
+    dispatch(updateUser(updatedData));
+  };
+
+  const handleCancel = () => {
+    setName(originalData.name);
+    setEmail(originalData.email);
+    setPassword('');
+    setIsModified(false);
   };
 
   const handleLogout = () => {
@@ -108,14 +134,25 @@ function ProfilePage() {
               name='password'
               onChange={(e) => setPassword(e.target.value)}
              />
-            <Button 
-              htmlType='submit' 
-              type='primary' 
-              size='medium'
-              extraClass='mt-6'
-            >
-              Сохранить
-            </Button>
+            {isModified && (
+              <div className={styles['button-group']}>
+                <Button
+                  type='secondary'
+                  size='medium'
+                  onClick={handleCancel}
+                  extraClass='mr-4'
+                >
+                  Отмена
+                </Button>
+                <Button
+                  type='primary'
+                  size='medium'
+                  htmlType='submit'
+                >
+                  Сохранить
+                </Button>
+              </div>
+            )}
           </form>
         </div>
       </main>
