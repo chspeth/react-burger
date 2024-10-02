@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppHeader from '../components/app-header/app-header';
-import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { getUser, updateUser } from '../services/actions/user';
 import { logoutUser } from '../services/actions/logout';
@@ -108,6 +108,14 @@ function ProfilePage() {
               name='password'
               onChange={(e) => setPassword(e.target.value)}
              />
+            <Button 
+              htmlType='submit' 
+              type='primary' 
+              size='medium'
+              extraClass='mt-6'
+            >
+              Сохранить
+            </Button>
           </form>
         </div>
       </main>
