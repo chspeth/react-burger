@@ -42,7 +42,9 @@ import {
 
 import { 
   SET_REDIRECT_PATH,
-  CLEAR_REDIRECT_PATH
+  CLEAR_REDIRECT_PATH,
+  SET_PENDING_ORDER,
+  CLEAR_PENDING_ORDER
 } from '../actions/redirect';
 
 const initialState = {
@@ -56,6 +58,7 @@ const initialState = {
   passwordResetSuccess: false,
   authChecked: false,
   redirectPath: '/',
+  pendingOrder: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -67,6 +70,7 @@ export const authReducer = (state = initialState, action) => {
     case GET_USER_REQUEST:
     case UPDATE_USER_REQUEST:
       return { ...state, isLoading: true, hasError: false };
+    
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       return { 
@@ -78,7 +82,9 @@ export const authReducer = (state = initialState, action) => {
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         authChecked: true,
+        redirectPath: '/',
       };
+    
     case LOGOUT_SUCCESS:
       return {
         ...state,
@@ -89,7 +95,10 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
         hasError: false,
         authChecked: true,
+        redirectPath: '/',
+        pendingOrder: false,
       };
+
     case REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
@@ -99,6 +108,7 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
         hasError: false,
       };
+
     case GET_USER_SUCCESS:
     case UPDATE_USER_SUCCESS:
       return {
@@ -109,6 +119,7 @@ export const authReducer = (state = initialState, action) => {
         hasError: false,
         authChecked: true,
       };
+
     case REGISTER_FAILED:
     case LOGIN_FAILED:
     case REFRESH_TOKEN_FAILED:
@@ -120,6 +131,7 @@ export const authReducer = (state = initialState, action) => {
         hasError: true,
         authChecked: true,
       };
+
     case LOGOUT_FAILED:
     case UPDATE_USER_FAILED:
       return { 
@@ -127,16 +139,31 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false, 
         hasError: true,
       };
+
     case SET_REDIRECT_PATH:
       return {
         ...state,
         redirectPath: action.payload,
       };
+
     case CLEAR_REDIRECT_PATH:
       return {
         ...state,
         redirectPath: '/',
       };
+
+    case SET_PENDING_ORDER:
+      return {
+        ...state,
+        pendingOrder: true,
+      };
+
+    case CLEAR_PENDING_ORDER:
+      return {
+        ...state,
+        pendingOrder: false,
+      };
+      
     case PASSWORD_RESET_REQUEST:
       return { ...state, isLoading: true, hasError: false, passwordResetRequested: false };
     case PASSWORD_RESET_SUCCESS:

@@ -9,7 +9,7 @@ import { useDrop } from 'react-dnd';
 import { addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
 import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
-import { setRedirectPath } from '../../services/actions/redirect';
+import { setRedirectPath, setPendingOrder } from '../../services/actions/redirect';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
@@ -36,6 +36,7 @@ const BurgerConstructor = () => {
   const handleOrderClick = () => {
     if (!isAuthenticated) {
       dispatch(setRedirectPath('/'));
+      dispatch(setPendingOrder());
       navigate('/login');
     } else {
       const ingredients = [bun?._id, ...fillings.map(item => item._id)];

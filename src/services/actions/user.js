@@ -38,9 +38,13 @@ export const getUser = () => {
       type: GET_USER_REQUEST
     });
 
-    try {
-      const accessToken = getCookie('accessToken');
+    const accessToken = getCookie('accessToken');
 
+    if (!accessToken) {
+      dispatch(getUserFailed('No access token'));
+      return;
+    }
+    try {
       const data = await request(USER_URL, {
         method: 'GET',
         headers: {
@@ -52,6 +56,13 @@ export const getUser = () => {
       dispatch(getUserSuccess(data.user));
     } catch (err) {
       if (err.status === 401 || err.status === 403) {
+        const refreshTokenCookie = getCookie('refreshToken');
+
+        if (!refreshTokenCookie) {
+          dispatch(getUserFailed('No refresh token'));
+          return;
+        }
+
         try {
           await dispatch(refreshToken());
           const newAccessToken = getCookie('accessToken');
@@ -83,9 +94,14 @@ export const updateUser = (userData) => {
       type: UPDATE_USER_REQUEST
     });
 
-    try {
-      const accessToken = getCookie('accessToken');
+    const accessToken = getCookie('accessToken');
 
+    if (!accessToken) {
+      dispatch(updateUserFailed('No access token'));
+      return;
+    }
+
+    try {
       const data = await request(USER_URL, {
         method: 'PATCH',
         headers: {
@@ -98,6 +114,13 @@ export const updateUser = (userData) => {
       dispatch(updateUserSuccess(data.user));
     } catch (err) {
       if (err.status === 401 || err.status === 403) {
+        const refreshTokenCookie = getCookie('refreshToken');
+
+        if (!refreshTokenCookie) {
+          dispatch(updateUserFailed('No refresh token'));
+          return;
+        }
+
         try {
           await dispatch(refreshToken());
           const newAccessToken = getCookie('accessToken');
@@ -116,6 +139,9 @@ export const updateUser = (userData) => {
           dispatch(updateUserFailed(err.message));
           console.error('Error:', err);
         }
+      }  else {
+        dispatch(updateUserFailed(err.message));
+        console.error('Error:', err);
       }
     }
   }

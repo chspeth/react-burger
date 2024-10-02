@@ -2,26 +2,27 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppHeader from '../components/app-header/app-header';
 import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { getUser, updateUser } from '../services/actions/user';
+import { logoutUser } from '../services/actions/logout';
 import styles from './pages.module.css';
 
 function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, authChecked } = useSelector((state) => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
+    if (!isAuthenticated && authChecked) {
+      navigate('/login', { replace: true });
     } else {
       dispatch(getUser());
     }
-  }, [dispatch, isAuthenticated, navigate]);
+  }, [authChecked, dispatch, isAuthenticated, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -35,6 +36,10 @@ function ProfilePage() {
     dispatch(updateUser({ name, email, password }));
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <>
       <AppHeader />
@@ -43,13 +48,36 @@ function ProfilePage() {
           <div className={ styles['left'] }>
             <ul className={`${ styles['nav-list'] } text text_type_main-medium`}>
               <li className={ styles['nav-item'] }>
-                Профиль
+                <NavLink
+                  to='/profile'
+                  end
+                  className={({ isActive }) =>
+                    isActive ? styles['active-link'] : styles['inactive-link']
+                  }
+                >
+                  Профиль
+                </NavLink>
               </li>
-              <li className={`${ styles['nav-item'] } text_color_inactive`}>
-                История заказов
+              <li className={ styles['nav-item'] }>
+                <NavLink
+                  to='/profile/orders'
+                  className={({ isActive }) =>
+                    isActive ? styles['active-link'] : styles['inactive-link']
+                  }
+                >
+                  История заказов
+                </NavLink>
               </li>
-              <li className={`${ styles['nav-item'] } text_color_inactive`}>
-                Выход
+              <li className={ styles['nav-item'] }>
+                <button
+                  type='button'
+                  onClick={handleLogout}
+                  className={`${styles['logout-button']} text text_type_main-medium ${
+                    styles['inactive-link']
+                  }`}
+                >
+                  Выход
+                </button>
               </li>
             </ul>
             <p className='text text_type_main-default text_color_inactive'>

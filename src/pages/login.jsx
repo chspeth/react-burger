@@ -4,23 +4,38 @@ import AppHeader from '../components/app-header/app-header';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/actions/login';
-import { clearRedirectPath } from '../services/actions/redirect';
+import { clearRedirectPath, clearPendingOrder } from '../services/actions/redirect';
+import { orderDetails } from '../services/actions/orderDetails';
 import styles from './pages.module.css';
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, isAuthenticated, redirectPath } = useSelector((state) => state.auth);
+  const { isLoading, isAuthenticated, redirectPath, pendingOrder } = useSelector((state) => state.auth);
+  const { bun, fillings } = useSelector((state) => state.constructorItems);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   useEffect(() => {
+
     if (isAuthenticated) {
-      navigate(redirectPath, { replace: true });
-      dispatch(clearRedirectPath());
+      if (pendingOrder) {
+        const ingredients = [bun?._id, ...fillings.map(item => item._id)];
+        
+        dispatch(orderDetails(ingredients));
+        dispatch(clearPendingOrder());
+        dispatch(clearRedirectPath());
+        
+        navigate('/', { replace: true });
+      } else {
+        const targetPath = redirectPath && redirectPath !== '/login' ? redirectPath : '/profile';
+        
+        navigate(targetPath, { replace: true });
+        dispatch(clearRedirectPath());
+      }
     }
-  }, [dispatch, isAuthenticated, navigate, redirectPath]);
+  }, [bun?._id, dispatch, fillings, isAuthenticated, navigate, pendingOrder, redirectPath]);
   
   const handleSubmit = (e) => {
     e.preventDefault();

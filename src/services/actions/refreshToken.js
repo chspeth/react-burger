@@ -23,22 +23,29 @@ export const refreshToken = () => {
       type: REFRESH_TOKEN_REQUEST
     });
 
+    const refreshTokenCookie = getCookie('refreshToken');
+
+    if (!refreshTokenCookie) {
+      dispatch(refreshTokenFailed('No refresh token'));
+      return;
+    }
+
     try {
       const data = await request(REFRESH_TOKEN_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ token: getCookie('refreshToken') }) 
+        body: JSON.stringify({ token: refreshTokenCookie }) 
       });
 
       if (data && data.success) {
         const accessToken = data.accessToken.split('Bearer ')[1];
-        const refreshToken = data.refreshToken;
+        const newRefreshToken = data.refreshToken;
         
         setCookie('accessToken', accessToken);
-        setCookie('refreshToken', refreshToken);
-        dispatch(refreshTokenSuccess(accessToken, refreshToken));
+        setCookie('refreshToken', newRefreshToken);
+        dispatch(refreshTokenSuccess(accessToken, newRefreshToken));
         return accessToken;
       } else {
         throw new Error('Failed to refresh token');
