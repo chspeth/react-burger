@@ -3,7 +3,7 @@ import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-comp
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { passwordResetRequest } from '../services/actions/password';
+import { passwordResetRequest, PASSWORD_RESET_STATUS } from '../services/actions/password';
 import styles from './pages.module.css';
 
 function ForgotPasswordPage() {
@@ -14,7 +14,12 @@ function ForgotPasswordPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!email) return null;
+
     dispatch(passwordResetRequest(email));
+    dispatch({
+      type: PASSWORD_RESET_STATUS
+    })
   };
 
   useEffect(() => {
@@ -39,6 +44,7 @@ function ForgotPasswordPage() {
               extraClass='mt-6'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <Button 
               htmlType='submit' 

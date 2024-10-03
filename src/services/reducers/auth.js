@@ -37,7 +37,9 @@ import {
   PASSWORD_RESET_FAILED,
   PASSWORD_RESET_CONFIRM_REQUEST,
   PASSWORD_RESET_CONFIRM_SUCCESS,
-  PASSWORD_RESET_CONFIRM_FAILED
+  PASSWORD_RESET_CONFIRM_FAILED,
+  PASSWORD_RESET_STATUS,
+  PASSWORD_RESET_CONFIRM_STATUS
 } from '../actions/password';
 
 import { 
@@ -170,12 +172,16 @@ export const authReducer = (state = initialState, action) => {
       return { ...state, isLoading: false, hasError: false, passwordResetRequested: true };
     case PASSWORD_RESET_FAILED:
       return { ...state, isLoading: false, hasError: true, passwordResetRequested: false };
+    case PASSWORD_RESET_STATUS:
+      return { ...state, isLoading: false, hasError: false, passwordResetRequested: false };
     case PASSWORD_RESET_CONFIRM_REQUEST:
       return { ...state, isLoading: true, hasError: false, passwordResetSuccess: false };
     case PASSWORD_RESET_CONFIRM_SUCCESS:
       return { ...state, isLoading: false, hasError: false, passwordResetSuccess: true };
     case PASSWORD_RESET_CONFIRM_FAILED:
       return { ...state, isLoading: false, hasError: true, passwordResetSuccess: false };
+    case PASSWORD_RESET_CONFIRM_STATUS:
+      return { ...state, isLoading: false, hasError: false, passwordResetSuccess: false };
     default:
       return state;
   }

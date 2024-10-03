@@ -2,7 +2,7 @@ import AppHeader from '../components/app-header/app-header';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { passwordResetConfirm } from '../services/actions/password';
+import { passwordResetConfirm, PASSWORD_RESET_CONFIRM_STATUS } from '../services/actions/password';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './pages.module.css';
 
@@ -16,8 +16,11 @@ function ResetPasswordPage() {
   useEffect(() => {
     if (passwordResetSuccess) {
       navigate('/login'); 
+      dispatch({ 
+        type: PASSWORD_RESET_CONFIRM_STATUS 
+      });
     }
-  }, [passwordResetSuccess, navigate]);
+  }, [passwordResetSuccess, navigate, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,6 +44,7 @@ function ResetPasswordPage() {
               extraClass='mt-6'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             <Input
               type='text'
