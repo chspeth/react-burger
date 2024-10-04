@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, matchPath } from 'react-router-dom';
 import { getUser } from '../../services/actions/user';
 import ProtectedRouteElement from '../protected-route/protected-route';
 import PublicRouteElement from '../public-route/public-route';
@@ -12,17 +12,26 @@ import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
 import OrdersPage from '../../pages/orders';
 import NotFound404 from '../../pages/not-found';
+import IngredientDetailsPage from '../../pages/ingredient-details-page';
+import IngredientDetails from '../modal/ingredient-details/ingredient-details';
+import IngredientModal from '../modal/ingredient-modal/ingredient-modal';
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(getUser());
   }, [dispatch]);
 
+  const backgroundLocation = location.state?.backgroundLocation;
+  const modalPath = '/ingredients/:id';
+  const isModal = matchPath(modalPath, location.pathname);
+  const isModalOpen = backgroundLocation && isModal;
+
   return (
-    <BrowserRouter>
-      <Routes>
+    <>
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<HomePage />} />
 
         <Route 
@@ -52,9 +61,24 @@ function App() {
           />
         </Route>
 
-        <Route path="*" element={<NotFound404/>}/>
+        <Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
+
+        <Route path='*' element={<NotFound404/>}/>
       </Routes>
-    </BrowserRouter>
+
+      {isModalOpen && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <IngredientModal>
+                <IngredientDetails />
+              </IngredientModal>
+            }
+          />
+        </Routes>
+      )}
+    </>
   );
 }
 

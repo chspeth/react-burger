@@ -6,7 +6,7 @@ import styles from './ingredients-list.module.css';
 
 const IngredientsList = ({ categoryType }) => {
   const productData = useSelector((state) => state.products.productData);
-  const ingredients= filterProducts(productData, categoryType);
+  const ingredients = filterProducts(productData, categoryType);
   
   return (
     <ul className={ styles['ingredients-list'] }>

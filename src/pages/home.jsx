@@ -13,6 +13,7 @@ import styles from './home.module.css';
 function HomePage() {
   const dispatch = useDispatch();
   const { productData, isLoading, hasError } = useSelector((state) => state.products);
+  const { isModalOpen } = useSelector(state => state.modal);
 
   useEffect(() => {
     dispatch(getItems());
@@ -33,7 +34,7 @@ function HomePage() {
           )
         }
       </main>
-      <Modal />
+      {isModalOpen && <Modal />}
     </>
   );
 }
