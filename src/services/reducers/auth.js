@@ -42,13 +42,6 @@ import {
   PASSWORD_RESET_CONFIRM_STATUS
 } from '../actions/password';
 
-import { 
-  SET_REDIRECT_PATH,
-  CLEAR_REDIRECT_PATH,
-  SET_PENDING_ORDER,
-  CLEAR_PENDING_ORDER
-} from '../actions/redirect';
-
 const initialState = {
   user: null,
   accessToken: null,
@@ -59,8 +52,6 @@ const initialState = {
   passwordResetRequested: false,
   passwordResetSuccess: false,
   authChecked: false,
-  redirectPath: '/',
-  pendingOrder: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -84,7 +75,8 @@ export const authReducer = (state = initialState, action) => {
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         authChecked: true,
-        redirectPath: '/',
+        // redirectPath: '/',
+        passwordResetSuccess: false,
       };
     
     case LOGOUT_SUCCESS:
@@ -97,8 +89,10 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
         hasError: false,
         authChecked: true,
-        redirectPath: '/',
-        pendingOrder: false,
+        // redirectPath: '/',
+        // pendingOrder: false,
+        passwordResetRequested: false,
+        passwordResetSuccess: false,
       };
 
     case REFRESH_TOKEN_SUCCESS:
@@ -141,30 +135,6 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false, 
         hasError: true,
       };
-
-    case SET_REDIRECT_PATH:
-      return {
-        ...state,
-        redirectPath: action.payload,
-      };
-
-    case CLEAR_REDIRECT_PATH:
-      return {
-        ...state,
-        redirectPath: '/',
-      };
-
-    case SET_PENDING_ORDER:
-      return {
-        ...state,
-        pendingOrder: true,
-      };
-
-    case CLEAR_PENDING_ORDER:
-      return {
-        ...state,
-        pendingOrder: false,
-      };
       
     case PASSWORD_RESET_REQUEST:
       return { ...state, isLoading: true, hasError: false, passwordResetRequested: false };
@@ -177,7 +147,13 @@ export const authReducer = (state = initialState, action) => {
     case PASSWORD_RESET_CONFIRM_REQUEST:
       return { ...state, isLoading: true, hasError: false, passwordResetSuccess: false };
     case PASSWORD_RESET_CONFIRM_SUCCESS:
-      return { ...state, isLoading: false, hasError: false, passwordResetSuccess: true };
+      return { 
+        ...state, 
+        isLoading: false, 
+        hasError: false, 
+        passwordResetSuccess: true,
+        passwordResetRequested: false,
+      };
     case PASSWORD_RESET_CONFIRM_FAILED:
       return { ...state, isLoading: false, hasError: true, passwordResetSuccess: false };
     case PASSWORD_RESET_CONFIRM_STATUS:

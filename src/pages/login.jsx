@@ -1,41 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AppHeader from '../components/app-header/app-header';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../services/actions/login';
-import { clearRedirectPath, clearPendingOrder } from '../services/actions/redirect';
-import { orderDetails } from '../services/actions/orderDetails';
 import styles from './pages.module.css';
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, isAuthenticated, redirectPath, pendingOrder } = useSelector((state) => state.auth);
-  const { bun, fillings } = useSelector((state) => state.constructorItems);
+  const location = useLocation();
+  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const from = location.state?.from?.pathname || '/';
   
   useEffect(() => {
-
     if (isAuthenticated) {
-      if (pendingOrder) {
-        const ingredients = [bun?._id, ...fillings.map(item => item._id)];
-        
-        dispatch(orderDetails(ingredients));
-        dispatch(clearPendingOrder());
-        dispatch(clearRedirectPath());
-        
-        navigate('/', { replace: true });
-      } else {
-        const targetPath = redirectPath && redirectPath !== '/login' ? redirectPath : '/profile';
-        
-        navigate(targetPath, { replace: true });
-        dispatch(clearRedirectPath());
-      }
+      navigate(from, { replace: true });
     }
-  }, [bun?._id, dispatch, fillings, isAuthenticated, navigate, pendingOrder, redirectPath]);
+  }, [from, isAuthenticated, navigate]);
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +29,6 @@ function LoginPage() {
 
   return (
     <>
-      <AppHeader />
       <main>
         <form 
           action='#' 
@@ -58,6 +42,7 @@ function LoginPage() {
               extraClass='mt-6'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <PasswordInput
               placeholder='Пароль'
@@ -65,6 +50,7 @@ function LoginPage() {
               extraClass='mt-6'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             <Button 
               htmlType='submit' 

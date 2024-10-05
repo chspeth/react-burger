@@ -10,13 +10,13 @@ const AppHeader = () => {
           <ul className={`text text_type_main-default ${ styles['nav-list'] }`}>
             <li className={ styles['nav-item'] }>
               <Link className={`${ styles['nav-link'] } pr-5 pl-5 pt-4 pb-4`} to='/'>
-                <BurgerIcon type="primary" />
+                <BurgerIcon type='primary' />
                 <span className='pl-2'>Конструктор</span>
               </Link>
             </li>
             <li className={ styles['nav-item'] }>
               <Link className={`${ styles['nav-link'] } pr-5 pl-5 pt-4 pb-4`} to='/'>
-                <ListIcon type="primary" />
+                <ListIcon type='primary' />
                 <span className='pl-2'>Лента заказов</span>
               </Link>
             </li>
@@ -29,7 +29,9 @@ const AppHeader = () => {
           </ul>
         </nav>
         <div className={ styles['logo-wrapper'] }>
-          <Logo />
+          <Link to='/'>
+            <Logo />
+          </Link>
         </div>
       </div>
     </header>

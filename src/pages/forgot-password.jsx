@@ -1,4 +1,3 @@
-import AppHeader from '../components/app-header/app-header';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -30,7 +29,6 @@ function ForgotPasswordPage() {
 
   return (
     <>
-      <AppHeader />
       <main>
         <form 
           action='#' 

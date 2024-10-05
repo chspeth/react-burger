@@ -1,19 +1,18 @@
 import { useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { closeModal } from '../../services/actions/modal';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import styles from './modal.module.css';
+import PropTypes from 'prop-types';
 
-const Modal = () => {
-  const { isModalOpen, modalContent, title } = useSelector(state => state.modal);
-  const dispatch = useDispatch();
+const Modal = ({ title, children, onClose }) => {
   const modalRoot = document.getElementById('modal-root');
 
   const handleClose = useCallback(() => {
-    dispatch(closeModal());
-  }, [dispatch]);
+    if (onClose) {
+      onClose();
+    } 
+  }, [onClose]);
 
   useEffect(() => {
     const handleKeyPress = e => {
@@ -29,27 +28,25 @@ const Modal = () => {
     if (e.target.classList.contains('overlay')) handleClose();
   }
 
-  if (!isModalOpen) {
-    return null;
-  }
-
   return createPortal(
     <>
-      {isModalOpen && (
-        <>
-        <ModalOverlay onClose={handleClose} />
-        <div className={styles['modal']} onClick={handleOverlayClick}>
-          {title && <h2 className='text text_type_main-large'>{ title }</h2>}
-          <button className={styles['close-btn']} onClick={handleClose}>
-            <CloseIcon type="primary" />
-          </button>
-          <div className={styles['modal-content']}> {modalContent} </div>
-        </div>
-        </>
-      )}
+      <ModalOverlay onClose={handleClose} />
+      <div className={styles['modal']} onClick={handleOverlayClick}>
+        {title && <h2 className='text text_type_main-large'>{ title }</h2>}
+        <button className={styles['close-btn']} onClick={handleClose}>
+          <CloseIcon type='primary' />
+        </button>
+        <div className={styles['modal-content']}> { children } </div>
+      </div>
     </>, 
     modalRoot
   )
 }
+
+Modal.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.node,
+  onClose: PropTypes.func,
+};
 
 export default Modal;

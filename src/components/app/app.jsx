@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Routes, Route, useLocation, matchPath } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { getUser } from '../../services/actions/user';
+import { getItems } from '../../services/actions/productData';
+import { closeModal } from '../../services/actions/modal';
+import AppHeader from '../app-header/app-header';
 import ProtectedRouteElement from '../protected-route/protected-route';
 import PublicRouteElement from '../public-route/public-route';
 import HomePage from '../../pages/home';
@@ -14,23 +17,32 @@ import OrdersPage from '../../pages/orders';
 import NotFound404 from '../../pages/not-found';
 import IngredientDetailsPage from '../../pages/ingredient-details-page';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
-import IngredientModal from '../modal/ingredient-modal/ingredient-modal';
+import Modal from '../modal/modal';
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUser());
+    dispatch(getItems());
   }, [dispatch]);
 
   const backgroundLocation = location.state?.backgroundLocation;
-  const modalPath = '/ingredients/:id';
-  const isModal = matchPath(modalPath, location.pathname);
-  const isModalOpen = backgroundLocation && isModal;
+  const { isModalOpen, modalContent } = useSelector((state) => state.modal);
+
+  const handleIngredientModalClose = () => {
+    navigate(-1);
+  };
+
+  const handleOrderModalClose = () => {
+    dispatch(closeModal());
+  };
 
   return (
     <>
+      <AppHeader />
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<HomePage />} />
 
@@ -66,17 +78,26 @@ function App() {
         <Route path='*' element={<NotFound404/>}/>
       </Routes>
 
-      {isModalOpen && (
+      {backgroundLocation && (
         <Routes>
           <Route
             path='/ingredients/:id'
             element={
-              <IngredientModal>
+              <Modal 
+                title='Детали ингредиента'
+                onClose={handleIngredientModalClose}
+              >
                 <IngredientDetails />
-              </IngredientModal>
+              </Modal>
             }
           />
         </Routes>
+      )}
+
+      {isModalOpen && (
+        <Modal onClose={handleOrderModalClose}>
+          {modalContent}
+        </Modal>
       )}
     </>
   );

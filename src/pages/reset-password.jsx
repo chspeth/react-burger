@@ -1,4 +1,3 @@
-import AppHeader from '../components/app-header/app-header';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +28,6 @@ function ResetPasswordPage() {
 
   return (
     <>
-      <AppHeader />
       <main>
         <form 
           action='#' 
@@ -52,6 +50,7 @@ function ResetPasswordPage() {
               extraClass='mt-6'
               value={token}
               onChange={(e) => setToken(e.target.value)}
+              required
             />
             <Button 
               htmlType='submit' 

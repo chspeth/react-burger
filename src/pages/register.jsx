@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AppHeader from '../components/app-header/app-header';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/actions/register';
@@ -28,7 +27,6 @@ function RegisterPage() {
 
   return (
     <>
-      <AppHeader />
       <main>
         <form 
           action='#' 

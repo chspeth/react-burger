@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AppHeader from '../components/app-header/app-header';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate, NavLink, useLocation, Outlet } from 'react-router-dom';
 import { getUser, updateUser } from '../services/actions/user';
@@ -69,7 +68,6 @@ function ProfilePage() {
 
   return (
     <>
-      <AppHeader />
       <main>
         <div className={ styles['wrapper'] }>
           <div className={ styles['left'] }>
