@@ -1,5 +1,4 @@
-import { BASE_URL } from '../../utils/util';
-import { request } from '../../utils/util';
+import { BASE_URL, request } from '../../utils/util';
 
 export const GET_ITEMS_REQUEST = 'GET_ITEMS_REQUEST';
 export const GET_ITEMS_SUCCESS = 'GET_ITEMS_SUCCESS';

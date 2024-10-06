@@ -1,15 +1,14 @@
-// import PropTypes from 'prop-types';
 import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; 
-import { openModal } from '../../../services/actions/modal';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ingredientType } from '../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
 import styles from './ingredient-item.module.css';
 import { useDrag } from 'react-dnd';
 
 const IngredientItem = ({ ingredient }) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { bun, fillings } = useSelector(store => store.constructorItems);
 
   const ingredientsCounter = useMemo(() => {
@@ -21,7 +20,7 @@ const IngredientItem = ({ ingredient }) => {
   }, [ingredient.type, ingredient._id, bun, fillings]);
   
   const handleIngredientClick = () => {
-    dispatch(openModal(<IngredientDetails ingredient={ingredient} />, 'Детали ингредиента'));
+    navigate(`/ingredients/${ingredient._id}`, { state: { backgroundLocation: location } });
   };
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -38,13 +37,13 @@ const IngredientItem = ({ ingredient }) => {
       style={{ opacity: isDragging ? 0.5 : 1 }}
       onClick={handleIngredientClick} 
       ref={dragRef}>
-      {ingredientsCounter && <Counter count={ingredientsCounter} size="default" extraClass="m-1" />}
+      {ingredientsCounter && <Counter count={ingredientsCounter} size='default' />}
       <img 
         className={`${ styles['image'] } mb-1`} 
         src={ingredient.image} 
         alt={ingredient.name} />
       <p className={`text text_type_digits-default mb-1 ${ styles['price'] }`}> 
-        {ingredient.price} <CurrencyIcon type="primary" />
+        {ingredient.price} <CurrencyIcon type='primary' />
       </p>
       <p className={`text text_type_main-default ${ styles['name'] }`}> {ingredient.name} </p>
     </li>

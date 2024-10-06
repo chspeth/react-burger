@@ -12,11 +12,12 @@ export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 async function checkResponse(res) {
   if (!res.ok) {
-    throw new Error(`Ошибка: ${res.status}`);
+    const error = new Error(`Ошибка: ${res.status}`);
+    error.status = res.status;
+    throw error;
   }
   return await res.json();
 }
-
 
 export async function request(url, options) {
   const res = await fetch(url, options);
