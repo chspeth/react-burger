@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { openModal } from '../../services/actions/modal';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import OrderDetails from '../modal/order-details/order-details';
-import styles from './burger-constructor.module.css';
 import { useDrop } from 'react-dnd';
 import { addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
 import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
+import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const { bun, fillings } = useSelector((state) => state.constructorItems);
   
   const [, dropTarget] = useDrop({
@@ -30,9 +34,13 @@ const BurgerConstructor = () => {
   };
 
   const handleOrderClick = () => {
-    const ingredients = [bun?._id, ...fillings.map(item => item._id)];
-    dispatch(orderDetails(ingredients));
-    dispatch(openModal(<OrderDetails />, false));
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location } });
+    } else {
+      const ingredients = [bun?._id, ...fillings.map(item => item._id)];
+      dispatch(orderDetails(ingredients));
+      dispatch(openModal(<OrderDetails />, false));
+    }
   };
 
   const itemHeight = 80; 
@@ -53,7 +61,7 @@ const BurgerConstructor = () => {
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
           {!bun && (
             <div className={`${ styles['empty-element'] } ${ styles['top'] }`}>
-              <span className="text text_type_main-medium">Выберите булку</span>
+              <span className='text text_type_main-medium'>Выберите булку</span>
             </div>
           )}
           {bun && (
@@ -68,7 +76,7 @@ const BurgerConstructor = () => {
         </div>
         {fillings.length === 0 && (
           <div className={`${ styles['empty-element'] } ${ styles['middle'] }`}>
-            <span className="text text_type_main-medium">Выберите ингредиенты</span>
+            <span className='text text_type_main-medium'>Выберите ингредиенты</span>
           </div>
         )}
         {fillings.length > 0 && (
@@ -96,7 +104,7 @@ const BurgerConstructor = () => {
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
           {!bun && (
             <div className={`${ styles['empty-element'] } ${ styles['bottom'] }`}>
-              <span className="text text_type_main-medium">Выберите булку</span>
+              <span className='text text_type_main-medium'>Выберите булку</span>
             </div>
           )}
           {bun && (
@@ -112,13 +120,13 @@ const BurgerConstructor = () => {
       </div>
       <div className={ styles['total'] }>
         <p className={ styles['total-price'] }>
-          <span className="text text_type_digits-medium">{totalPrice}</span> 
-          <CurrencyIcon type="primary" />
+          <span className='text text_type_digits-medium'>{totalPrice}</span> 
+          <CurrencyIcon type='primary' />
         </p>
         <Button 
-          htmlType="button" 
-          type="primary" 
-          size="large" 
+          htmlType='button'
+          type='primary' 
+          size='large'
           onClick={handleOrderClick} 
           disabled={!bun || fillings.length === 0}>Оформить заказ</Button>
       </div>

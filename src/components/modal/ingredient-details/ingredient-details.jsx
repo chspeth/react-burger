@@ -1,11 +1,22 @@
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { ingredientType } from '../../../utils/types';
 import styles from './ingredient-details.module.css';
 
 const IndredientDetails = ({ ingredient }) => {
+  const { id } = useParams();
+  const { productData } = useSelector((state) => state.products);
+
+  const selectedIngredient = ingredient || productData.find((item) => item._id === id);
+
+  if (!selectedIngredient) {
+    return <p className='text text_type_main-small text_color_inactive mt-5'>Ингредиент не найден</p>;
+  }
+
   return (
     <div className={styles['wrapper']}>
-      <img className={styles['image']} src={ingredient.image_large} alt={ingredient.name} />
-      <h3 className='text text_type_main-medium'> {ingredient.name} </h3>
+      <img className={styles['image']} src={selectedIngredient.image_large} alt={selectedIngredient.name} />
+      <h3 className='text text_type_main-medium'> {selectedIngredient.name} </h3>
       <table className={styles['nutrition-facts']}>
         <thead>
           <tr className='text text_type_main-default text_color_inactive'>
@@ -17,10 +28,10 @@ const IndredientDetails = ({ ingredient }) => {
         </thead>
         <tbody>
           <tr className='text text_type_digits-default text_color_inactive'>
-            <td>{ingredient.calories}</td>
-            <td>{ingredient.proteins}</td>
-            <td>{ingredient.fat}</td>
-            <td>{ingredient.carbohydrates}</td>
+            <td>{selectedIngredient.calories}</td>
+            <td>{selectedIngredient.proteins}</td>
+            <td>{selectedIngredient.fat}</td>
+            <td>{selectedIngredient.carbohydrates}</td>
           </tr>
         </tbody>
       </table>
@@ -29,7 +40,7 @@ const IndredientDetails = ({ ingredient }) => {
 }
 
 IndredientDetails.propTypes = {
-  ingredient: ingredientType.isRequired
+  ingredient: ingredientType
 }
 
 export default IndredientDetails;

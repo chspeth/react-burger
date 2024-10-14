@@ -49,8 +49,13 @@ const ConstructorIngredient = ({ element, index, moveIngredient, handleDeleteIte
   drag(drop(ref));
 
   return (
-    <div className={styles['element-container']} ref={ref} data-handler-id={handlerId} style={{ opacity: isDragging ? 0.5 : 1 }}>
-      <DragIcon type="primary" />
+    <div 
+      className={styles['element-container']} 
+      ref={ref} 
+      data-handler-id={handlerId} 
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+    >
+      <DragIcon type='primary' />
       <ConstructorElement
         isLocked={false}
         text={element.name}
