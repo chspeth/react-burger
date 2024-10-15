@@ -1,15 +1,39 @@
+import { FC } from 'react';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ingredientType } from '../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css';
 import { useDrag } from 'react-dnd';
 
-const IngredientItem = ({ ingredient }) => {
+interface IIngredient {
+  _id: string;
+  name: string;
+  type: 'bun' | 'sauce' | 'main';
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  __v: number;
+}
+
+interface IIngredientItemProps {
+  ingredient: IIngredient
+}
+
+interface IConstructorItemsState {
+  bun: IIngredient | null;
+  fillings: IIngredient[];
+}
+
+const IngredientItem: FC<IIngredientItemProps> = ({ ingredient }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { bun, fillings } = useSelector(store => store.constructorItems);
+  const { bun, fillings } = useSelector((state: { constructorItems: IConstructorItemsState }) => state.constructorItems);
 
   const ingredientsCounter = useMemo(() => {
     if (ingredient.type === 'bun') {
@@ -48,10 +72,6 @@ const IngredientItem = ({ ingredient }) => {
       <p className={`text text_type_main-default ${ styles['name'] }`}> {ingredient.name} </p>
     </li>
   )
-}
-
-IngredientItem.propTypes = {
-  ingredient: ingredientType.isRequired
 }
 
 export default IngredientItem;

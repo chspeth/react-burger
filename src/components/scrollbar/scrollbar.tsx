@@ -1,8 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
-const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFrame }, ref) => {
+interface ICustomScrollbarStyles {
+  wrapperMaxHeight?: string;
+  wrapperHeight?: string;
+  top?: string;
+  bottom?: string;
+}
+
+interface ICustomScrollbarProps {
+  children: React.ReactNode;
+  customStyles: ICustomScrollbarStyles;
+  onScrollFrame?: (values: any) => void; 
+}
+
+const CustomScrollbar = React.forwardRef<Scrollbars, ICustomScrollbarProps>(
+  ({ children, customStyles, onScrollFrame }, ref) => {
   return (
     <div 
       style={{ 
@@ -43,16 +56,5 @@ const CustomScrollbar = React.forwardRef(({ children, customStyles, onScrollFram
     </div>
   )
 })
-
-CustomScrollbar.propTypes = {
-  children: PropTypes.node,
-  customStyles: PropTypes.shape({
-    wrapperMaxHeight: PropTypes.string,
-    wrapperHeight: PropTypes.string,
-    top: PropTypes.string,
-    bottom: PropTypes.string
-  }).isRequired,
-  onScrollFrame: PropTypes.func
-}
 
 export default CustomScrollbar;

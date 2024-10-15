@@ -1,11 +1,16 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, FC } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import styles from './modal.module.css';
-import PropTypes from 'prop-types';
 
-const Modal = ({ title, children, onClose }) => {
+interface IModalProps {
+  title?: string | null; 
+  children: React.ReactNode; 
+  onClose: () => void;
+}
+
+const Modal: FC<IModalProps> = ({ title, children, onClose }) => {
   const modalRoot = document.getElementById('modal-root');
 
   const handleClose = useCallback(() => {
@@ -15,7 +20,7 @@ const Modal = ({ title, children, onClose }) => {
   }, [onClose]);
 
   useEffect(() => {
-    const handleKeyPress = e => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
     }
 
@@ -24,9 +29,11 @@ const Modal = ({ title, children, onClose }) => {
     return () => document.removeEventListener('keydown', handleKeyPress);
   }, [handleClose])
 
-  const handleOverlayClick = e => {
-    if (e.target.classList.contains('overlay')) handleClose();
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).classList.contains('overlay')) handleClose();
   }
+
+  if (!modalRoot) return null;
 
   return createPortal(
     <>
@@ -42,11 +49,5 @@ const Modal = ({ title, children, onClose }) => {
     modalRoot
   )
 }
-
-Modal.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node,
-  onClose: PropTypes.func,
-};
 
 export default Modal;

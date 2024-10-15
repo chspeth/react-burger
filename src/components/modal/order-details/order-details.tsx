@@ -1,9 +1,17 @@
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import orderCompletedIcon from '../../../images/icons/order-completed.svg';
 import styles from './order-details.module.css';
 
-const OrderDetails = () => {
-  const { orderNumber, isLoading } = useSelector((state) => state.details);
+interface IDetailsState {
+  orderNumber: number | null;
+  isLoading: boolean;
+  hasError: boolean;
+  errorMessage: string | null;
+}
+
+const OrderDetails: FC = () => {
+  const { orderNumber, isLoading } = useSelector((state: { details: IDetailsState }) => state.details);
   return (
     <div className={styles['wrapper']}>
       {isLoading && <p className="text text_type_main-medium">Загрузка...</p>}

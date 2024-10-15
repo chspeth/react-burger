@@ -1,35 +1,44 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, FC, RefObject } from 'react';
 import IngredientsTabs from './ingredients-tabs/ingredients-tabs';
 import IngredientsList from './ingredients-list/ingredients-list';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { productsCategories } from '../../utils/util';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredients = () => {
-  const [currentTab, setCurrentTab] = useState('bun');
-  const allTabsRef = useRef();
-  const scrollbarRef = useRef();
-  const tabsRefs = {
-    'bun': useRef(),
-    'sauce': useRef(),
-    'main': useRef()
+type TTabsRefs = {
+  [name in 'bun' | 'sauce' | 'main']: RefObject<HTMLDivElement>;
+};
+
+type TCoordinates = {
+  [name in 'bun' | 'sauce' | 'main']: number | undefined;
+};
+
+const BurgerIngredients: FC = () => {
+  const [currentTab, setCurrentTab] = useState<'bun' | 'sauce' | 'main'>('bun');
+  const allTabsRef = useRef<HTMLDivElement>(null);
+  const scrollbarRef = useRef<Scrollbars | null>(null);
+  const tabsRefs: TTabsRefs = {
+    'bun': useRef<HTMLDivElement>(null),
+    'sauce': useRef<HTMLDivElement>(null),
+    'main': useRef<HTMLDivElement>(null),
   };
   
-  const handleTabClick = (tabName) => {
+  const handleTabClick = (tabName: 'bun' | 'sauce' | 'main') => {
     setCurrentTab(tabName);
-    tabsRefs[tabName].current.scrollIntoView({ behavior: 'smooth' });
+    tabsRefs[tabName].current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleTabScroll = () => {
-    const tabsTop = allTabsRef.current.getBoundingClientRect().top;
-    const coordinates = {
-      'bun': tabsRefs.bun.current.getBoundingClientRect().top,
-      'sauce': tabsRefs.sauce.current.getBoundingClientRect().top,
-      'main': tabsRefs.main.current.getBoundingClientRect().top,
+    const tabsTop = allTabsRef.current?.getBoundingClientRect().top;
+    const coordinates: TCoordinates = {
+      'bun': tabsRefs.bun.current?.getBoundingClientRect().top,
+      'sauce': tabsRefs.sauce.current?.getBoundingClientRect().top,
+      'main': tabsRefs.main.current?.getBoundingClientRect().top,
     };
 
-    const closestTab = Object.keys(coordinates).reduce((prev, curr) =>
-      Math.abs(coordinates[curr] - tabsTop) < Math.abs(coordinates[prev] - tabsTop) ? curr : prev
+    const closestTab = (Object.keys(coordinates) as Array<keyof TCoordinates>).reduce((prev, curr) =>
+      Math.abs((coordinates[curr] ?? 0) - (tabsTop ?? 0)) < Math.abs((coordinates[prev] ?? 0) - (tabsTop ?? 0)) ? curr : prev
     );
 
     if (currentTab !== closestTab) {
@@ -57,7 +66,7 @@ const BurgerIngredients = () => {
             <div 
               className={ styles['group'] } 
               key={category.type}
-              ref={tabsRefs[category.type]}>
+              ref={tabsRefs[category.type as keyof TTabsRefs]}>
               <h3 className={`text text_type_main-medium ${ styles['group-header'] }`}> {category.title} </h3>
               <IngredientsList categoryType={category.type}/>
             </div>
