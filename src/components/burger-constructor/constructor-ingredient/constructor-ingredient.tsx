@@ -2,24 +2,7 @@ import { useRef, FC } from 'react';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './constructor-ingredient.module.css';
-
-interface IConstructorIngredientProps {
-  element: {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-  };
-  index: number;
-  moveIngredient: (dragIndex: number, hoverIndex: number) => void;
-  handleDeleteItem: (id: string) => void;
-}
-
-interface IDragItem {
-  index: number;
-  id: string;
-  type: string;
-}
+import { IConstructorIngredientProps, IDragItem } from '../../../utils/types';
 
 const ConstructorIngredient: FC<IConstructorIngredientProps> = ({ element, index, moveIngredient, handleDeleteItem }) => {
   const ref = useRef<HTMLDivElement | null>(null);

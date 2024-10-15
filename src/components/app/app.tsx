@@ -18,12 +18,7 @@ import NotFound404 from '../../pages/not-found';
 import IngredientDetailsPage from '../../pages/ingredient-details-page';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-
-interface IModalState {
-  isModalOpen: boolean;
-  modalContent: React.ReactNode | null;
-  title: string | null;
-}
+import { IModalState } from '../../utils/types';
 
 const App: FC = () => {
   const dispatch: any = useDispatch();

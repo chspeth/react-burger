@@ -4,21 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { passwordResetRequest, PASSWORD_RESET_STATUS } from '../services/actions/password';
 import styles from './pages.module.css';
-
-interface IAuthState {
-  user: {
-    email: string;
-    name: string;
-  } | null;
-  accessToken: string | null;
-  refreshToken:  string | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  hasError: boolean;
-  passwordResetRequested: boolean;
-  passwordResetSuccess: boolean;
-  authChecked: boolean;
-}
+import { IAuthState } from '../utils/types';
 
 const ForgotPasswordPage: FC = () => {
   const dispatch: any = useDispatch();

@@ -1,18 +1,6 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
-
-interface ICustomScrollbarStyles {
-  wrapperMaxHeight?: string;
-  wrapperHeight?: string;
-  top?: string;
-  bottom?: string;
-}
-
-interface ICustomScrollbarProps {
-  children: React.ReactNode;
-  customStyles: ICustomScrollbarStyles;
-  onScrollFrame?: (values: any) => void; 
-}
+import { ICustomScrollbarProps } from '../../utils/types';
 
 const CustomScrollbar = React.forwardRef<Scrollbars, ICustomScrollbarProps>(
   ({ children, customStyles, onScrollFrame }, ref) => {

@@ -10,42 +10,7 @@ import { addUserItem, deleteItem, moveItem } from '../../services/actions/constr
 import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
 import styles from './burger-constructor.module.css';
-
-interface IAuthState {
-  user: {
-    email: string;
-    name: string;
-  } | null;
-  accessToken: string | null;
-  refreshToken:  string | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  hasError: boolean;
-  passwordResetRequested: boolean;
-  passwordResetSuccess: boolean;
-  authChecked: boolean;
-}
-
-interface IIngredient {
-  _id: string;
-  id: string;
-  name: string;
-  type: 'bun' | 'sauce' | 'main';
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
-}
-
-interface IConstructorState {
-  bun: IIngredient | null;
-  fillings: IIngredient[];
-}
+import { IAuthState, IConstructorState } from '../../utils/types';
 
 const BurgerConstructor: FC = () => {
   const dispatch: any = useDispatch();

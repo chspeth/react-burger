@@ -5,30 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css';
 import { useDrag } from 'react-dnd';
-
-interface IIngredient {
-  _id: string;
-  name: string;
-  type: 'bun' | 'sauce' | 'main';
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
-}
-
-interface IIngredientItemProps {
-  ingredient: IIngredient
-}
-
-interface IConstructorItemsState {
-  bun: IIngredient | null;
-  fillings: IIngredient[];
-}
+import { IIngredientItemProps, IConstructorItemsState } from '../../../utils/types';
 
 const IngredientItem: FC<IIngredientItemProps> = ({ ingredient }) => {
   const navigate = useNavigate();

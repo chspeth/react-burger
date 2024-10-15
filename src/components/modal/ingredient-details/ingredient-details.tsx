@@ -2,31 +2,7 @@ import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './ingredient-details.module.css';
-
-interface IIngredient {
-  _id: string;
-  name: string;
-  type: 'bun' | 'sauce' | 'main';
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
-}
-
-interface IIndredientDetailsProps {
-  ingredient?: IIngredient;
-}
-
-interface IProductsState {
-  productData: IIngredient[];
-  isLoading: boolean;
-  hasError: boolean;
-}
+import { IIndredientDetailsProps, IProductsState } from '../../../utils/types';
 
 const IndredientDetails: FC<IIndredientDetailsProps> = ({ ingredient }) => {
   const { id } = useParams();

@@ -1,11 +1,7 @@
 import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredients-tabs.module.css';
-
-interface IIngredientsTabsProps {
-  currentTab: 'bun' | 'sauce' | 'main';
-  onTabClick: (tabName: 'bun' | 'sauce' | 'main') => void;
-}
+import { IIngredientsTabsProps } from '../../../utils/types';
 
 const IngredientsTabs = React.forwardRef<HTMLDivElement, IIngredientsTabsProps>(
   ({ currentTab, onTabClick }, ref) => {

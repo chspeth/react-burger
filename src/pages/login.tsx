@@ -4,21 +4,7 @@ import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../services/actions/login';
 import styles from './pages.module.css';
-
-interface IAuthState {
-  user: {
-    email: string;
-    name: string;
-  } | null;
-  accessToken: string | null;
-  refreshToken:  string | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  hasError: boolean;
-  passwordResetRequested: boolean;
-  passwordResetSuccess: boolean;
-  authChecked: boolean;
-}
+import { IAuthState } from '../utils/types';
 
 const LoginPage: FC = () => {
   const dispatch: any = useDispatch();

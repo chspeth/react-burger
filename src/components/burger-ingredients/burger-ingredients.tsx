@@ -1,18 +1,11 @@
-import { useRef, useState, FC, RefObject } from 'react';
+import { useRef, useState, FC } from 'react';
 import IngredientsTabs from './ingredients-tabs/ingredients-tabs';
 import IngredientsList from './ingredients-list/ingredients-list';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { productsCategories } from '../../utils/util';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import styles from './burger-ingredients.module.css';
-
-type TTabsRefs = {
-  [name in 'bun' | 'sauce' | 'main']: RefObject<HTMLDivElement>;
-};
-
-type TCoordinates = {
-  [name in 'bun' | 'sauce' | 'main']: number | undefined;
-};
+import { TTabsRefs, TCoordinates } from '../../utils/types';
 
 const BurgerIngredients: FC = () => {
   const [currentTab, setCurrentTab] = useState<'bun' | 'sauce' | 'main'>('bun');
