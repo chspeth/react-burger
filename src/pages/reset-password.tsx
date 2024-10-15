@@ -1,14 +1,29 @@
+import { useState, useEffect, FC } from 'react';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { passwordResetConfirm, PASSWORD_RESET_CONFIRM_STATUS } from '../services/actions/password';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './pages.module.css';
 
-function ResetPasswordPage() {
-  const dispatch = useDispatch();
+interface IAuthState {
+  user: {
+    email: string;
+    name: string;
+  } | null;
+  accessToken: string | null;
+  refreshToken:  string | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  hasError: boolean;
+  passwordResetRequested: boolean;
+  passwordResetSuccess: boolean;
+  authChecked: boolean;
+}
+
+const ResetPasswordPage: FC = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, passwordResetSuccess } = useSelector((state) => state.auth);
+  const { isLoading, passwordResetSuccess } = useSelector((state: { auth: IAuthState }) => state.auth);
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
 
@@ -21,7 +36,7 @@ function ResetPasswordPage() {
     }
   }, [passwordResetSuccess, navigate, dispatch]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(passwordResetConfirm(password, token));
   };
@@ -50,7 +65,9 @@ function ResetPasswordPage() {
               extraClass='mt-6'
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              required
+              required 
+              onPointerEnterCapture={undefined} // typescript требует добавления данных свойств, хотя обязательными они не являются, и консоль выдаёт ошибку
+              onPointerLeaveCapture={undefined}
             />
             <Button 
               htmlType='submit' 
