@@ -1,17 +1,18 @@
+import { useState, useEffect, FC } from 'react';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { passwordResetRequest, PASSWORD_RESET_STATUS } from '../services/actions/password';
 import styles from './pages.module.css';
+import { IAuthState } from '../utils/types';
 
-function ForgotPasswordPage() {
-  const dispatch = useDispatch();
+const ForgotPasswordPage: FC = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, passwordResetRequested } = useSelector((state) => state.auth);
+  const { isLoading, passwordResetRequested } = useSelector((state: { auth: IAuthState }) => state.auth);
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return null;
 

@@ -75,7 +75,6 @@ export const authReducer = (state = initialState, action) => {
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         authChecked: true,
-        // redirectPath: '/',
         passwordResetSuccess: false,
       };
     
@@ -89,8 +88,6 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
         hasError: false,
         authChecked: true,
-        // redirectPath: '/',
-        // pendingOrder: false,
         passwordResetRequested: false,
         passwordResetSuccess: false,
       };

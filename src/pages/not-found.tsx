@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './pages.module.css';
 
-function NotFound404() {
+const NotFound404: FC = () => {
   return (
     <div className={ `${styles['center-container']} pt-30` }>
       <h1 className='text text_type_main-large'>Oops! <span className='text text_type_digits-large'>404</span> Error</h1>

@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/actions/register';
 import styles from './pages.module.css';
+import { IAuthState } from '../utils/types';
 
-function RegisterPage() {
-  const dispatch = useDispatch();
+const RegisterPage: FC = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
+  const { isLoading, isAuthenticated } = useSelector((state: { auth: IAuthState }) => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ function RegisterPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(registerUser({ email, password, name }));
   };
@@ -40,7 +41,9 @@ function RegisterPage() {
               placeholder='Имя'
               extraClass='mt-6'
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)} 
+              onPointerEnterCapture={undefined} // typescript требует добавления данных свойств, хотя обязательными они не являются, и консоль выдаёт ошибку
+              onPointerLeaveCapture={undefined}
             />
             <EmailInput
               placeholder='E-mail'

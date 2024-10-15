@@ -1,11 +1,12 @@
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ingredientType } from '../../../utils/types';
 import styles from './ingredient-details.module.css';
+import { IIndredientDetailsProps, IProductsState } from '../../../utils/types';
 
-const IndredientDetails = ({ ingredient }) => {
+const IndredientDetails: FC<IIndredientDetailsProps> = ({ ingredient }) => {
   const { id } = useParams();
-  const { productData } = useSelector((state) => state.products);
+  const { productData } = useSelector((state: { products: IProductsState }) => state.products);
 
   const selectedIngredient = ingredient || productData.find((item) => item._id === id);
 
@@ -37,10 +38,6 @@ const IndredientDetails = ({ ingredient }) => {
       </table>
     </div>
   )
-}
-
-IndredientDetails.propTypes = {
-  ingredient: ingredientType
 }
 
 export default IndredientDetails;

@@ -1,18 +1,18 @@
-import { useRef } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import { useRef, FC } from 'react';
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import styles from './constructor-ingredient.module.css';
+import { IConstructorIngredientProps, IDragItem } from '../../../utils/types';
 
-const ConstructorIngredient = ({ element, index, moveIngredient, handleDeleteItem }) => {
-  const ref = useRef(null);
+const ConstructorIngredient: FC<IConstructorIngredientProps> = ({ element, index, moveIngredient, handleDeleteItem }) => {
+  const ref = useRef<HTMLDivElement | null>(null);
 
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<IDragItem, void, { handlerId: string | symbol | null }>({
     accept: 'constructorIngredient',
     collect: monitor => ({
       handlerId: monitor.getHandlerId(),
     }),
-    hover(item, monitor) {
+    hover(item: IDragItem, monitor: DropTargetMonitor) {
       if (!ref.current) {
         return;
       }
@@ -24,6 +24,9 @@ const ConstructorIngredient = ({ element, index, moveIngredient, handleDeleteIte
       const hoverBoundingRect = ref.current.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) {
+        return;
+      }
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -65,13 +68,6 @@ const ConstructorIngredient = ({ element, index, moveIngredient, handleDeleteIte
       />
     </div>
   );
-};
-
-ConstructorIngredient.propTypes = {
-  element: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  moveIngredient: PropTypes.func.isRequired,
-  handleDeleteItem: PropTypes.func.isRequired,
 };
 
 export default ConstructorIngredient;

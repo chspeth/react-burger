@@ -1,9 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredients-tabs.module.css';
+import { IIngredientsTabsProps } from '../../../utils/types';
 
-const IngredientsTabs = React.forwardRef(({ currentTab, onTabClick }, ref) => {
+const IngredientsTabs = React.forwardRef<HTMLDivElement, IIngredientsTabsProps>(
+  ({ currentTab, onTabClick }, ref) => {
   return (
     <div className={ styles['tabs'] } ref={ref}>
       <Tab 
@@ -27,10 +28,5 @@ const IngredientsTabs = React.forwardRef(({ currentTab, onTabClick }, ref) => {
     </div>
   )
 })
-
-IngredientsTabs.propTypes = {
-  currentTab: PropTypes.string.isRequired,
-  onTabClick: PropTypes.func.isRequired
-}
 
 export default IngredientsTabs;

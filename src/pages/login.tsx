@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../services/actions/login';
 import styles from './pages.module.css';
+import { IAuthState } from '../utils/types';
 
-function LoginPage() {
-  const dispatch = useDispatch();
+const LoginPage: FC = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
+  const { isLoading, isAuthenticated } = useSelector((state: { auth: IAuthState }) => state.auth);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,7 +23,7 @@ function LoginPage() {
     }
   }, [from, isAuthenticated, navigate]);
   
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(loginUser(email, password));
   }
