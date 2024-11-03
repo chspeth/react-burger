@@ -1,5 +1,5 @@
 import React, { useEffect, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../utils/types';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { getUser } from '../../services/actions/user';
 import { getItems } from '../../services/actions/productData';
@@ -18,10 +18,9 @@ import NotFound404 from '../../pages/not-found';
 import IngredientDetailsPage from '../../pages/ingredient-details-page';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { IModalState } from '../../utils/types';
 
 const App: FC = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -31,7 +30,7 @@ const App: FC = () => {
   }, [dispatch]);
 
   const backgroundLocation = location.state?.backgroundLocation;
-  const { isModalOpen, modalContent } = useSelector((state: { modal: IModalState }) => state.modal);
+  const { isModalOpen, modalContent } = useAppSelector(state => state.modal);
 
   const handleIngredientModalClose = () => {
     navigate(-1);

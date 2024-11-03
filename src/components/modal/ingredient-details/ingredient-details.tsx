@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../utils/types';
 import styles from './ingredient-details.module.css';
-import { IIndredientDetailsProps, IProductsState } from '../../../utils/types';
+import { IIndredientDetailsProps, IIngredientBase } from '../../../utils/types';
 
 const IndredientDetails: FC<IIndredientDetailsProps> = ({ ingredient }) => {
   const { id } = useParams();
-  const { productData } = useSelector((state: { products: IProductsState }) => state.products);
+  const { productData } = useAppSelector(state => state.products);
 
-  const selectedIngredient = ingredient || productData.find((item) => item._id === id);
+  const selectedIngredient = ingredient || productData.find((item: IIngredientBase) => item._id === id);
 
   if (!selectedIngredient) {
     return <p className='text text_type_main-small text_color_inactive mt-5'>Ингредиент не найден</p>;

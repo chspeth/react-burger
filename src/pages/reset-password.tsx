@@ -1,15 +1,14 @@
 import { useState, useEffect, FC } from 'react';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../utils/types';
 import { passwordResetConfirm, PASSWORD_RESET_CONFIRM_STATUS } from '../services/actions/password';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './pages.module.css';
-import { IAuthState } from '../utils/types';
 
 const ResetPasswordPage: FC = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, passwordResetSuccess } = useSelector((state: { auth: IAuthState }) => state.auth);
+  const { isLoading, passwordResetSuccess } = useAppSelector(state => state.auth);
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
 

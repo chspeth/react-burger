@@ -1,6 +1,6 @@
 import { useMemo, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../utils/types';
 import { openModal } from '../../services/actions/modal';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
@@ -10,14 +10,13 @@ import { addUserItem, deleteItem, moveItem } from '../../services/actions/constr
 import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
 import styles from './burger-constructor.module.css';
-import { IAuthState, IConstructorState } from '../../utils/types';
 
 const BurgerConstructor: FC = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useSelector((state: { auth: IAuthState }) => state.auth);
-  const { bun, fillings } = useSelector((state: { constructorItems: IConstructorState }) => state.constructorItems);
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  const { bun, fillings } = useAppSelector(state => state.constructorItems);
   
   const [, dropTarget] = useDrop({
     accept: 'ingredient',

@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../utils/types';
 import { filterProducts } from '../../../utils/util';
 import IngredientsItem from '../ingredient-item/ingredient-item';
 import styles from './ingredients-list.module.css';
-import { IIngredientsListProps, IProductsState, IIngredientBase } from '../../../utils/types';
+import { IIngredientsListProps, IIngredientBase } from '../../../utils/types';
 
 const IngredientsList: FC<IIngredientsListProps> = ({ categoryType }) => {
-  const productData = useSelector((state: { products: IProductsState }) => state.products.productData);
+  const productData = useAppSelector(state => state.products.productData);
   const ingredients: IIngredientBase[] = filterProducts(productData, categoryType);
   
   return (

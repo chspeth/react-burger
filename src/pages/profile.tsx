@@ -1,17 +1,16 @@
 import { useState, useEffect, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../utils/types';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate, NavLink, useLocation, Outlet } from 'react-router-dom';
 import { getUser, updateUser } from '../services/actions/user';
 import { logoutUser } from '../services/actions/logout';
 import styles from './pages.module.css';
-import { IAuthState } from '../utils/types';
 
 const ProfilePage: FC = () => {
   const location = useLocation();
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, isAuthenticated, authChecked } = useSelector((state: { auth: IAuthState }) => state.auth);
+  const { user, isAuthenticated, authChecked } = useAppSelector(state => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

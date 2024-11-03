@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css';
 import { useDrag } from 'react-dnd';
-import { IIngredientItemProps, IConstructorItemsState } from '../../../utils/types';
+import { IIngredientItemProps } from '../../../utils/types';
 
 const IngredientItem: FC<IIngredientItemProps> = ({ ingredient }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { bun, fillings } = useSelector((state: { constructorItems: IConstructorItemsState }) => state.constructorItems);
+  const { bun, fillings } = useAppSelector(state => state.constructorItems);
 
   const ingredientsCounter = useMemo(() => {
     if (ingredient.type === 'bun') {

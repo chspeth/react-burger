@@ -1,11 +1,10 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../utils/types';
 import orderCompletedIcon from '../../../images/icons/order-completed.svg';
 import styles from './order-details.module.css';
-import { IDetailsState } from '../../../utils/types';
 
 const OrderDetails: FC = () => {
-  const { orderNumber, isLoading } = useSelector((state: { details: IDetailsState }) => state.details);
+  const { orderNumber, isLoading } = useAppSelector(state => state.details);
   return (
     <div className={styles['wrapper']}>
       {isLoading && <p className="text text_type_main-medium">Загрузка...</p>}

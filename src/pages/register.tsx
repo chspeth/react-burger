@@ -1,15 +1,14 @@
 import { useState, useEffect, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../utils/types';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/actions/register';
 import styles from './pages.module.css';
-import { IAuthState } from '../utils/types';
 
 const RegisterPage: FC = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, isAuthenticated } = useSelector((state: { auth: IAuthState }) => state.auth);
+  const { isLoading, isAuthenticated } = useAppSelector(state => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
