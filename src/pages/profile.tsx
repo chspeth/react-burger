@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect, FC } from 'react';
+import { useAppDispatch, useAppSelector } from '../utils/types';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate, NavLink, useLocation, Outlet } from 'react-router-dom';
 import { getUser, updateUser } from '../services/actions/user';
 import { logoutUser } from '../services/actions/logout';
 import styles from './pages.module.css';
 
-function ProfilePage() {
+const ProfilePage: FC = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, isAuthenticated, authChecked } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, authChecked } = useAppSelector(state => state.auth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -45,7 +45,7 @@ function ProfilePage() {
     }
   }, [name, email, password, originalData, user]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const updatedData = {
       name,
@@ -112,16 +112,19 @@ function ProfilePage() {
           {location.pathname === '/profile' ? (
             <form onSubmit={handleSubmit}>
               <Input
+                type='text'
                 placeholder='Имя'
                 icon='EditIcon'
                 value={name}
                 name='name'
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} 
+                onPointerEnterCapture={undefined} // typescript требует добавления данных свойств, хотя обязательными они не являются, и консоль выдаёт ошибку
+                onPointerLeaveCapture={undefined}
               />
               <EmailInput
                 placeholder='Логин'
                 extraClass='mt-6'
-                icon='EditIcon'
+                isIcon={true}
                 value={email}
                 name='email'
                 onChange={(e) => setEmail(e.target.value)}
@@ -140,14 +143,15 @@ function ProfilePage() {
                     type='secondary'
                     size='medium'
                     onClick={handleCancel}
-                    extraClass='mr-4'
+                    extraClass='mr-4' 
+                    htmlType='button' 
                   >
                     Отмена
                   </Button>
                   <Button
                     type='primary'
                     size='medium'
-                    htmlType='submit'
+                    htmlType={'submit'}
                   >
                     Сохранить
                   </Button>

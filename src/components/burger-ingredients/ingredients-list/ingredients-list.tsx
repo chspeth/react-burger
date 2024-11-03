@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { FC } from 'react';
+import { useAppSelector } from '../../../utils/types';
 import { filterProducts } from '../../../utils/util';
 import IngredientsItem from '../ingredient-item/ingredient-item';
 import styles from './ingredients-list.module.css';
+import { IIngredientsListProps, IIngredientBase } from '../../../utils/types';
 
-const IngredientsList = ({ categoryType }) => {
-  const productData = useSelector((state) => state.products.productData);
-  const ingredients = filterProducts(productData, categoryType);
+const IngredientsList: FC<IIngredientsListProps> = ({ categoryType }) => {
+  const productData = useAppSelector(state => state.products.productData);
+  const ingredients: IIngredientBase[] = filterProducts(productData, categoryType);
   
   return (
     <ul className={ styles['ingredients-list'] }>
@@ -15,10 +16,6 @@ const IngredientsList = ({ categoryType }) => {
       ))}
     </ul>
   )
-}
-
-IngredientsList.propTypes = {
-  categoryType: PropTypes.string
 }
 
 export default IngredientsList;

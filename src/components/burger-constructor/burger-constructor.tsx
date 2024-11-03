@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo, FC } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../utils/types';
 import { openModal } from '../../services/actions/modal';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CustomScrollbar from '../scrollbar/scrollbar';
@@ -11,12 +11,12 @@ import { orderDetails } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+const BurgerConstructor: FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const { bun, fillings } = useSelector((state) => state.constructorItems);
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  const { bun, fillings } = useAppSelector(state => state.constructorItems);
   
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
@@ -25,11 +25,11 @@ const BurgerConstructor = () => {
     }
   });
 
-  const moveIngredient = (dragIndex, hoverIndex) => {
+  const moveIngredient = (dragIndex: number, hoverIndex: number) => {
     dispatch(moveItem(dragIndex, hoverIndex));
   };
 
-  const handleDeleteItem = (id) => {
+  const handleDeleteItem = (id: string) => {
     dispatch(deleteItem(id));
   };
 

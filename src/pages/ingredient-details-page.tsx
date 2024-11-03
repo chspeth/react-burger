@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
+import { FC } from 'react';
+import { useAppSelector } from '../utils/types';
 import IngredientDetails from '../components/modal/ingredient-details/ingredient-details';
 import styles from './pages.module.css';
 
-function IngredientDetailsPage() {
-  const { isLoading, hasError } = useSelector((state) => state.products);
+const IngredientDetailsPage: FC = () => {
+  const { isLoading, hasError } = useAppSelector(state => state.products);
   
   return (
     <>
