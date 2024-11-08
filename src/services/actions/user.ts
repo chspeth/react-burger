@@ -1,39 +1,91 @@
 import { BASE_URL, request } from '../../utils/util';
 import { getCookie } from '../../utils/cookie';
 import { refreshToken } from './refreshToken';
+import { AppDispatch, AppThunk } from '../store';
+import { IUser, IAuthResponse } from '../../utils/types';
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED  = 'GET_USER_FAILED';
+export const GET_USER_REQUEST: 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED: 'GET_USER_FAILED' = 'GET_USER_FAILED';
 
-export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
-export const UPDATE_USER_FAILED  = 'UPDATE_USER_FAILED';
+export const UPDATE_USER_REQUEST: 'UPDATE_USER_REQUEST' = 'UPDATE_USER_REQUEST';
+export const UPDATE_USER_SUCCESS: 'UPDATE_USER_SUCCESS' = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER_FAILED: 'UPDATE_USER_FAILED' = 'UPDATE_USER_FAILED';
 
-export const getUserSuccess = (user) => ({
+export interface IGetUserRequestAction {
+  readonly type: typeof GET_USER_REQUEST;
+}
+
+export interface IGetUserSuccessAction {
+  readonly type: typeof GET_USER_SUCCESS;
+  readonly payload: {
+    user: {
+      email: string;
+      name: string;
+    };
+  };
+}
+
+export interface IGetUserFailedAction {
+  readonly type: typeof GET_USER_FAILED;
+  readonly payload: string;
+}
+
+export interface IUpdateUserRequestAction {
+  readonly type: typeof UPDATE_USER_REQUEST;
+}
+
+export interface IUpdateUserSuccessAction {
+  readonly type: typeof UPDATE_USER_SUCCESS;
+  readonly payload: {
+    user: {
+      email: string;
+      name: string;
+    };
+  };
+}
+
+export interface IUpdateUserFailedAction {
+  readonly type: typeof UPDATE_USER_FAILED;
+  readonly payload: string;
+}
+
+export type TUserActions =
+  | IGetUserRequestAction
+  | IGetUserSuccessAction
+  | IGetUserFailedAction
+  | IUpdateUserRequestAction
+  | IUpdateUserSuccessAction
+  | IUpdateUserFailedAction;
+
+export const getUserSuccess = (
+  user: IUser
+): IGetUserSuccessAction => ({
   type: GET_USER_SUCCESS,
   payload: { user },
 });
 
-export const getUserFailed = (error) => ({
+export const getUserFailed = (error: string): IGetUserFailedAction => ({
   type: GET_USER_FAILED,
   payload: error,
 });
 
-export const updateUserSuccess = (user) => ({
+export const updateUserSuccess = (
+  user: IUser
+): IUpdateUserSuccessAction => ({
   type: UPDATE_USER_SUCCESS,
   payload: { user },
 });
 
-export const updateUserFailed = (error) => ({
+export const updateUserFailed = (error: string): IUpdateUserFailedAction => ({
   type: UPDATE_USER_FAILED,
   payload: error,
 });
 
 const USER_URL = BASE_URL + '/auth/user';
 
-export const getUser = () => {
-  return async (dispatch) => {
+export const getUser = (): AppThunk => {
+  return async (dispatch: AppDispatch) => {
     dispatch({
       type: GET_USER_REQUEST
     });
@@ -45,7 +97,7 @@ export const getUser = () => {
       return;
     }
     try {
-      const data = await request(USER_URL, {
+      const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +106,7 @@ export const getUser = () => {
       });
 
       dispatch(getUserSuccess(data.user));
-    } catch (err) {
+    } catch (err: any) {
       if (err.status === 401 || err.status === 403) {
         const refreshTokenCookie = getCookie('refreshToken');
 
@@ -64,10 +116,10 @@ export const getUser = () => {
         }
 
         try {
-          await dispatch(refreshToken());
+          await dispatch(refreshToken() as any);
           const newAccessToken = getCookie('accessToken');
 
-          const data = await request(USER_URL, {
+          const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -76,7 +128,7 @@ export const getUser = () => {
           });
 
           dispatch(getUserSuccess(data.user));
-        } catch (error) {
+        } catch (error: any) {
           dispatch(getUserFailed(error.message));
           console.error('Error:', error);
         }
@@ -88,8 +140,8 @@ export const getUser = () => {
   }
 };
 
-export const updateUser = (userData) => {
-  return async (dispatch) => {
+export const updateUser = (userData: { email: string; password: string; name: string }) => {
+  return async (dispatch: AppDispatch) => {
     dispatch({
       type: UPDATE_USER_REQUEST
     });
@@ -102,7 +154,7 @@ export const updateUser = (userData) => {
     }
 
     try {
-      const data = await request(USER_URL, {
+      const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +164,7 @@ export const updateUser = (userData) => {
       });
 
       dispatch(updateUserSuccess(data.user));
-    } catch (err) {
+    } catch (err: any) {
       if (err.status === 401 || err.status === 403) {
         const refreshTokenCookie = getCookie('refreshToken');
 
@@ -122,10 +174,10 @@ export const updateUser = (userData) => {
         }
 
         try {
-          await dispatch(refreshToken());
+          await dispatch(refreshToken() as any);
           const newAccessToken = getCookie('accessToken');
 
-          const data = await request(USER_URL, {
+          const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -135,7 +187,7 @@ export const updateUser = (userData) => {
           });
 
           dispatch(updateUserSuccess(data.user));
-        } catch (err) {
+        } catch (err: any) {
           dispatch(updateUserFailed(err.message));
           console.error('Error:', err);
         }

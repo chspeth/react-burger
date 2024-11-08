@@ -3,14 +3,20 @@ import {
   DELETE_ITEM,
   MOVE_ITEM,
   CLEAR_CONSTRUCTOR
-} from "../actions/constructorDnd";
+} from '../actions/constructorDnd';
 
-const initialState = {
+import { TConstructorActions } from '../actions/constructorDnd';
+import { IConstructorState } from '../../utils/types';
+
+const initialState: IConstructorState = {
   bun: null,
   fillings: [],
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (
+  state: IConstructorState = initialState, 
+  action: TConstructorActions 
+): IConstructorState => {
   switch (action.type) { 
     case ADD_USER_ITEM: {
       if (action.payload.type === 'bun') {

@@ -50,7 +50,7 @@ const ProfilePage: FC = () => {
     const updatedData = {
       name,
       email,
-      ...(password && { password }),
+      password: password || '',
     };
     dispatch(updateUser(updatedData));
   };

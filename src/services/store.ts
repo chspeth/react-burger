@@ -1,6 +1,7 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import { thunk } from 'redux-thunk';
+import { thunk, ThunkDispatch, ThunkAction } from 'redux-thunk';
 import { rootReducer } from './reducers';
+import { TApplicationActions } from './actions/actions';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -13,6 +14,13 @@ const enhancer = composeEnhancers(applyMiddleware(thunk));
 
 const store = createStore(rootReducer, enhancer);
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  TApplicationActions
+>;
 
 export default store;

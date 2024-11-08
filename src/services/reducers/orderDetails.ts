@@ -1,17 +1,27 @@
 import {
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
-  GET_ORDER_FAILED
-} from '../actions/orderDetails.js';
+  GET_ORDER_FAILED,
+  TOrderActions
+} from '../actions/orderDetails';
 
-const initialState = {
+export interface IOrderState {
+  orderNumber: number | null;
+  isLoading: boolean;
+  hasError: boolean;
+  errorMessage: string | null;
+}
+
+const initialState: IOrderState = {
   orderNumber: null,
   isLoading: false,
   hasError: false,
   errorMessage: null
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (
+  state: IOrderState = initialState, 
+  action: TOrderActions): IOrderState => {
   switch (action.type) {
     case GET_ORDER_REQUEST:
       return { ...state, isLoading: true, hasError: false, errorMessage: null };

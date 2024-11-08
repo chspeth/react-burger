@@ -42,7 +42,16 @@ import {
   PASSWORD_RESET_CONFIRM_STATUS
 } from '../actions/password';
 
-const initialState = {
+import { TUserActions } from '../actions/user';
+import { TRegisterActions } from '../actions/register';
+import { TRefreshTokenActions } from '../actions/refreshToken';
+import { TLoginActions } from '../actions/login';
+import { TLogoutActions } from '../actions/logout';
+import { TPasswordResetActions } from '../actions/password';
+
+import { IAuthState } from '../../utils/types';
+
+const initialState: IAuthState = {
   user: null,
   accessToken: null,
   refreshToken: null,
@@ -54,7 +63,15 @@ const initialState = {
   authChecked: false,
 };
 
-export const authReducer = (state = initialState, action) => {
+export type TAuthActions =
+  | TUserActions
+  | TRegisterActions
+  | TRefreshTokenActions
+  | TLoginActions
+  | TLogoutActions
+  | TPasswordResetActions;
+
+export const authReducer = (state = initialState, action: TAuthActions): IAuthState => {
   switch (action.type) {
     case REGISTER_REQUEST:
     case LOGIN_REQUEST:

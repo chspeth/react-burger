@@ -143,3 +143,33 @@ export interface ICustomScrollbarProps {
   customStyles: ICustomScrollbarStyles;
   onScrollFrame?: (values: any) => void; 
 }
+
+export interface IUser {
+  email: string;
+  name: string;
+}
+
+export interface IAuthResponse {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: IUser;
+}
+
+export interface IDefaultResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface IOrderResponse {
+  success: boolean;
+  name: string;
+  order: {
+    number: number;
+  };
+}
+
+export interface IIngredientsResponse {
+  success: boolean;
+  data: IIngredientBase[];
+}
