@@ -18,6 +18,7 @@ import NotFound404 from '../../pages/not-found';
 import IngredientDetailsPage from '../../pages/ingredient-details-page';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
+import FeedPage from '../../pages/feed';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -72,6 +73,8 @@ const App: FC = () => {
             element={<ProtectedRouteElement element={<OrdersPage />} />}
           />
         </Route>
+
+        <Route path='/feed' element={<FeedPage />} />
 
         <Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
 
