@@ -1,0 +1,89 @@
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 96%;
+}
+
+.feed-item {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: #1c1c21;
+  border-radius: 40px;
+}
+
+.order-name-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
+}
+
+.about-item {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.about-item-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+}
+
+.about-item-item {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #801ab2;
+  margin-right: -15px;
+  background-color: #1e1b26;
+  overflow: hidden;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.about-item-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-item-hidden {
+  color: #fff;
+}
+
+.hidden-image {
+  opacity: 0.5; 
+}
+
+.hidden-counter {
+  position: absolute;
+  font-weight: bold;
+}
+
+.item-price {
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.order-contsiner {
+  width: 640px;
+  height: 620px;
+}
+
+.number {
+  text-align: center;
+}
+
+.ingredients-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}

@@ -1,7 +1,14 @@
 import { FC } from 'react';
+import OrderInfo from '../components/order/order-info';
+import styles from './pages.module.css';
 
-const OrdersPage: FC = () => {
-  return <p>пока ничего нет</p>
+const OrderInfoPage: FC = () => {
+
+  return (
+    <>
+      <OrderInfo />
+    </>
+  );
 };
 
-export default OrdersPage;
+export default OrderInfoPage;

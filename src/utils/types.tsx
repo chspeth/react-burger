@@ -161,7 +161,22 @@ export interface IDefaultResponse {
   message?: string;
 }
 
+export interface IOrder {
+  _id: string;
+  ingredients: string[];
+  status: 'created' | 'pending' | 'done';
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+}
+
 export interface IOrderResponse {
+  success: boolean;
+  orders: IOrder[];
+}
+
+export interface ICreateOrderResponse {
   success: boolean;
   name: string;
   order: {

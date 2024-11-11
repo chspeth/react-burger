@@ -4,19 +4,22 @@ import {
   GET_ORDER_FAILED,
   TOrderActions
 } from '../actions/orderDetails';
+import { IOrder } from '../../utils/types';
 
 export interface IOrderState {
   orderNumber: number | null;
   isLoading: boolean;
   hasError: boolean;
   errorMessage: string | null;
+  selectedOrder: IOrder | null;
 }
 
 const initialState: IOrderState = {
   orderNumber: null,
   isLoading: false,
   hasError: false,
-  errorMessage: null
+  errorMessage: null,
+  selectedOrder: null,
 }
 
 export const orderReducer = (

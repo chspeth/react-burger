@@ -13,12 +13,13 @@ import RegisterPage from '../../pages/register';
 import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
-import OrdersPage from '../../pages/orders';
 import NotFound404 from '../../pages/not-found';
 import IngredientDetailsPage from '../../pages/ingredient-details-page';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import FeedPage from '../../pages/feed';
+import ProfileForm from '../profile/profile-form';
+import OrderFeed from '../order/order-feed';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -68,10 +69,8 @@ const App: FC = () => {
           path='/profile' 
           element={<ProtectedRouteElement element={<ProfilePage />} />} 
         >
-          <Route 
-            path='orders' 
-            element={<ProtectedRouteElement element={<OrdersPage />} />}
-          />
+          <Route index element={<ProfileForm />} /> 
+          <Route path='orders' element={<OrderFeed />} />
         </Route>
 
         <Route path='/feed' element={<FeedPage />} />
