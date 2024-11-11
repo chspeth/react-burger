@@ -38,8 +38,9 @@ const OrderFeed: FC = () => {
 
   const itemHeight = 214;
   const maxContainerHeight = 812;
-  const calculatedHeight = orders.length < 5 
-    ? `${Math.min((orders.length * itemHeight), maxContainerHeight)}px` : '100%';
+  const heightOnPage = isProfileOrders ? '100vh' : '100%';
+  const calculatedHeight = orders.length > 5 
+    ? heightOnPage : `${Math.min((orders.length * itemHeight), maxContainerHeight)}px`;
 
   return (
     <CustomScrollbar

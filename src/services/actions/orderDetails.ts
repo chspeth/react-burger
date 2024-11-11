@@ -2,6 +2,8 @@ import { BASE_URL, request } from '../../utils/util';
 import { AppDispatch } from '../store';
 import { clearConstructor } from './constructorDnd';
 import { ICreateOrderResponse, IOrderResponse } from '../../utils/types';
+import { getCookie } from '../../utils/cookie';
+import { refreshToken } from './refreshToken';
 
 export const GET_ORDER_REQUEST: 'GET_ORDER_REQUEST' = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS: 'GET_ORDER_SUCCESS' = 'GET_ORDER_SUCCESS';
@@ -62,16 +64,19 @@ const API_URL = BASE_URL + '/orders';
 export function getOrder(ingredients: string[]) {
   return async (dispatch: AppDispatch) => {
     dispatch({
-      type: GET_ORDER_REQUEST
+      type: GET_ORDER_REQUEST,
     });
+
+    const accessToken = getCookie('accessToken');
 
     try {
       const data: ICreateOrderResponse = await request<ICreateOrderResponse>(API_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
         },
-        body: JSON.stringify({ ingredients }) 
+        body: JSON.stringify({ ingredients }),
       });
 
       if (data && data.success) {
@@ -79,13 +84,36 @@ export function getOrder(ingredients: string[]) {
         dispatch(clearConstructor());
       } else {
         throw new Error('Failed to create order');
-      }  
+      }
     } catch (err: any) {
-      dispatch(getOrderFailed(err.message));
-      console.error('Error:', err);
+      if (err.status === 401 || err.message === 'jwt expired') {
+        try {
+          await dispatch(refreshToken());
+          const newAccessToken = getCookie('accessToken');
+          if (newAccessToken) {
+            const data: ICreateOrderResponse = await request<ICreateOrderResponse>(API_URL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${newAccessToken}`,
+              },
+              body: JSON.stringify({ ingredients }),
+            });
+            if (data && data.success) {
+              dispatch(getOrderSuccess(data.order.number));
+              dispatch(clearConstructor());
+              return;
+            }
+          }
+        } catch (refreshErr: any) {
+          dispatch(getOrderFailed(refreshErr.message));
+        }
+      } else {
+        dispatch(getOrderFailed((err as Error).message));
+      }
     }
-  }
-};
+  };
+}
 
 export const getOrderById = (orderId: string) => {
   return async (dispatch: AppDispatch) => {

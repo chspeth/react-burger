@@ -14,7 +14,10 @@ export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 async function checkResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
-    const error: Error & { status?: number } = new Error(`Ошибка: ${res.status}`);
+    const errorData = await res.json().catch(() => ({}));
+    const error: Error & { status?: number } = new Error(
+      errorData?.message || `Ошибка: ${res.status}`
+    );
     error.status = res.status;
     throw error;
   }

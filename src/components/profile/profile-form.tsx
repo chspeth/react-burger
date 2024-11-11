@@ -51,7 +51,7 @@ const ProfileForm: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles['form']} onSubmit={handleSubmit}>
       <Input
         type='text'
         placeholder='Имя'

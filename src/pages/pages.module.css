@@ -24,11 +24,12 @@
   gap: 60px;
   width: 1240px;
   margin: 0 auto;
-  padding-top: 120px;
+  padding-top: 40px;
 }
 
 .left {
   width: 320px;
+  padding-top: 80px;
 }
 
 .nav-list {

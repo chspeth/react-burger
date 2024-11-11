@@ -92,10 +92,6 @@ export const getUser = (): AppThunk => {
 
     const accessToken = getCookie('accessToken');
 
-    if (!accessToken) {
-      dispatch(getUserFailed('No access token'));
-      return;
-    }
     try {
       const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
         method: 'GET',
@@ -105,36 +101,34 @@ export const getUser = (): AppThunk => {
         },
       });
 
-      dispatch(getUserSuccess(data.user));
+      if (data && data.success) {
+        dispatch(getUserSuccess(data.user));
+      } else {
+        throw new Error('Failed to get user data');
+      }
     } catch (err: any) {
-      if (err.status === 401 || err.status === 403) {
-        const refreshTokenCookie = getCookie('refreshToken');
-
-        if (!refreshTokenCookie) {
-          dispatch(getUserFailed('No refresh token'));
-          return;
-        }
-
+      if (err instanceof Error && (err as any).status === 401) {
         try {
           await dispatch(refreshToken() as any);
           const newAccessToken = getCookie('accessToken');
-
-          const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + newAccessToken,
-            },
-          });
-
-          dispatch(getUserSuccess(data.user));
-        } catch (error: any) {
-          dispatch(getUserFailed(error.message));
-          console.error('Error:', error);
+          if (newAccessToken) {
+            const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${newAccessToken}`,
+              },
+            });
+            if (data && data.success) {
+              dispatch(getUserSuccess(data.user));
+              return;
+            }
+          }
+        } catch (refreshErr: any) {
+          dispatch(getUserFailed(refreshErr.message));
         }
       } else {
         dispatch(getUserFailed(err.message));
-        console.error('Error:', err);
       }
     }
   }
