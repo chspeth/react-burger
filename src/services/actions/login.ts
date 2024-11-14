@@ -1,5 +1,4 @@
 import { BASE_URL, request } from '../../utils/util';
-import { setCookie } from '../../utils/cookie';
 import { IAuthState } from '../../utils/types';
 import { AppDispatch } from '../store';
 import { IAuthResponse } from '../../utils/types';
@@ -60,11 +59,15 @@ export function loginUser(email: string, password: string) {
       });
 
       if (data && data.success) {
-        const accessToken = data.accessToken.split('Bearer ')[1];
+        const accessTokenRaw = data.accessToken;
+
+        const accessToken = accessTokenRaw.startsWith('Bearer ') 
+          ? accessTokenRaw.split('Bearer ')[1] 
+          : accessTokenRaw;
         const refreshToken = data.refreshToken;
         
-        setCookie('accessToken', accessToken, { path: '/' });
-        setCookie('refreshToken', refreshToken, { path: '/' });
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
         dispatch(loginSuccess(data.user, accessToken, refreshToken));
       } else {
         throw new Error('Failed to log in');

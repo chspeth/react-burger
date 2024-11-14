@@ -1,37 +1,23 @@
 import { FC, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; 
-import { IIngredientBase, useAppDispatch, useAppSelector } from '../../utils/types';
+import { IIngredientBase, IOrder, useAppSelector } from '../../utils/types';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getCookie } from '../../utils/cookie';
-import { wsConnectionClose, wsConnectionStart } from '../../services/actions/wsActions';
 import styles from './order.module.css';
 
-const OrderFeed: FC = () => {
-  const dispatch = useAppDispatch();
+interface IOrderFeedProps {
+  orders: IOrder[];
+  isProfileOrders?: boolean;
+}
+
+const OrderFeed: FC<IOrderFeedProps> = ({ orders, isProfileOrders = false }) => {
   const navigate = useNavigate();
   const location = useLocation(); 
-  const accessToken = getCookie('accessToken');
-  const { orders } = useAppSelector(state => state.ws);
   const { productData } = useAppSelector(state => state.products);
+  const sortedOrders = orders.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  const isProfileOrders = location.pathname.startsWith('/profile/orders');
-  
   useEffect(() => {
-    if (isProfileOrders) {
-      if (accessToken) {
-        dispatch(wsConnectionStart(`wss://norma.nomoreparties.space/orders?token=${accessToken}`));
-      }
-    } else {
-      dispatch(wsConnectionStart('wss://norma.nomoreparties.space/orders/all'));
-    }
-
-    return () => {
-      dispatch(wsConnectionClose());
-    };
-  }, [dispatch, accessToken, isProfileOrders]);
-
-
+  }, [sortedOrders]);
   const handleOrderClick = (orderNumber: number) => {
     navigate(`${location.pathname}/${orderNumber}`, { state: { backgroundLocation: location } });
   };
@@ -51,7 +37,7 @@ const OrderFeed: FC = () => {
       }}
     >
       <div className={ styles['feed-list'] }>
-        {orders.map((order) => {
+        {sortedOrders.map((order) => {
           const orderIngredients = order.ingredients
             .map((ingredientId) => productData.find((ingredient) => ingredient._id === ingredientId))
             .filter(Boolean) as IIngredientBase[];
@@ -62,11 +48,10 @@ const OrderFeed: FC = () => {
           const hiddenItemsCount = order.ingredients.length - visibleItems.length;
           const hiddenItemImg = productData.find(item => item._id === order.ingredients[5])?.image;
 
+          const statusColor = order.status === 'done' ? '#00CCCC' : '#F2F2F3';
           const statusText = order.status === 'done' ? 'Выполнен' :
             order.status === 'pending' ? 'Готовится' :
             order.status === 'created' ? 'Создан' : '';
-
-          const statusColor = order.status === 'done' ? '#00CCCC' : '#F2F2F3';
 
           return (
             <div 
@@ -120,7 +105,7 @@ const OrderFeed: FC = () => {
                     )}
                   </ul>
                 </div>
-                <p className={ styles['item-price'] }>
+                <p className={ styles['total-price'] }>
                   <span className='text text_type_digits-default'>{totalPrice}</span>
                   <CurrencyIcon type='primary' />
                 </p>

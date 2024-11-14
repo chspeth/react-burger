@@ -12,6 +12,7 @@
   padding: 24px;
   background-color: #1c1c21;
   border-radius: 40px;
+  cursor: pointer;
 }
 
 .order-name-status {
@@ -66,16 +67,15 @@
   font-weight: bold;
 }
 
-.item-price {
+.total-price {
   margin: 0;
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.order-contsiner {
+.order-container {
   width: 640px;
-  height: 620px;
 }
 
 .number {
@@ -86,4 +86,33 @@
   margin: 0;
   padding: 0;
   list-style-type: none;
+  margin-bottom: 20px;
+}
+
+.ingredient-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 608px;
+  min-height: 64px;
+}
+
+.ingredient-name {
+  flex-grow: 1;
+}
+
+.ingredient-price {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  flex-basis: 145px;
+  gap: 8px;
+}
+
+.order-total {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

@@ -14,12 +14,14 @@ import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
 import NotFound404 from '../../pages/not-found';
-import IngredientDetailsPage from '../../pages/ingredient-details-page';
+import IngredientDetailsPage from '../../pages/ingredient-details';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import FeedPage from '../../pages/feed';
+import FeedPage from '../../pages/public-feed';
 import ProfileForm from '../profile/profile-form';
-import OrderFeed from '../order/order-feed';
+import OrderInfo from '../order/order-info';
+import OrderInfoPage from '../../pages/order-details';
+import ProfileOrdersPage from '../../pages/profile-order';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +29,13 @@ const App: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUser());
+    const accessToken = localStorage.getItem('accessToken');
+    
+    if (accessToken) { 
+      dispatch(getUser());
+    } else {
+      dispatch({ type: 'SET_AUTH_CHECKED' });
+    }
     dispatch(getItems());
   }, [dispatch]);
 
@@ -70,10 +78,12 @@ const App: FC = () => {
           element={<ProtectedRouteElement element={<ProfilePage />} />} 
         >
           <Route index element={<ProfileForm />} /> 
-          <Route path='orders' element={<OrderFeed />} />
+          <Route path='orders' element={<ProfileOrdersPage />} />
+          <Route path='orders/:id' element={<OrderInfoPage />} />
         </Route>
 
         <Route path='/feed' element={<FeedPage />} />
+        <Route path='/feed/:id' element={<OrderInfoPage />} />
 
         <Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
 
@@ -90,6 +100,22 @@ const App: FC = () => {
                 onClose={handleIngredientModalClose}
               >
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/feed/:id'
+            element={
+              <Modal onClose={handleIngredientModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:id'
+            element={
+              <Modal onClose={handleIngredientModalClose}>
+                <OrderInfo />
               </Modal>
             }
           />

@@ -188,3 +188,15 @@ export interface IIngredientsResponse {
   success: boolean;
   data: IIngredientBase[];
 }
+
+export type TOrderList = {
+  success: boolean,
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TRefreshToken = { 
+  accessToken: string;
+  refreshToken: string;
+}

@@ -1,8 +1,8 @@
 import { BASE_URL, request } from '../../utils/util';
-import { getCookie } from '../../utils/cookie';
 import { refreshToken } from './refreshToken';
 import { AppDispatch, AppThunk } from '../store';
 import { IUser, IAuthResponse } from '../../utils/types';
+import { setAuthChecked } from './auth';
 
 export const GET_USER_REQUEST: 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
 export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
@@ -86,11 +86,15 @@ const USER_URL = BASE_URL + '/auth/user';
 
 export const getUser = (): AppThunk => {
   return async (dispatch: AppDispatch) => {
-    dispatch({
-      type: GET_USER_REQUEST
-    });
+    const accessToken = localStorage.getItem('accessToken');
 
-    const accessToken = getCookie('accessToken');
+    if (!accessToken) { 
+      dispatch(getUserFailed('No access token'));
+      dispatch(setAuthChecked());
+      return;
+    }
+
+    dispatch({ type: GET_USER_REQUEST });
 
     try {
       const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
@@ -107,18 +111,20 @@ export const getUser = (): AppThunk => {
         throw new Error('Failed to get user data');
       }
     } catch (err: any) {
-      if (err instanceof Error && (err as any).status === 401) {
+      if (err.status === 401 || err.status === 403 || err.message === 'jwt expired') {
         try {
-          await dispatch(refreshToken() as any);
-          const newAccessToken = getCookie('accessToken');
+          await dispatch(refreshToken());
+          const newAccessToken = localStorage.getItem('accessToken');
+
           if (newAccessToken) {
             const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${newAccessToken}`,
+                Authorization: 'Bearer ' + newAccessToken,
               },
             });
+
             if (data && data.success) {
               dispatch(getUserSuccess(data.user));
               return;
@@ -130,6 +136,8 @@ export const getUser = (): AppThunk => {
       } else {
         dispatch(getUserFailed(err.message));
       }
+    } finally {
+      dispatch(setAuthChecked());
     }
   }
 };
@@ -140,7 +148,7 @@ export const updateUser = (userData: { email: string; password: string; name: st
       type: UPDATE_USER_REQUEST
     });
 
-    const accessToken = getCookie('accessToken');
+    const accessToken = localStorage.getItem('accessToken');
 
     if (!accessToken) {
       dispatch(updateUserFailed('No access token'));
@@ -160,7 +168,7 @@ export const updateUser = (userData: { email: string; password: string; name: st
       dispatch(updateUserSuccess(data.user));
     } catch (err: any) {
       if (err.status === 401 || err.status === 403) {
-        const refreshTokenCookie = getCookie('refreshToken');
+        const refreshTokenCookie = localStorage.getItem('refreshToken');
 
         if (!refreshTokenCookie) {
           dispatch(updateUserFailed('No refresh token'));
@@ -168,22 +176,24 @@ export const updateUser = (userData: { email: string; password: string; name: st
         }
 
         try {
-          await dispatch(refreshToken() as any);
-          const newAccessToken = getCookie('accessToken');
+          await dispatch(refreshToken());
+          const newAccessToken = localStorage.getItem('accessToken');
 
-          const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + newAccessToken,
-            },
-            body: JSON.stringify(userData),
-          });
+          if (newAccessToken) {
+            const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + newAccessToken,
+              },
+              body: JSON.stringify(userData),
+            });
 
-          dispatch(updateUserSuccess(data.user));
-        } catch (err: any) {
-          dispatch(updateUserFailed(err.message));
-          console.error('Error:', err);
+            dispatch(updateUserSuccess(data.user));
+          }
+        } catch (refreshErr: any) {
+          dispatch(updateUserFailed(refreshErr.message));
+          console.error('Error:', refreshErr);
         }
       }  else {
         dispatch(updateUserFailed(err.message));

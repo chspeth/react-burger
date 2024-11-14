@@ -2,8 +2,9 @@ import { TModalActions } from './modal';
 import { TItemsActions } from './productData';
 import { TConstructorActions } from './constructorDnd';
 import { TOrderActions } from './orderDetails';
-import { TAuthActions } from '../reducers/auth'; 
-import { TWsActions } from './wsActions';
+import { TAuthActions } from './auth'; 
+import { TWSPublicAllActions } from './wsPublicActions';
+import { TWSUserAllActions } from './wsUserActions';
 
 export type TApplicationActions =
   | TModalActions
@@ -11,4 +12,5 @@ export type TApplicationActions =
   | TConstructorActions
   | TOrderActions
   | TAuthActions
-  | TWsActions;
+  | TWSPublicAllActions
+  | TWSUserAllActions;

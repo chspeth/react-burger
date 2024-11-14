@@ -1,23 +1,20 @@
 import { useEffect, FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../utils/types';
-import { NavLink, useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { getUser } from '../services/actions/user';
 import { logoutUser } from '../services/actions/logout';
 import styles from './pages.module.css';
 
 const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, authChecked } = useAppSelector(state => state.auth);
+  const { isAuthenticated, user } = useAppSelector(state => state.auth);
 
   useEffect(() => {
-    if (!isAuthenticated && authChecked) {
-      navigate('/login', { replace: true });
-    } else {
+    if (isAuthenticated && !user) {
       dispatch(getUser());
-    }
-  }, [authChecked, dispatch, isAuthenticated, navigate]);
+    } 
+  }, [dispatch, isAuthenticated, user]);
 
   const handleLogout = () => {
     dispatch(logoutUser());

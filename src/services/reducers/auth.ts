@@ -13,7 +13,7 @@ import {
  import { 
   LOGIN_REQUEST,
   LOGIN_FAILED,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
 } from '../actions/login';
 
  import { 
@@ -42,14 +42,8 @@ import {
   PASSWORD_RESET_CONFIRM_STATUS
 } from '../actions/password';
 
-import { TUserActions } from '../actions/user';
-import { TRegisterActions } from '../actions/register';
-import { TRefreshTokenActions } from '../actions/refreshToken';
-import { TLoginActions } from '../actions/login';
-import { TLogoutActions } from '../actions/logout';
-import { TPasswordResetActions } from '../actions/password';
-
 import { IAuthState } from '../../utils/types';
+import { SET_AUTH_CHECKED, TAuthActions } from '../actions/auth';
 
 const initialState: IAuthState = {
   user: null,
@@ -62,14 +56,6 @@ const initialState: IAuthState = {
   passwordResetSuccess: false,
   authChecked: false,
 };
-
-export type TAuthActions =
-  | TUserActions
-  | TRegisterActions
-  | TRefreshTokenActions
-  | TLoginActions
-  | TLogoutActions
-  | TPasswordResetActions;
 
 export const authReducer = (state = initialState, action: TAuthActions): IAuthState => {
   switch (action.type) {
@@ -172,6 +158,12 @@ export const authReducer = (state = initialState, action: TAuthActions): IAuthSt
       return { ...state, isLoading: false, hasError: true, passwordResetSuccess: false };
     case PASSWORD_RESET_CONFIRM_STATUS:
       return { ...state, isLoading: false, hasError: false, passwordResetSuccess: false };
+      case SET_AUTH_CHECKED: {
+        return {
+          ...state,
+          authChecked: true
+        }
+      }
     default:
       return state;
   }

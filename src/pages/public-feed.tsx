@@ -1,22 +1,41 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../utils/types';
-import { wsConnectionStart, wsConnectionClose } from '../services/actions/wsActions';
-import { wsUrl } from '../services/store';
+import { WS_PUBLIC_CONNECTION_START, WS_PUBLIC_CONNECTION_CLOSED } from '../services/actions/wsPublicActions';
 import styles from './pages.module.css';
 import OrderFeed from '../components/order/order-feed';
 
 const FeedPage: FC = () => {
   const dispatch = useAppDispatch();
+  const mountedRef = useRef(false);
+  const url = 'orders/all';
 
-  const { orders, total, totalToday } = useAppSelector(state => state.ws);
+  const publicFeedData = useAppSelector(state => state.wsPublic);
+
+  const orders = useMemo(() => {
+    return publicFeedData?.messages?.orders || []
+  }, [publicFeedData.messages]);
 
   useEffect(() => {
-    dispatch(wsConnectionStart(`${wsUrl}/all`));
+    let ignore = false;
+
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      dispatch({
+        type: WS_PUBLIC_CONNECTION_START,
+        payload: { url, token: false }
+      });
+    }
 
     return () => {
-      dispatch(wsConnectionClose());
+      if (ignore) {
+        return;
+      } else {
+        ignore = true;
+        dispatch({ type: WS_PUBLIC_CONNECTION_CLOSED });
+        mountedRef.current = false;
+      }
     };
-  }, [dispatch]);
+  }, [dispatch, url]);
 
   const doneOrders = orders.filter(order => order.status === 'done');
   const inProgressOrders = orders.filter(order => order.status !== 'done');
@@ -40,7 +59,7 @@ const FeedPage: FC = () => {
           <h1 className='text text_type_main-medium'>Лента заказов</h1>
           <div className={ styles['feed-inner-wrapper'] }>
             <div className={ styles['feed-left'] }>
-              <OrderFeed />
+              <OrderFeed orders={orders} />
             </div>
             <div className={ styles['feed-right'] }>
               <div className={ styles['right-inner-container'] }>
@@ -80,9 +99,9 @@ const FeedPage: FC = () => {
                 </div>
               </div>
               <p className='text text_type_main-medium mt-10'>Выполнено за все время:</p>
-              <p className={`${styles['ready-number']} text text_type_digits-large mb-15`}>{total}</p>
+              <p className={`${styles['ready-number']} text text_type_digits-large mb-15`}>{publicFeedData.messages.total}</p>
               <p className='text text_type_main-medium'>Выполнено за сегодня:</p>
-              <p className={`${styles['ready-number']} text text_type_digits-large`}>{totalToday}</p>
+              <p className={`${styles['ready-number']} text text_type_digits-large`}>{publicFeedData.messages.totalToday}</p>
             </div>
           </div>
         </div>

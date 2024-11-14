@@ -1,5 +1,4 @@
 import { BASE_URL, request } from '../../utils/util';
-import { setCookie, getCookie } from '../../utils/cookie';
 import { AppDispatch } from '../store';
 import { IDefaultResponse } from '../../utils/types';
 
@@ -39,17 +38,23 @@ export function logoutUser() {
     });
 
     try {
+      const refreshToken = localStorage.getItem('refreshToken');
+
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
+
       const data: IDefaultResponse = await request<IDefaultResponse>(LOGOUT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ token: getCookie('refreshToken') }) 
+        body: JSON.stringify({ token: refreshToken })
       });
 
       if (data && data.success) {
-        setCookie('accessToken', '', { expires: -1 });
-        setCookie('refreshToken', '', { expires: -1 });
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
 
         dispatch({
           type: LOGOUT_SUCCESS

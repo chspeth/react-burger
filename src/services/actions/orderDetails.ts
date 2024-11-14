@@ -2,7 +2,6 @@ import { BASE_URL, request } from '../../utils/util';
 import { AppDispatch } from '../store';
 import { clearConstructor } from './constructorDnd';
 import { ICreateOrderResponse, IOrderResponse } from '../../utils/types';
-import { getCookie } from '../../utils/cookie';
 import { refreshToken } from './refreshToken';
 
 export const GET_ORDER_REQUEST: 'GET_ORDER_REQUEST' = 'GET_ORDER_REQUEST';
@@ -67,7 +66,7 @@ export function getOrder(ingredients: string[]) {
       type: GET_ORDER_REQUEST,
     });
 
-    const accessToken = getCookie('accessToken');
+    const accessToken = localStorage.getItem('accessToken');
 
     try {
       const data: ICreateOrderResponse = await request<ICreateOrderResponse>(API_URL, {
@@ -89,7 +88,7 @@ export function getOrder(ingredients: string[]) {
       if (err.status === 401 || err.message === 'jwt expired') {
         try {
           await dispatch(refreshToken());
-          const newAccessToken = getCookie('accessToken');
+          const newAccessToken = localStorage.getItem('accessToken');
           if (newAccessToken) {
             const data: ICreateOrderResponse = await request<ICreateOrderResponse>(API_URL, {
               method: 'POST',

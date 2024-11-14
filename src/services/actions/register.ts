@@ -1,5 +1,4 @@
 import { BASE_URL, request } from '../../utils/util';
-import { setCookie } from '../../utils/cookie';
 import { AppDispatch } from '../store';
 import { IAuthResponse } from '../../utils/types';
 
@@ -65,11 +64,15 @@ export function registerUser(userData: { email: string; password: string; name: 
       });
 
       if (data && data.success) {
-        const accessToken = data.accessToken.split('Bearer ')[1];
+        const accessTokenRaw = data.accessToken;
+
+        const accessToken = accessTokenRaw.startsWith('Bearer ') 
+          ? accessTokenRaw.split('Bearer ')[1] 
+          : accessTokenRaw;
         const refreshToken = data.refreshToken;
         
-        setCookie('accessToken', accessToken);
-        setCookie('refreshToken', refreshToken);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
         dispatch(registerSuccess(data.user, accessToken, refreshToken));
       } else {
         throw new Error('Failed to register');

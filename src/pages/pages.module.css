@@ -206,3 +206,10 @@
 .right {
   width: 68%;
 }
+
+.order-page-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 60px;
+}

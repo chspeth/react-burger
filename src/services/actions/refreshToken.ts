@@ -1,7 +1,6 @@
 import { BASE_URL, request } from '../../utils/util';
-import { setCookie, getCookie } from '../../utils/cookie';
 import { AppDispatch } from '../store';
-import { IAuthResponse } from '../../utils/types';
+import { TRefreshToken } from '../../utils/types';
 
 export const REFRESH_TOKEN_REQUEST: 'REFRESH_TOKEN_REQUEST' = 'REFRESH_TOKEN_REQUEST';
 export const REFRESH_TOKEN_SUCCESS: 'REFRESH_TOKEN_SUCCESS' = 'REFRESH_TOKEN_SUCCESS';
@@ -39,45 +38,59 @@ export const refreshTokenFailed = (error: string): IRefreshTokenFailedAction => 
   payload: error,
 });
 
+export const refreshTokenRequest = (): IRefreshTokenRequestAction => ({
+  type: REFRESH_TOKEN_REQUEST
+});
+
 const REFRESH_TOKEN_URL = BASE_URL + '/auth/token';
+
+export const checkTokenExpire = async (): Promise<boolean> => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (!refreshToken) {
+    console.error('No refresh token available');
+    return false;
+  }
+
+  try {
+    const data: TRefreshToken = await request<TRefreshToken>(REFRESH_TOKEN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: refreshToken })
+    });
+
+    if (data && data.accessToken && data.refreshToken) {
+      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem('accessToken', data.accessToken.split('Bearer ')[1]);
+      return true;
+    } else {
+      console.error('Failed to refresh token');
+      return false;
+    }
+  } catch (err) {
+    console.error('Error during token refresh:', err);
+    return false;
+  }
+};
 
 export const refreshToken = () => {
   return async (dispatch: AppDispatch) => {
-    dispatch({
-      type: REFRESH_TOKEN_REQUEST
-    });
-
-    const refreshTokenCookie = getCookie('refreshToken');
-
-    if (!refreshTokenCookie) {
-      dispatch(refreshTokenFailed('No refresh token'));
-      return;
-    }
+    dispatch(refreshTokenRequest());
 
     try {
-      const data: IAuthResponse = await request<IAuthResponse>(REFRESH_TOKEN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ token: refreshTokenCookie }) 
-      });
+      const success = await checkTokenExpire();
 
-      if (data && data.success) {
-        const accessToken = data.accessToken.split('Bearer ')[1];
-        const newRefreshToken = data.refreshToken;
-        
-        setCookie('accessToken', accessToken);
-        setCookie('refreshToken', newRefreshToken);
-        dispatch(refreshTokenSuccess(accessToken, newRefreshToken));
+      if (success) {
+        const accessToken = localStorage.getItem('accessToken')!;
+        const refreshToken = localStorage.getItem('refreshToken')!;
+        dispatch(refreshTokenSuccess(accessToken, refreshToken));
         return accessToken;
       } else {
-        throw new Error('Failed to refresh token');
-      } 
+        dispatch(refreshTokenFailed('Failed to refresh token'));
+        return null;
+      }
     } catch (err: any) {
       dispatch(refreshTokenFailed(err.message));
-      console.error('Error:', err);
-      throw err; 
+      throw err;
     }
-  }
-}
+  };
+};

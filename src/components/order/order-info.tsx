@@ -1,16 +1,21 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../utils/types';
 import CustomScrollbar from '../scrollbar/scrollbar';
 import styles from './order.module.css';
 import { getOrderById } from '../../services/actions/orderDetails';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const OrderInfo: FC = () => {
-  const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
+  const { id } = useParams<{ id: string }>();
   const { productData } = useAppSelector(state => state.products);
   const { selectedOrder, isLoading } = useAppSelector(state => state.details);
+  const publicFeedData = useAppSelector(state => state.wsPublic);
+
+  const orders = useMemo(() => {
+    return publicFeedData?.messages?.orders || []
+  }, [publicFeedData.messages]);
 
   useEffect(() => {
     if (id) {
@@ -20,11 +25,28 @@ const OrderInfo: FC = () => {
     }
   }, [dispatch, id, selectedOrder]);
 
-  if (isLoading || !selectedOrder) {
+  const order = useMemo(() => {
+    return orders.find(order => order._id === id || String(order.number) === id);
+  }, [orders, id]);
+
+  useEffect(() => {
+    if (!order && id) {
+      dispatch(getOrderById(id));
+    }
+  }, [dispatch, id, order]);
+
+  const currentOrder = order || selectedOrder;
+
+  if (isLoading || !currentOrder) {
     return <p className='text text_type_main-medium'>Загрузка...</p>;
   }
 
-  const ingredientCounts = selectedOrder.ingredients.reduce(
+  const statusColor = currentOrder.status === 'done' ? '#00CCCC' : '#F2F2F3';
+  const statusText = currentOrder.status === 'done' ? 'Выполнен' :
+    currentOrder.status === 'pending' ? 'Готовится' :
+    currentOrder.status === 'created' ? 'Создан' : '';
+
+  const ingredientCounts = currentOrder.ingredients.reduce(
     (acc: Record<string, number>, ingredientId: string) => {
     acc[ingredientId] = (acc[ingredientId] || 0) + 1;
     return acc;
@@ -40,21 +62,31 @@ const OrderInfo: FC = () => {
 
   const totalPrice = ingredientsData.reduce((sum, item) => {
     if (item.ingredient && item.ingredient.price) {
-      return sum + item.ingredient.price * item.count;
+      item.count = item.ingredient.type === 'bun' ? 2 : item.count;
+      return sum + (item.ingredient.price * item.count);
     }
     return sum;
   }, 0);
 
+  const itemHeight = 76; 
+  const uniqueIngredientsCount = ingredientsData.length;
+  const scrollBarHeight = uniqueIngredientsCount < 4 ? `${uniqueIngredientsCount * itemHeight}px` : '312px';
+
   return (
     <>
-      <div className={ styles['order-contsiner'] }>
-        <p className={`${ styles['number'] } text text_type_digits-default mb-10`}>#{selectedOrder.number}</p>
-        <p className='text text_type_main-medium mb-3'>{selectedOrder.name}</p>
-        <p className='text text_type_main-small mb-15'>{selectedOrder.status}</p>
-        <p className='text text_type_main-medium mb-6'>Состав:</p>
+      <div className={ styles['order-container'] }>
+        <p className={`${ styles['number'] } text text_type_digits-default mb-8`}>#{currentOrder.number}</p>
+        <p className='text text_type_main-medium mb-3'>{currentOrder.name}</p>
+        <p 
+          className='text text_type_main-small mb-6'
+          style={{ color: statusColor }}
+        >
+          {statusText}
+        </p>
+        <p className='text text_type_main-medium mb-4'>Состав:</p>
         <CustomScrollbar
           customStyles={{
-            wrapperHeight: '312px',
+            wrapperHeight: scrollBarHeight,
             top: '0',
             bottom: '0'
           }}
@@ -81,8 +113,13 @@ const OrderInfo: FC = () => {
           </ul>
         </CustomScrollbar>
         <p className={ styles['order-total'] }>
-          <span>{selectedOrder.createdAt}</span>
-          <span>{totalPrice}</span>
+          <span className='text text_type_main-default text_color_inactive'>
+            <FormattedDate date={new Date(currentOrder.createdAt)} />
+          </span>
+          <p className={ styles['total-price'] }>
+            <span className='text text_type_digits-default'>{totalPrice}</span>
+            <CurrencyIcon type='primary' />
+          </p>
         </p>
       </div>
     </>

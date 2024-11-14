@@ -6,7 +6,9 @@ const OrderInfoPage: FC = () => {
 
   return (
     <>
-      <OrderInfo />
+      <div className={ styles['order-page-container'] }>
+        <OrderInfo />
+      </div>
     </>
   );
 };
