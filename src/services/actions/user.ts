@@ -1,5 +1,5 @@
 import { BASE_URL, request } from '../../utils/util';
-import { refreshToken } from './refreshToken';
+import { checkTokenExpire, refreshToken } from './refreshToken';
 import { AppDispatch, AppThunk } from '../store';
 import { IUser, IAuthResponse } from '../../utils/types';
 import { setAuthChecked } from './auth';
@@ -97,6 +97,11 @@ export const getUser = (): AppThunk => {
     dispatch({ type: GET_USER_REQUEST });
 
     try {
+      const isTokenValid = await checkTokenExpire();
+      if (!isTokenValid) {
+        throw new Error('Token expired and could not be refreshed');
+      }
+      
       const data: IAuthResponse = await request<IAuthResponse>(USER_URL, {
         method: 'GET',
         headers: {

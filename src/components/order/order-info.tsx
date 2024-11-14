@@ -112,7 +112,7 @@ const OrderInfo: FC = () => {
             ))}
           </ul>
         </CustomScrollbar>
-        <p className={ styles['order-total'] }>
+        <div className={ styles['order-total'] }>
           <span className='text text_type_main-default text_color_inactive'>
             <FormattedDate date={new Date(currentOrder.createdAt)} />
           </span>
@@ -120,7 +120,7 @@ const OrderInfo: FC = () => {
             <span className='text text_type_digits-default'>{totalPrice}</span>
             <CurrencyIcon type='primary' />
           </p>
-        </p>
+        </div>
       </div>
     </>
   );

@@ -7,24 +7,29 @@ import { TApplicationActions } from '../actions';
 
 type TWSActions = TWSPublicActions | TWSUserActions;
 
-export const WS_URL = 'wss://norma.nomoreparties.space/';
-
 export const socketMiddleware = (wsActions: TWSActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
     let isSocketOpen: boolean;
     let wsInitAction: TApplicationActions | null = null;
-    const accessToken = localStorage.getItem('accessToken');
 
-    return next => (action: TApplicationActions) => {
+    return next => async (action: TApplicationActions) => {
       const { dispatch } = store;
       const { type } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
 
       if (type === wsInit) {
         wsInitAction = action;
+
+        const tokenIsValid = await checkTokenExpire();
+        if (!tokenIsValid) {
+          console.error('Token validation failed before WebSocket connection');
+          return;
+        }
+
+        const accessToken = localStorage.getItem('accessToken');
         const token = action.payload.token ? `?token=${accessToken}` : '';
-        socket = new WebSocket(`${WS_URL}${action.payload.url}${token}`);
+        socket = new WebSocket(`${action.payload.url}${token}`);
         isSocketOpen = true;
       }
 

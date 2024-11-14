@@ -22,6 +22,7 @@ import ProfileForm from '../profile/profile-form';
 import OrderInfo from '../order/order-info';
 import OrderInfoPage from '../../pages/order-details';
 import ProfileOrdersPage from '../../pages/profile-order';
+import { SET_AUTH_CHECKED } from '../../services/actions/auth';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -34,7 +35,7 @@ const App: FC = () => {
     if (accessToken) { 
       dispatch(getUser());
     } else {
-      dispatch({ type: 'SET_AUTH_CHECKED' });
+      dispatch({ type: SET_AUTH_CHECKED });
     }
     dispatch(getItems());
   }, [dispatch]);

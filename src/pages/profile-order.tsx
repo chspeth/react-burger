@@ -6,7 +6,7 @@ import OrderFeed from '../components/order/order-feed';
 const ProfileOrdersPage: FC = () => {
   const dispatch = useAppDispatch();
   const mountedRef = useRef(false);
-  const url = 'orders';
+  const url = 'wss://norma.nomoreparties.space/orders';
 
   const privateFeedData = useAppSelector(state => state.wsUser);
 

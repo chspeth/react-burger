@@ -2,6 +2,7 @@ import { BASE_URL, request } from '../../utils/util';
 import { IAuthState } from '../../utils/types';
 import { AppDispatch } from '../store';
 import { IAuthResponse } from '../../utils/types';
+import { checkTokenExpire } from './refreshToken';
 
 export const LOGIN_REQUEST: 'LOGIN_REQUEST' = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS: 'LOGIN_SUCCESS' = 'LOGIN_SUCCESS';
@@ -68,6 +69,12 @@ export function loginUser(email: string, password: string) {
         
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+
+        const isTokenValid = await checkTokenExpire();
+        if (!isTokenValid) {
+          throw new Error('Token validation failed after login');
+        }
+        
         dispatch(loginSuccess(data.user, accessToken, refreshToken));
       } else {
         throw new Error('Failed to log in');

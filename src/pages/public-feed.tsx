@@ -7,7 +7,7 @@ import OrderFeed from '../components/order/order-feed';
 const FeedPage: FC = () => {
   const dispatch = useAppDispatch();
   const mountedRef = useRef(false);
-  const url = 'orders/all';
+  const url = 'wss://norma.nomoreparties.space/orders/all';
 
   const publicFeedData = useAppSelector(state => state.wsPublic);
 
