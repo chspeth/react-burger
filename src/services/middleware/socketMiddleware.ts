@@ -21,14 +21,20 @@ export const socketMiddleware = (wsActions: TWSActions): Middleware => {
       if (type === wsInit) {
         wsInitAction = action;
 
-        const tokenIsValid = await checkTokenExpire();
-        if (!tokenIsValid) {
-          console.error('Token validation failed before WebSocket connection');
-          return;
+        let token = '';
+        if (action.payload.token) {
+          const tokenIsValid = await checkTokenExpire();
+          if (!tokenIsValid) {
+            console.error('Token validation failed before WebSocket connection');
+            return;
+          }
+          token = `?token=${localStorage.getItem('accessToken')}`;
         }
 
-        const accessToken = localStorage.getItem('accessToken');
-        const token = action.payload.token ? `?token=${accessToken}` : '';
+        // const accessToken = localStorage.getItem('accessToken');
+        // const token = action.payload.token ? `?token=${accessToken}` : '';
+        // socket = new WebSocket(`${action.payload.url}${token}`);
+        // isSocketOpen = true;
         socket = new WebSocket(`${action.payload.url}${token}`);
         isSocketOpen = true;
       }
@@ -39,7 +45,10 @@ export const socketMiddleware = (wsActions: TWSActions): Middleware => {
         };
 
         if (type === onClose) {
-          if (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING) socket.close(); 
+          if (
+            socket.readyState === WebSocket.OPEN || 
+            socket.readyState === WebSocket.CONNECTING
+          ) socket.close(); 
           isSocketOpen = false;
         }
 
