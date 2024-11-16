@@ -17,7 +17,7 @@ export interface IOrderState {
   selectedOrder: IOrder | null;
 }
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
   orderNumber: null,
   isLoading: false,
   hasError: false,

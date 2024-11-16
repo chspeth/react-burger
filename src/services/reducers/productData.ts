@@ -6,7 +6,7 @@ import {
 } from '../actions/productData';
 import { IProductsState } from '../../utils/types';
 
-const initialState: IProductsState = {
+export const initialState: IProductsState = {
   productData: [],
   isLoading: false,
   hasError: false,

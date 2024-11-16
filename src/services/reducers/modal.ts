@@ -2,7 +2,7 @@ import { OPEN_MODAL, CLOSE_MODAL } from '../actions/modal';
 import { TModalActions } from '../actions/modal';
 import { IModalState } from '../../utils/types';
 
-const initialState: IModalState = {
+export const initialState: IModalState = {
   modalContent: null,
   title: null,
   isModalOpen: false
