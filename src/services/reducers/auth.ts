@@ -13,7 +13,7 @@ import {
  import { 
   LOGIN_REQUEST,
   LOGIN_FAILED,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
 } from '../actions/login';
 
  import { 
@@ -42,7 +42,10 @@ import {
   PASSWORD_RESET_CONFIRM_STATUS
 } from '../actions/password';
 
-const initialState = {
+import { IAuthState } from '../../utils/types';
+import { SET_AUTH_CHECKED, TAuthActions } from '../actions/auth';
+
+const initialState: IAuthState = {
   user: null,
   accessToken: null,
   refreshToken: null,
@@ -54,7 +57,7 @@ const initialState = {
   authChecked: false,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: TAuthActions): IAuthState => {
   switch (action.type) {
     case REGISTER_REQUEST:
     case LOGIN_REQUEST:
@@ -155,6 +158,12 @@ export const authReducer = (state = initialState, action) => {
       return { ...state, isLoading: false, hasError: true, passwordResetSuccess: false };
     case PASSWORD_RESET_CONFIRM_STATUS:
       return { ...state, isLoading: false, hasError: false, passwordResetSuccess: false };
+      case SET_AUTH_CHECKED: {
+        return {
+          ...state,
+          authChecked: true
+        }
+      }
     default:
       return state;
   }

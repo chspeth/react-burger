@@ -24,11 +24,12 @@
   gap: 60px;
   width: 1240px;
   margin: 0 auto;
-  padding-top: 120px;
+  padding-top: 40px;
 }
 
 .left {
   width: 320px;
+  padding-top: 80px;
 }
 
 .nav-list {
@@ -72,7 +73,6 @@
 }
 
 .center-container {
-  /* margin-top: 200px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -83,4 +83,133 @@
   display: flex;
   justify-content: flex-start;
   margin-top: 20px;
+}
+
+.feed {
+  flex-direction: column;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  gap: 20px;
+}
+
+.feed-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 60px;
+}
+
+.feed-left {
+  width: 49%;
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 584px;
+}
+
+.feed-item {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: #1c1c21;
+  border-radius: 40px;
+}
+
+.about-item {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.about-item-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+}
+
+.about-item-item {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #801ab2;
+  margin-right: -15px;
+  background-color: #1e1b26;
+  overflow: hidden;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.about-item-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-item-hidden {
+  color: #fff;
+}
+
+.hidden-image {
+  opacity: 0.5; 
+}
+
+.hidden-counter {
+  position: absolute;
+  font-weight: bold;
+}
+
+.item-price {
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.columns-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.right-inner-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.right-inner-title {
+  margin-bottom: 24px;
+}
+
+.right-list-orders {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 24px;
+  list-style-type: none;
+}
+
+.right-list-orders li {
+  margin-bottom: 8px;
+}
+
+.ready-number {
+  text-shadow: 0px 4px 32px #3333FF80, 0px 0px 8px #3333FF40, 0px 0px 16px #3333FF40;
+}
+
+.right {
+  width: 68%;
+}
+
+.order-page-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 60px;
 }

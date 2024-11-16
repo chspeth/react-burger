@@ -4,7 +4,8 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import styles from './constructor-ingredient.module.css';
 import { IConstructorIngredientProps, IDragItem } from '../../../utils/types';
 
-const ConstructorIngredient: FC<IConstructorIngredientProps> = ({ element, index, moveIngredient, handleDeleteItem }) => {
+const ConstructorIngredient: FC<IConstructorIngredientProps> = (
+  { element, index, moveIngredient, handleDeleteItem }) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const [{ handlerId }, drop] = useDrop<IDragItem, void, { handlerId: string | symbol | null }>({

@@ -16,7 +16,7 @@ const AppHeader: FC = () => {
               </Link>
             </li>
             <li className={ styles['nav-item'] }>
-              <Link className={`${ styles['nav-link'] } pr-5 pl-5 pt-4 pb-4`} to='/'>
+              <Link className={`${ styles['nav-link'] } pr-5 pl-5 pt-4 pb-4`} to='/feed'>
                 <ListIcon type='primary' />
                 <span className='pl-2'>Лента заказов</span>
               </Link>

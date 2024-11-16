@@ -8,10 +8,10 @@ const ProtectedRouteElement: FC<IProtectedNPublicRouteElementProps> = ({ element
   const location = useLocation();
   
   if (!authChecked) {
-    return null;
+    return <p>Loading...</p>;
   }
 
-  return isAuthenticated ? element : <Navigate to='/login' state={{ from: location }} replace />;
+  return isAuthenticated ? element : <Navigate to='/login' state={{ from: location }} />;
 }
 
 export default ProtectedRouteElement;

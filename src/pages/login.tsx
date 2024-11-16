@@ -1,26 +1,16 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../utils/types';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { loginUser } from '../services/actions/login';
 import styles from './pages.module.css';
 
 const LoginPage: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { isLoading, isAuthenticated } = useAppSelector(state => state.auth);
+  const { isLoading } = useAppSelector(state => state.auth);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const from = location.state?.from?.pathname || '/';
-  
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(from, { replace: true });
-    }
-  }, [from, isAuthenticated, navigate]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

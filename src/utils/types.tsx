@@ -143,3 +143,60 @@ export interface ICustomScrollbarProps {
   customStyles: ICustomScrollbarStyles;
   onScrollFrame?: (values: any) => void; 
 }
+
+export interface IUser {
+  email: string;
+  name: string;
+}
+
+export interface IAuthResponse {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: IUser;
+}
+
+export interface IDefaultResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface IOrder {
+  _id: string;
+  ingredients: string[];
+  status: 'created' | 'pending' | 'done';
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+}
+
+export interface IOrderResponse {
+  success: boolean;
+  orders: IOrder[];
+}
+
+export interface ICreateOrderResponse {
+  success: boolean;
+  name: string;
+  order: {
+    number: number;
+  };
+}
+
+export interface IIngredientsResponse {
+  success: boolean;
+  data: IIngredientBase[];
+}
+
+export type TOrderList = {
+  success: boolean,
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TRefreshToken = { 
+  accessToken: string;
+  refreshToken: string;
+}

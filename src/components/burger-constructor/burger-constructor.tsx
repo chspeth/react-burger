@@ -7,8 +7,9 @@ import CustomScrollbar from '../scrollbar/scrollbar';
 import OrderDetails from '../modal/order-details/order-details';
 import { useDrop } from 'react-dnd';
 import { addUserItem, deleteItem, moveItem } from '../../services/actions/constructorDnd';
-import { orderDetails } from '../../services/actions/orderDetails';
+import { getOrder } from '../../services/actions/orderDetails';
 import ConstructorIngredient from './constructor-ingredient/constructor-ingredient';
+import { IIngredientWithId, IIngredientBase } from '../../utils/types';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor: FC = () => {
@@ -16,9 +17,10 @@ const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAppSelector(state => state.auth);
-  const { bun, fillings } = useAppSelector(state => state.constructorItems);
+  const { bun, fillings }: { bun: IIngredientWithId | null; fillings: IIngredientWithId[] } = 
+    useAppSelector(state => state.constructorItems);
   
-  const [, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop<IIngredientBase>({
     accept: 'ingredient',
     drop(item) {
       dispatch(addUserItem(item));
@@ -37,9 +39,11 @@ const BurgerConstructor: FC = () => {
     if (!isAuthenticated) {
       navigate('/login', { state: { from: location } });
     } else {
-      const ingredients = [bun?._id, ...fillings.map(item => item._id)];
-      dispatch(orderDetails(ingredients));
-      dispatch(openModal(<OrderDetails />, false));
+      const ingredients = [bun?._id, ...fillings.map(item => item._id)].filter(
+        (id): id is string => typeof id === 'string'
+      );
+      dispatch(getOrder(ingredients));
+      dispatch(openModal(<OrderDetails />, null));
     }
   };
 
@@ -52,7 +56,7 @@ const BurgerConstructor: FC = () => {
   
   const totalPrice = useMemo(() => {
     const bunPrice = bun ? bun.price * 2 : 0;
-    return bunPrice + fillings.reduce((acc, curr) => acc + curr.price, 0);
+    return bunPrice + fillings.reduce((acc: number, curr: IIngredientWithId) => acc + curr.price, 0);
   }, [bun, fillings]);
   
   return (
