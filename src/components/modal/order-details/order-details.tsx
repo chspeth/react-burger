@@ -10,7 +10,12 @@ const OrderDetails: FC = () => {
       {isLoading && <p className="text text_type_main-medium">Загрузка...</p>}
       {!isLoading && (
         <>
-          <p className={`${styles['order-id']} text text_type_digits-large`}>{orderNumber}</p>
+          <p 
+            className={`${styles['order-id']} text text_type_digits-large`}
+            data-test='order-number'
+          >
+            {orderNumber}
+          </p>
           <p className='text text_type_main-medium'>идентификатор заказа</p>
         </>
         )}
