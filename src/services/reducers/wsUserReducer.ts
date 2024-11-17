@@ -14,7 +14,7 @@ export interface IWsUserState {
   error?: Event;
 }
 
-const initialState: IWsUserState = {
+export const initialState: IWsUserState = {
   wsConnected: false,
   messages: {
     success: false,
@@ -56,7 +56,8 @@ export const wsUserReducer = (
     case WS_USER_GET_MESSAGE:
       return {
         ...state,
-        messages: action.payload
+        messages: action.payload,
+        error: ''
       };
     default:
       return state;

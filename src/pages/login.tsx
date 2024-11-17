@@ -27,30 +27,36 @@ const LoginPage: FC = () => {
         >
           <fieldset>
             <legend className='text text_type_main-medium'>Вход</legend>
-            <EmailInput
-              placeholder='E-mail'
-              extraClass='mt-6'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <PasswordInput
-              placeholder='Пароль'
-              icon='ShowIcon'
-              extraClass='mt-6'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <Button 
-              htmlType='submit' 
-              type='primary' 
-              size='medium'
-              extraClass='mt-6'
-              disabled={isLoading}
-            >
-              Войти
-            </Button>
+            <div data-test='login-email-input'>
+              <EmailInput
+                placeholder='E-mail'
+                extraClass='mt-6'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div data-test='login-password-input'>
+              <PasswordInput
+                placeholder='Пароль'
+                icon='ShowIcon'
+                extraClass='mt-6'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div data-test='login-button'>
+              <Button
+                htmlType='submit'
+                type='primary'
+                size='medium'
+                extraClass='mt-6'
+                disabled={isLoading}
+              >
+                Войти
+              </Button>
+            </div>
             <p className='mt-20 text text_type_main-default text_color_inactive'>
               Вы — новый пользователь? {' '}
               <Link to='/register' className={ styles['link'] }>Зарегистрироваться</Link>

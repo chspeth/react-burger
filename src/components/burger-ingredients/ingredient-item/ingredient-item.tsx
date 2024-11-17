@@ -37,7 +37,10 @@ const IngredientItem: FC<IIngredientItemProps> = ({ ingredient }) => {
       className={ styles['ingredient-item'] } 
       style={{ opacity: isDragging ? 0.5 : 1 }}
       onClick={handleIngredientClick} 
-      ref={dragRef}>
+      ref={dragRef}
+      data-test='ingredient-item' 
+      data-type={ingredient.type}
+      >
       {ingredientsCounter && <Counter count={ingredientsCounter} size='default' />}
       <img 
         className={`${ styles['image'] } mb-1`} 

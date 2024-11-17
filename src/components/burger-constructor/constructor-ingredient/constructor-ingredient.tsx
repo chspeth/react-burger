@@ -58,6 +58,7 @@ const ConstructorIngredient: FC<IConstructorIngredientProps> = (
       ref={ref} 
       data-handler-id={handlerId} 
       style={{ opacity: isDragging ? 0.5 : 1 }}
+      data-test='constructor-item'
     >
       <DragIcon type='primary' />
       <ConstructorElement

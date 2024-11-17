@@ -8,7 +8,7 @@ import {
 import { TConstructorActions } from '../actions/constructorDnd';
 import { IConstructorState } from '../../utils/types';
 
-const initialState: IConstructorState = {
+export const initialState: IConstructorState = {
   bun: null,
   fillings: [],
 };

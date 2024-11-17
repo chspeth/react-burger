@@ -14,7 +14,7 @@ export interface IWsPublicState {
   error?: Event;
 }
 
-const initialState: IWsPublicState = {
+export const initialState: IWsPublicState = {
   wsConnected: false,
   messages: {
     success: false,

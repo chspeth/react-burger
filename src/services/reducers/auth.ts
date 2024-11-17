@@ -45,7 +45,7 @@ import {
 import { IAuthState } from '../../utils/types';
 import { SET_AUTH_CHECKED, TAuthActions } from '../actions/auth';
 
-const initialState: IAuthState = {
+export const initialState: IAuthState = {
   user: null,
   accessToken: null,
   refreshToken: null,

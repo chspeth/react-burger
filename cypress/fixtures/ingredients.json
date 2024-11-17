@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "bun1",
+      "name": "Булка 1",
+      "type": "bun",
+      "price": 100,
+      "image": "http://example.com/bun1.png"
+    },
+    {
+      "_id": "main1",
+      "name": "Начинка 1",
+      "type": "main",
+      "price": 150,
+      "image": "http://example.com/main1.png"
+    },
+    {
+      "_id": "sauce1",
+      "name": "Соус 1",
+      "type": "sauce",
+      "price": 50,
+      "image": "http://example.com/sauce1.png"
+    }
+  ]
+}

@@ -61,7 +61,11 @@ const BurgerConstructor: FC = () => {
   
   return (
     <section className={ styles['constructor-section'] }>
-      <div className={styles['flex-wrapper']} ref={dropTarget}>
+      <div 
+        className={styles['flex-wrapper']} 
+        ref={dropTarget} 
+        data-test='constructor-drop-target'
+      >
         <div className={`${ styles['element-container'] } ${ styles['bun-element'] }`}>
           {!bun && (
             <div className={`${ styles['empty-element'] } ${ styles['top'] }`}>
@@ -69,13 +73,15 @@ const BurgerConstructor: FC = () => {
             </div>
           )}
           {bun && (
-            <ConstructorElement
-              type='top'
-              isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
+            <div data-test='constructor-bun-top'>
+              <ConstructorElement
+                type='top'
+                isLocked={true}
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image}
               />
+            </div>
           )}
         </div>
         {fillings.length === 0 && (
@@ -93,13 +99,15 @@ const BurgerConstructor: FC = () => {
               }}>
               <div className={ `${ styles['flex-container'] } ${ styles['inner-container'] }` }>
                 {fillings.map((element, index) => (
-                  <ConstructorIngredient
-                    key={element.id}
-                    index={index}
-                    element={element}
-                    moveIngredient={moveIngredient}
-                    handleDeleteItem={handleDeleteItem}
-                  />
+                  <div data-test='constructor-item'>
+                    <ConstructorIngredient
+                      key={element.id}
+                      index={index}
+                      element={element}
+                      moveIngredient={moveIngredient}
+                      handleDeleteItem={handleDeleteItem}
+                    />
+                  </div>
                 ))}
               </div>
             </CustomScrollbar>
@@ -112,13 +120,15 @@ const BurgerConstructor: FC = () => {
             </div>
           )}
           {bun && (
-            <ConstructorElement
-              type='bottom'
-              isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
-            />
+            <div data-test='constructor-bun-bottom'>
+              <ConstructorElement
+                type='bottom'
+                isLocked={true}
+                text={`${bun.name} (низ)`}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+            </div>
           )}
         </div>
       </div>
@@ -127,12 +137,17 @@ const BurgerConstructor: FC = () => {
           <span className='text text_type_digits-medium'>{totalPrice}</span> 
           <CurrencyIcon type='primary' />
         </p>
-        <Button 
-          htmlType='button'
-          type='primary' 
-          size='large'
-          onClick={handleOrderClick} 
-          disabled={!bun || fillings.length === 0}>Оформить заказ</Button>
+        <div data-test='place-order-button'>
+          <Button
+            htmlType='button'
+            type='primary'
+            size='large'
+            onClick={handleOrderClick}
+            disabled={!bun || fillings.length === 0}
+          >
+            Оформить заказ
+          </Button>
+        </div>
       </div>
     </section>
   )
